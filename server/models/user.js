@@ -7,15 +7,23 @@ const userSchema = new Schema({
         required: true,
         unique: true
     },
-    firstName: String,
-    lastName: String,
-    City:{
+    firstName:{
+        type: String,
+        required: true,
+        unique: true
+    },
+    lastName: {
+        type: String,
+        required: true,
+        unique: true
+    },
+    city:{
         type:String
     },
     Address: String,
     addressCoordinates: String,
     phoneNumber: String,
-    Orders:{
+    orders:{
         type: Array,
         default:[]
     },

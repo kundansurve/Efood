@@ -11,9 +11,10 @@ const loginCredential = new Schema({
         type: String,
         required: true
     },
-    isHotel: Boolean,
-    isAdmin: Boolean,
-    isDileveryBoy: Boolean,
+    userType:{
+        type: String,
+        required: true
+    },
     createdAt: {
         type: Date,
         default: Date.now()

@@ -7,9 +7,14 @@ const hotelSchema = new Schema({
         required: true,
         unique: true
     },
-    Name: String,
+    Name:{
+        type: String,               //email of that Hotel
+        required: true,
+        unique: true
+    },
     City:{
-        type:String
+        type:String,                // City of that Hotel
+        required
     },
     Adress: {
         type:String,                // Adress of that Hotel
