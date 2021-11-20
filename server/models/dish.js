@@ -9,7 +9,7 @@ const dishSchema = new Schema({
     price: Number,
     anyOffer: String,
     priceAfterOffer: Number,
-    ratings:Number,
+    ratings: Number,
     hotelId: String,
     createdAt: {                   
         type: Date,

@@ -3,10 +3,22 @@ const { Schema } = mongoose;
 
 const orderSchema = new Schema({
     placedByUser: {
-        type: Object,
+        type: String,
         required: true
     },
     placedInHotel: {
+        type: String,
+        required: true
+    },
+    detailsOfUser:{
+        type: Object,
+        required: true
+    },
+    detailsOfHotel:{
+        type: Object,
+        required: true
+    },
+    detailsOfDeliveryBoy:{
         type: Object,
         required: true
     },

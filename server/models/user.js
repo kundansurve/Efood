@@ -32,8 +32,8 @@ const userSchema = new Schema({
         default:[]
     },
     cart:{
-        type:Array,
-        default:[]
+        type:Object,
+        default:{}
     },
     createdAt: {
         type: Date,
@@ -45,4 +45,4 @@ const userSchema = new Schema({
     }
 });
 
-module.exports = mongoose.model('User', userSchema);
+module.exports = mongoose.model('user', userSchema);

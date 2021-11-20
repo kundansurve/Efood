@@ -6,7 +6,7 @@ const reviewSchema = new Schema({
         type:String,
         rquired:true
     },
-    reviewedForName:{
+    reviewForName:{
         type:String,
         required:true
     },

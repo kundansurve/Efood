@@ -7,18 +7,18 @@ const hotelSchema = new Schema({
         required: true,
         unique: true
     },
-    Name:{
+    name:{
         type: String,               //email of that Hotel
         required: true,
         unique: true
     },
-    City:{
+    city:{
         type:String,                // City of that Hotel
-        required
+        required:true
     },
-    Adress: {
-        type:String,                // Adress of that Hotel
-        required
+    address: {
+        type:String,                // Address of that Hotel
+        required:true
     },
     addressCoordinates:{
         type:Array,                 //Array of Longitudes and Latitudes 
@@ -28,7 +28,7 @@ const hotelSchema = new Schema({
         type:Array,                 //Array of all object _id of dish 
         default:[]                  //that are offered by that hotel
     },
-    Orders:{
+    orders:{
         type:Array,                 //Array of all object _id of Orders
         default:[]                  //that are placed in that hotel
     },
@@ -47,4 +47,4 @@ const hotelSchema = new Schema({
     }
 });
 
-module.exports = mongoose.model('Hotel',  hotelSchema);
+module.exports = mongoose.model('hotel',  hotelSchema);

@@ -3,6 +3,8 @@ const router = express.Router();
 
 const authenticate=require('../middlewares/authenticate');
 
+const hotel=require('../models/hotel');
+
 const bcrypt = require('bcryptjs');
 const user = require('../models/user');
 
@@ -40,51 +42,96 @@ router.post('/',(req,res)=>{
     });
 });
 
-// Get all Hotels in that city or region.
-router.get('/hotel',(req,res)=>{
-    
-});
 
-//get hotels by name
-router.get('/hotel',(req,res)=>{
-
+//Get user info by userId
+router.get('/me',authenticate,(req,res)=>{
+    const _id=req.session.userId;
+    const userType=req.session.userType;
+    if(userType==='Hotel'){
+        hotel.findOne({_id})
+        .then((user)=>{
+            res.status(200).send({user});
+            return;
+        })
+        .catch((error)=>{
+            if(error){
+                res.status(400).send({error});
+                return;
+            }
+            res.status(400).send({error:"Internal Server Error"});
+                return;
+        });
+    }
+    if(userType==='User'){
+        user.findOne({_id})
+        .then((user)=>{
+            res.status(200).send({user});
+            return;
+        })
+        .catch((error)=>{
+            if(error){
+                res.status(400).send({error});
+                return;
+            }
+            res.status(400).send({error:"Internal Server Error"});
+                return;
+        });
+    }
+    if(userType==='DeliveryBoy'){
+        deliveryBoy.findOne({_id})
+        .then((user)=>{
+            res.status(200).send({user});
+            return;
+        })
+        .catch((error)=>{
+            if(error){
+                res.status(400).send({error});
+                return;
+            }
+            res.status(400).send({error:"Internal Server Error"});
+                return;
+        });
+    }
 });
 
 // get all dishes offered
-router.get('/dishes',(req,res)=>{
-
-});
-
-// get dishes by name
-router.get('/dish',(req,res)=>{
-
-});
-
-// get dishes by hotels
-router.get('/hotel/dishes',(req,res)=>{
-
-});
-
-// get all past orders details
-router.get('/orders',(req,res)=>{
-
-});
-
-
-// get all dishes in cart
-router.put('/cart',(req,res)=>{
-
+router.get('/dishes',authenticate,(req,res)=>{
+    const {name,city,hotelId} = req.body;
+    if(!name && !city && !hotelId){
+        res.status(400).send({error:"Dish name, city name, hotelid any one of these must be provided"});
+    }
+    const query={};
+    if(name){
+        query={...query,name};
+    }
+    if(city){
+        query={...query,city};
+    }if(hotelId){
+        query={...query,hotelId};
+    }
+    dish.find(query)
+        .then((dishes)=>{
+            res.status(200).send({"hotels":dishes});
+            return;
+        })
+        .catch(
+            (error)=>{
+                if(error)res.status().send({"error":error});
+                res.status(400).send({"error":"Internal Server Error"});
+                return;
+            }
+        );
 });
 
 // update cart
 router.put('/updatecart',(req,res)=>{
-
+    
 });
 
 //get past searches 
 router.get('/pastSearches',(req,res)=>{
 
-})
+});
 
 // update user info
 router.put('/update',(req,res)=>{

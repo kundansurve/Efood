@@ -1,11 +1,10 @@
 const express = require('express');
 const router = express.Router();
-
 const bcrypt = require('bcryptjs');
 const user = require('../models/user');
 
 
-router.get('/me', auth.authenticate, (req, res) => {
+router.get('/me', authenticate, (req, res) => {
     User.findOne({ _id: req.session.userId }).then(user => {
         res.send(user);
     }).catch(() => {
@@ -13,15 +12,8 @@ router.get('/me', auth.authenticate, (req, res) => {
     });
 });
 
-router.get('/:userId', (req, res) => {
-    User.findOne({ _id: req.params.userId }).then(user => {
-        res.send(user);
-    }).catch(() => {
-        res.status(500).send({ error: "Internal Server Error" });
-    });
-});
 
-router.put('/me', auth.authenticate, (req, res) => {
+router.put('/me',authenticate, (req, res) => {
     if (!req.session.userId) {
         res.status(401).send({ error: "Not logged in"});
     }
