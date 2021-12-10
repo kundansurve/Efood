@@ -10,18 +10,6 @@ const orderSchema = new Schema({
         type: String,
         required: true
     },
-    detailsOfUser:{
-        type: Object,
-        required: true
-    },
-    detailsOfHotel:{
-        type: Object,
-        required: true
-    },
-    detailsOfDeliveryBoy:{
-        type: Object,
-        required: true
-    },
     assignedToDeliveryBoy: {
         type: String,
         required: true

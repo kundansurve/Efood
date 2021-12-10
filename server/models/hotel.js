@@ -31,12 +31,7 @@ const hotelSchema = new Schema({
     orders:{
         type:Array,                 //Array of all object _id of Orders
         default:[]                  //that are placed in that hotel
-    },
-    ratings:Number,
-    reviews:{
-        type:Array,                 //Array of all object _id of Reviews
-        default:[]                  // of that hotel
-    },                
+    },               
     createdAt: {                    
         type: Date,
         default: Date.now()

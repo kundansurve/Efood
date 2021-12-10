@@ -7,11 +7,11 @@ const deliveryBoy = new Schema({
         required: true,
         unique: true
     },
-    Name: String,
-    City:{
+    name: String,
+    city:{
         type:String
     },
-    Adress: {
+    address: {
         type:String,                // Adress of that Hotel
         required
     },
@@ -19,7 +19,7 @@ const deliveryBoy = new Schema({
         type:Array,                 //Array of Longitudes and Latitudes 
         required: true              //of that DeliveryBoy on map
     },
-    Orders:{
+    orders:{
         type:Array,                 //Array of all object _id of Orders
         default:[]                  //that are delivered by that deliveryBoy
     },

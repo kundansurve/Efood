@@ -2,15 +2,28 @@ const mongoose = require("mongoose");
 const { Schema } = mongoose;
 
 const dishSchema = new Schema({
-    name: String,
-    isVeg: Boolean,
-    type: String,            // Types of dish: Starters, MainCourse, Chineese, Salad, Bread, Curry , Soup,
+    name: {
+        type: String,
+        required: true
+    },
+    isVeg: {
+        type: Boolean,
+        required: true
+    },
+    type: {
+        type: String,
+        required: true
+    },                       // Types of dish: Starters, MainCourse, Chineese, Salad, Bread, Curry , Soup,
                              // Drinks, Street dish, Desert and etc..
-    price: Number,
-    anyOffer: String,
-    priceAfterOffer: Number,
-    ratings: Number,
-    hotelId: String,
+    img: String,
+    price: {
+        type: Number,
+        required: true
+    },
+    hotelId: {
+        type: String,
+        required: true
+    },       
     createdAt: {                   
         type: Date,
         default: Date.now()

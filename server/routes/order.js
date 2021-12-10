@@ -67,5 +67,4 @@ router.post('/order',(req,res)=>{
         res.status(400).send("Only User has Access to create the orders");
         return;
     }
-    Const
 });

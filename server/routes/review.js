@@ -79,7 +79,7 @@ router.delete('/:id',authenticate(),(req,res)=>{
         if(!rev){
             res.status(400).send({error:`Review of id ${id} not present in database`});
         }else if(rev.reviewdById===req.session.userId){
-            review.deleteOne({_id,});
+            review.deleteOne({_id});
             res.status(200).send({succes:`Review with id ${_id} was Deleted succesfully`});
         }else{
             res.status(400).send({error:'User can delete review only reviews which is reviewd by him'})
