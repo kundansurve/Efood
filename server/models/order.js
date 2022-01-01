@@ -2,15 +2,15 @@ const mongoose = require("mongoose");
 const { Schema } = mongoose;
 
 const orderSchema = new Schema({
-    placedByUser: {
+    placedByUserId: {
         type: String,
         required: true
     },
-    placedInHotel: {
+    placedInHotelId: {
         type: String,
         required: true
     },
-    assignedToDeliveryBoy: {
+    assignedToDeliveryBoyId: {
         type: String,
         required: true
     },
@@ -18,8 +18,14 @@ const orderSchema = new Schema({
         type: Object,
         required:true
     },
-    dishes: Array,
-    quantity: Array,
+    dishes: {
+        type:Array,
+        required:true
+    },
+    quantity: {
+        type:Array,
+        required:true
+    },
     isPaid:{
         type:boolean,
         required: true

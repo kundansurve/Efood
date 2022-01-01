@@ -7,6 +7,10 @@ const deliveryBoy = new Schema({
         required: true,
         unique: true
     },
+    isFree:{
+        type:Boolean,
+        default:true
+    },                //busy or not
     name: String,
     city:{
         type:String

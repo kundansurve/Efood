@@ -6,8 +6,10 @@ const deliveryBoy= require('../models/review');
 const bcrypt = require('bcryptjs');
 const user = require('../models/user');
 const review = require('../models/review'); 
+const order = require('../models/order');
+const waiting = require('../models/waitinglist');
 
-router.get('/user/orders',authenticate,(req,res)=>{
+router.get('/user',authenticate,(req,res)=>{
     let id=req.session.userId;
     if(req.session.userType==='admin'){
         id=req.body.id;
@@ -22,7 +24,7 @@ router.get('/user/orders',authenticate,(req,res)=>{
     }
 });
 
-router.get('/hotel/orders',authenticate,(req,res)=>{
+router.get('/hotel',authenticate,(req,res)=>{
     let id=req.session.userId;
     if(req.session.userType==='admin'){
         id=req.body.id;
@@ -40,7 +42,7 @@ router.get('/hotel/orders',authenticate,(req,res)=>{
     })
 });
 
-router.post('/order',(req,res)=>{
+router.post('/Admin',(req,res)=>{
     let id=req.session.userId;
     if(req.session.userType==='admin'){
         id=req.body.id;
@@ -60,11 +62,28 @@ router.post('/order',(req,res)=>{
 
 
 
-router.post('/order',(req,res)=>{
-    let id=req.session.userId;
+router.post('/create',(req,res)=>{
+    const placedByUserId=req.session.userId;
+    const {placedInHotelId,diliverToAdress,dishes,quantity,isPaid,totalPrice,status,placedAt}=req.body;
+    const Order=null;
     
-    if(!req.session.userType==='deliveryBoy' && !req.session.userType==='admin'){
-        res.status(400).send("Only User has Access to create the orders");
-        return;
-    }
+    deliveryBoy.findOne({isFree:true})
+    .then((assignedToDeliveryBoyId)=>{
+        
+        if(assignedToDeliveryBoyId){
+            Order=new order({placedByUserId,assignedToDeliveryBoyId,placedInHotelId,diliverToAdress,dishes,quantity,isPaid,totalPrice,status,placedAt});
+        }else{
+            Order=new order({placedByUserId,placedInHotelId,diliverToAdress,dishes,quantity,isPaid,totalPrice,status,placedAt});
+        }
+        Order.save()
+        .then(res.status(200).send("order"))
+    }).catch((error)=>{
+        res.status(400).send({error});
+    })
+
+});
+
+
+router.delete('/delete/:id',(req,res)=>{
+
 });
