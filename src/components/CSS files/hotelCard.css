@@ -1,0 +1,33 @@
+.card {
+    --card-gradient: rgba(0, 0, 0, 0.8);
+    --card-gradient: #5e9ad9, #e271ad;
+    --card-blend-mode: overlay;
+    background-color: #fff;
+    border-radius: 0.5 em;
+    box-shadow: 0.05 em 0.1 em 0.3 em -0.03 em rgba(0, 0, 0, 0.45);
+    width:280px;
+    padding-bottom: 1 em;
+    background-image: linear-gradient(var(--card-gradient), white 27 em);
+    overflow: hidden;
+}
+.card img {
+    border-radius: 0.5 em 0.5 em 0 0;
+    width: 100%;
+    object-fit: cover;
+    max-height: 30 em;
+    mix-blend-mode: var(--card-blend-mode);
+}
+.card img ~ * {
+    margin-left: 1 em;
+    margin-right: 1 em;
+}
+.card:hover, .card:focus-within {
+    --card-gradient: #24a9d5 max(8.5 em, 20 em);
+}
+.card h3 {
+    margin-top: 1 em;
+    font-size: 1.25 em;
+}
+.card a {
+    color: inherit;
+}
