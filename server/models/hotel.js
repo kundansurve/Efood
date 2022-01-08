@@ -12,6 +12,10 @@ const hotelSchema = new Schema({
         required: true,
         unique: true
     },
+    centerId:{
+        type:string,
+        required: true,
+    },
     city:{
         type:String,                // City of that Hotel
         required:true

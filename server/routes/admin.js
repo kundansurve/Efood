@@ -22,7 +22,7 @@ router.post('/newhotel',adminAuth,(req,res)=>{
     .catch(error=>{res.status(400).send(error)});
 });
 
-router.delete('/deletehotel:id',adminAuth,(req,res)=>{
+router.delete('/deletehotel/:id',adminAuth,(req,res)=>{
     const _id=req.params.id;
     hotel.findOne({_id})
     .then((Hotel)=>{
@@ -37,4 +37,13 @@ router.delete('/deletehotel:id',adminAuth,(req,res)=>{
             .catch((error)=>{res.status(401).send({error})})
         }
     })
+});
+
+
+router.post('/newhotel',adminAuth,(req,res)=>{
+    
+});
+
+router.delete('/deletehotel/:id',adminAuth,(req,res)=>{
+    
 });

@@ -2,7 +2,11 @@ const mongoose = require("mongoose");
 const { Schema } = mongoose;
 
 const waiting = new Schema({
-    list:{
+    centerId:{
+        type:string,
+        required: true,
+    },
+    waitingList:{
         type:Array,
         default:[]
     }

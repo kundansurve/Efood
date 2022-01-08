@@ -15,6 +15,10 @@ const deliveryBoy = new Schema({
     city:{
         type:String
     },
+    centerId:{
+        type:string,
+        required: true,
+    },
     address: {
         type:String,                // Adress of that Hotel
         required

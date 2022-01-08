@@ -20,6 +20,10 @@ const dishSchema = new Schema({
         type: Number,
         required: true
     },
+    centerId:{
+        type:string,
+        required: true,
+    },
     hotelId: {
         type: String,
         required: true
