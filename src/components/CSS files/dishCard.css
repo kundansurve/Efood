@@ -1,102 +1,52 @@
-.recipe, .pizza-box {
-    display: flex;
-    flex-wrap: wrap;
-    align-items: center;
-  }
-  .pizza-box {
-    flex: 3 1 30ch;
-    height: calc(282px + 5vw);
-    overflow: hidden;
-  }
-  .pizza-box img {
-    max-width: 100%;
-    min-height: 100%;
-    width: auto;
-    height: auto;
-    object-fit: cover;
-    object-position: 50% 50%;
-  }
-  .recipe {
-    border: 2px solid #F2F2F2;
-    border-radius: 8px;
-    overflow: hidden;
-  }
-  .recipe-content {
-    padding: 16px 32px;
-    flex: 4 1 40ch;
-  }
-  .recipe-tags {
-    margin: 0 -8px;
-  }
-  .recipe-tag {
-    display: inline-block;
-    margin: 8px;
-    font-size: 0.875em;
-    text-transform: uppercase;
-    font-weight: 600;
-    letter-spacing: 0.02em;
-    color: var(--primary);
-  }
-  .recipe-title {
-    margin: 0;
-    font-size: clamp(1.4em, 2.1vw, 2.1em);
-    font-family: "Roboto Slab", Helvetica, Arial, sans-serif;
-  }
-  .recipe-title a {
-    text-decoration: none;
-    color: inherit;
-  }
-  .recipe-metadata {
-    margin: 0;
-  }
-  .recipe-rating {
-    font-size: 1.2em;
-    letter-spacing: 0.05em;
-    color: var(--primary);
-  }
-  .recipe-rating span {
-    color: var(--grey);
-  }
-  .recipe-votes {
-    font-size: 0.825em;
-    font-style: italic;
-    color: var(--lightgrey);
-  }
-  .recipe-save {
-    display: flex;
-    align-items: center;
-    padding: 6px 14px 6px 12px;
-    border-radius: 4px;
-    border: 2px solid currentColor;
-    color: var(--primary);
-    background: none;
-    cursor: pointer;
-    font-weight: bold;
-  }
-  .recipe-save svg {
-    margin-right: 6px;
-  }
-  /* Body Layout */
-  * {
-    box-sizing: border-box;
-  }
-  body {
-    --primary: #E05D26;
-    --grey: #454545;
-    --lightgrey: #666;
-    color: var(--grey);
-    line-height: 1.55;
-    display: flex;
-    justify-content: center;
-    flex-wrap: wrap;
-    font-family: "Roboto", Helvetica, Arial, sans-serif;
-  }
-  .big {
-    width: clamp(320px, 65%, 65%);
-    padding: 24px;
-  }
-  .small {
-    width: clamp(320px, 35%, 480px);
-    padding: 24px;
-  }
-  
+
+.quantity {
+  display: flex;
+  align-items: center;
+  justify-content: center;
+  padding: 0;
+}
+.quantity__minus,
+.quantity__plus {
+  display: block;
+  width: 22px;
+  height: 23px;
+  margin: 0;
+  background: #dee0ee;
+  text-decoration: none;
+  text-align: center;
+  line-height: 23px;
+}
+.quantity__minus:hover,
+.quantity__plus:hover {
+  background: #575b71;
+  color: #fff;
+} 
+.quantity__minus {
+  border-radius: 3px 0 0 3px;
+  height:"100%"
+}
+.quantity__plus {
+  border-radius: 0 3px 3px 0;
+  height:"100%"
+}
+.quantity__input {
+  width: 32px;
+  height: 19px;
+  margin: 0;
+  padding: 0;
+  text-align: center;
+  border-top: 2px solid #dee0ee;
+  border-bottom: 2px solid #dee0ee;
+  border-left: 1px solid #dee0ee;
+  border-right: 2px solid #dee0ee;
+  background: #fff;
+  color: #545664;
+}
+.quantity__minus:link,
+.quantity__plus:link {
+  color: #8184a1;
+} 
+.quantity__minus:visited,
+.quantity__plus:visited {
+  color: #fff;
+}

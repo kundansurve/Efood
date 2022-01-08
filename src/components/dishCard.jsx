@@ -1,12 +1,10 @@
 import React,{Component} from 'react';
-import { Navbar,
-    Nav,
-    Container,
-    } from 'react-bootstrap';
+import { Card,Image } from 'react-bootstrap';
 import 'bootstrap/dist/css/bootstrap.min.css';
-import LoginPage from './login';
 import './CSS files/footer.css';
 import './CSS files/dishCard.css';
+import Img from './../assets/img/HomeImg.jpg';
+
 
 class Dish extends Component {
     constructor(props){
@@ -27,38 +25,32 @@ class Dish extends Component {
       }
   render(){
       return (
-      <><div className="big">
-      <article className="recipe">
-         <div className="pizza-box">
-             <img src="https://brotokoll.com/wp-content/uploads/2019/12/xPSX_20190928_134709.jpg.pagespeed.ic.qsjw5ilFw5.jpg" width="1500" height="1368" alt=""/>
-         </div>
-         <div className="recipe-content">
-             <p className="recipe-tags">
-                 <span className="recipe-tag">Gluten Free</span>
-                 <span className="recipe-tag">Main dish</span>
-             </p>
- 
-             <h1 className="recipe-title"><a href="#">Gluten Free Pan Pizza</a></h1>
- 
-             <p className="recipe-metadata">
-                 <span className="recipe-rating">★★★★<span>☆</span></span>
-                 <span className="recipe-votes">(12 votes)</span>
-             </p>
- 
-             <p className="recipe-desc">It really is possible to make excellent gluten free pizza at home in your own oven with our recipes and techniques.</p>
- 
-            <form>
+        <div className="Card" style={{height:"100px",borderRadius:"5px 5px 5px 5px",boxShadow:"0 0 10px rgba(0, 0, 255, .2)",width:"400px",maxWidth:"80%",display:"flex",justifyContent:"center",alignItems:"center" }}>
+        <Image style={{marginLeft:"2px",height:"80px",width: "80px",borderRadius:"5px 5px 5px 5px", opacity:"1"}} src={Img} />
+      <Card.Body>
+      <div>
+        <Card.Title>Card Title
+        </Card.Title>
+        <Card.Text >
+            Ratings:<span style={{color:"rgb(255,213,5)"}}> &#9733; &#9734;</span>
+
+        </Card.Text>
+        </div>
+        <div className="quantity">
+            <a href="#" onClick={this.decreaseValue} className="quantity__minus"><span>-</span></a>
+            <input name="quantity" type="text" style={{height:"100%"}} className="quantity__input" value={this.state.quantity}/>
+            <a href="#" onClick={this.increaseValue} className="quantity__plus"><span>+</span></a>
+        </div>
+      </Card.Body>
+    </div>
+      );
+      }
+  }
+  export default Dish;
+  {/*
+    <form>
                 <div class="value-button" id="decrease" onClick={this.decreaseValue} value="Decrease Value">-</div>
                 <input type="number" id="number" value={this.state.quantity} />
                 <div class="value-button" id="increase" onClick={this.increaseValue} value="Increase Value">+</div>
             </form>
- 
-         </div>
-     </article>
- </div>
- 
-</>
-                                );
-      }
-  }
-  export default Dish;
+*/}
