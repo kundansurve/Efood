@@ -49,6 +49,15 @@ class Home extends Component{
                     <HotelCard/>
                     </ul>
                     </Container>
+                    <Container style={{margin:"0px",marginTop:"3em",width:"100%"}}>
+                    <span className='title'>Hotels Near You</span>
+                    <ul className="card-wrapper">
+                    <HotelCard/>
+                    <HotelCard/>
+                    <HotelCard/>
+                    <HotelCard/>
+                    </ul>
+                    </Container>
                     
                 </Container>
         </div>;
