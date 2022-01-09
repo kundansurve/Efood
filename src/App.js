@@ -4,6 +4,7 @@ import Home from "./views/home";
 import Hotel from "./views/hotel";
 import NavbarInstance from './components/navbar.jsx';
 import Footer from './components/footer.jsx';
+import Cart from './views/cart';
 
 function App() {
   return (
@@ -12,7 +13,8 @@ function App() {
     <Router>
       <Routes>
       <Route exact path="/" element={<Home/>}/>
-      <Route exact path="/hotel/:hotelName" element={<Hotel/>}></Route>
+      <Route exact path="/hotel/:hotelName" element={<Hotel/>}/>
+      <Route exact path="/mycart" element={<Cart/>}/>
       </Routes>
     </Router>
     <Footer/>

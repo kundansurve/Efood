@@ -9,7 +9,7 @@ import Img from './../assets/img/HomeImg.jpg';
 class Dish extends Component {
     constructor(props){
         super(props);
-        this.state={quantity:0};
+        this.state={quantity:0,id:props.id};
         this.increaseValue = this.increaseValue.bind(this);
         this.decreaseValue = this.decreaseValue.bind(this);
     }
@@ -25,9 +25,9 @@ class Dish extends Component {
       }
   render(){
       return (
-        <div className="Card" style={{height:"100px",borderRadius:"5px 5px 5px 5px",boxShadow:"0 0 10px rgba(0, 0, 255, .2)",width:"400px",maxWidth:"80%",display:"flex",justifyContent:"center",alignItems:"center" }}>
-        <Image style={{marginLeft:"2px",height:"80px",width: "80px",borderRadius:"5px 5px 5px 5px", opacity:"1"}} src={Img} />
-      <Card.Body>
+        <div className="Card" id={this.state.id} style={{margin:"0.5em",height:"150px",borderRadius:"5px 5px 5px 5px",boxShadow:"0 0 10px rgba(0, 0, 255, .2)",width:"90%",maxWidth:"600px",display:"flex",justifyContent:"center",alignItems:"center" ,padding:"1em 2em 1em 1em"}}>
+        <Image style={{marginLeft:"2px",height:"120px",width: "120px",borderRadius:"5px 5px 5px 5px", opacity:"1"}} src={Img} />
+      <Card.Body style={{width:"80px"}}>
       <div>
         <Card.Title>Card Title
         </Card.Title>
@@ -36,12 +36,13 @@ class Dish extends Component {
 
         </Card.Text>
         </div>
-        <div className="quantity">
-            <a href="#" onClick={this.decreaseValue} className="quantity__minus"><span>-</span></a>
-            <input name="quantity" type="text" style={{height:"100%"}} className="quantity__input" value={this.state.quantity}/>
-            <a href="#" onClick={this.increaseValue} className="quantity__plus"><span>+</span></a>
-        </div>
+        
       </Card.Body>
+      <div className="quantity">
+            <div onClick={this.decreaseValue} className="quantity__minus"><span>-</span></div>
+            <input name="quantity" type="text" style={{height:"100%"}} className="quantity__input" value={this.state.quantity}/>
+            <div onClick={this.increaseValue} className="quantity__plus"><span>+</span></div>
+        </div>
     </div>
       );
       }

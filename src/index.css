@@ -20,9 +20,6 @@ code {
   font-family: source-code-pro, Menlo, Monaco, Consolas, 'Courier New',
     monospace;
 }
-#root{
-  background-color: white;
-}
 
 .card-wrapper {
   list-style: none;
@@ -39,4 +36,9 @@ code {
 .title{
   font-size: 2em;
   margin: 2em 2em 2em 0em;
+}
+@media only screen and (max-width: 600px) {
+  .menu{
+    display: none;
+  }
 }
