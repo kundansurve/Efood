@@ -6,52 +6,62 @@ const deliveryBoy= require('../models/review');
 const bcrypt = require('bcryptjs');
 const user = require('../models/user');
 const review = require('../models/review'); 
+const dish = require('../models/dish');
+const order = require('../models/order');
 
-router.get('city/:name',(req,res)=>{
-    const city=req.params.name;
-    if(!city){
-        res.status(400).send('City name was not present in response');
+router.get('/orders',(req,res)=>{
+    let id=req.session.userId;
+    if(req.session.userType==='admin'){
+        id=req.body.id;
+    }
+    if(!req.session.userType==='hotel' && !req.session.userType==='admin'){
+        res.status(400).send("Only User has Access to view the orders");
         return;
     }
-    hotel.find({city})
-    .then((hotels)=>{
-        res.status(200).send({hotels});
-    }).catch((error)=>{
-        if(error){
-            res.status.error(400).send({error});
-            return;
-        }
-        res.status(200).send({error:"Internal server error"})
+    order.find({placedInHotel:id})
+    .then((orders)=>{
+        res.status(200).send({orders});
         return;
-    });
+    }).catch((error)=>{
+        res.status(400).send({error});
+    })
 });
 
 
-
-router.post('/newdish',hotelAuth,(req,res)=>{
+router.post('/newdish',(req,res)=>{
     const {name,isVeg,type,img,price}=req.body;
     const hotelId=req.session.userId;
     dish.find({name,hotelId})
     .then((oldDish)=>{
-        if(oldDish){
+        if(!oldDish){
             res.status(400).send('Two different dishes cannot have same name.');
         }else{
-            const newDish = new dish({name,isVeg,type,img,price,hotelId});
-            newDish.save()
-            .then(({_id})=>{
-                dish.findOne({_id})
-                .then((Dish)=>{res.status.send(Dish)})
-                .catch((error)=>{res.status(401).send({error})});             
-            }).catch((error)=>{res.status(401).send({error})})
+            hotel.findOne({_id:hotelId})
+            .then((Hotel)=>{
+                console.log(JSON.stringify(Hotel));
+                const newDish = new dish({name,isVeg,type,img,price,hotelId,cityId:Hotel.cityId});
+                newDish.save()
+                .then(({_id})=>{
+                    dish.findOne({_id})
+                    .then((Dish)=>{res.status.send(Dish)})
+                    .catch((error)=>{res.status(401).send({error})});             
+                }).catch((error)=>{res.status(401).send({error})})
+            }).catch((error)=>{
+                if(error){
+                    res.status(400).send({error});
+                }else{
+                    res.status(400).send({error:"Server Error"});
+                }
+            })
         }
     }).catch((error)=>{res.status(401).send({error})})
 });
 
-router.put('updatedish/:id',hotelAuth,(req,res)=>{
+router.put('/updatedish/:id',(req,res)=>{
     const _id=req.params.id;
     dish.findOne({_id})
     .then((Dish)=>{
-        if(Dish){
+        if(!Dish){
             res.status(400).send("Dish with this id is not present");
             return;
         }else{
@@ -59,7 +69,7 @@ router.put('updatedish/:id',hotelAuth,(req,res)=>{
                 res.status.send("Dish cannot be deleted");
                 return;
             }
-            dish.updateOne({_id},{ $inc: req.body })
+            dish.updateOne({_id},{$set:req.body})
             .then(dish.findOne({_id})
             .then((updatedDish)=>{
                     res.status(200).send(updatedDish);
@@ -70,8 +80,23 @@ router.put('updatedish/:id',hotelAuth,(req,res)=>{
     })
 });
 
+router.put('/acceptorder/:orderId',(req,res)=>{
+    const _id=req.session.id;
+    order.updateOne({_id:req.params.orderId},{$set:{hotelAccepted:true}})
+    .then((ORDER)=>{
+        res.status(200).send({status:"Accepted",order:ORDER});
+    }).catch((error)=>{res.status(401).send({error})})
+});
 
-router.delete('/deletedish/:id',hotelAuth,(req,res)=>{
+router.put('/rejectorder/:orderId',(req,res)=>{
+    const _id=req.session.id;
+    order.updateOne({_id:req.params.orderId},{$set:{hotelAccepted:false}})
+    .then((ORDER)=>{
+        res.status(200).send({status:"Accepted",order:ORDER});
+    }).catch((error)=>{res.status(401).send({error})});
+});
+
+router.delete('/deletedish/:id',(req,res)=>{
     const _id=req.params.id;
     dish.findOne({_id})
     .then((Dish)=>{
@@ -91,3 +116,5 @@ router.delete('/deletedish/:id',hotelAuth,(req,res)=>{
         }
     })
 });
+
+module.exports = router;

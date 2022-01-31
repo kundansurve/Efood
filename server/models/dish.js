@@ -20,8 +20,8 @@ const dishSchema = new Schema({
         type: Number,
         required: true
     },
-    centerId:{
-        type:string,
+    cityId:{
+        type:String,
         required: true,
     },
     hotelId: {
@@ -31,6 +31,14 @@ const dishSchema = new Schema({
     createdAt: {                   
         type: Date,
         default: Date.now()
+    },
+    ratings:{
+        type:Number,
+        default:0
+    },      
+    numberofRatings:{
+        type:Number,
+        default:0
     },
     updatedAt: {
         type: Date,

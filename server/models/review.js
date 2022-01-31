@@ -6,15 +6,7 @@ const reviewSchema = new Schema({
         type:String,
         rquired:true
     },
-    reviewForName:{
-        type:String,
-        required:true
-    },
     reviewForId:{
-        type:String,
-        required:true
-    },
-    reviewedByName:{
         type:String,
         required:true
     },

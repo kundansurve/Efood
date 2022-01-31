@@ -20,9 +20,21 @@ const userSchema = new Schema({
     city:{
         type:String
     },
-    Address: String,
-    addressCoordinates: String,
-    phoneNumber: String,
+    location: {
+        type: {
+          type: String,
+          enum: ['Point'],
+          //required: true
+        },
+        coordinates: {
+          type: [Number],
+          //required: true
+        }
+    },
+    phoneNumber: {
+        type:String,
+        required:true
+    },
     orders:{
         type: Array,
         default:[]
@@ -33,7 +45,7 @@ const userSchema = new Schema({
     },
     cart:{
         type:Object,
-        default:{}
+        default:{"hotelId":null,"items":{}}
     },
     createdAt: {
         type: Date,

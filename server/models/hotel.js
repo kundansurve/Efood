@@ -12,30 +12,29 @@ const hotelSchema = new Schema({
         required: true,
         unique: true
     },
-    centerId:{
-        type:string,
+    cityId:{
+        type:String,
         required: true,
     },
-    city:{
-        type:String,                // City of that Hotel
-        required:true
+    location: {
+        type: {
+          type: String,
+          enum: ['Point'],
+          required: true
+        },
+        coordinates: {
+          type: [Number],
+          required: true
+        }
     },
-    address: {
-        type:String,                // Address of that Hotel
-        required:true
-    },
-    addressCoordinates:{
-        type:Array,                 //Array of Longitudes and Latitudes 
-        required: true              //of that Hotel on map
-    },
-    dish:{
-        type:Array,                 //Array of all object _id of dish 
-        default:[]                  //that are offered by that hotel
-    },
-    orders:{
-        type:Array,                 //Array of all object _id of Orders
-        default:[]                  //that are placed in that hotel
-    },               
+    ratings:{
+        type:Number,
+        default:0
+    },      
+    numberofRatings:{
+        type:Number,
+        default:0
+    },     
     createdAt: {                    
         type: Date,
         default: Date.now()

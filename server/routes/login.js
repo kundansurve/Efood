@@ -4,7 +4,7 @@ const bcrypt = require('bcryptjs');
 const user = require('../models/user');
 
 
-router.get('/me', authenticate, (req, res) => {
+router.get('/me', (req, res) => {
     User.findOne({ _id: req.session.userId }).then(user => {
         res.send(user);
     }).catch(() => {
@@ -13,7 +13,7 @@ router.get('/me', authenticate, (req, res) => {
 });
 
 
-router.put('/me',authenticate, (req, res) => {
+router.put('/me', (req, res) => {
     if (!req.session.userId) {
         res.status(401).send({ error: "Not logged in"});
     }
@@ -30,4 +30,6 @@ router.put('/me',authenticate, (req, res) => {
         res.status(500).send({ error: "Internal Server Error" });
     });
 });
+
+
 module.exports=router;

@@ -11,30 +11,49 @@ const deliveryBoy = new Schema({
         type:Boolean,
         default:true
     },                //busy or not
-    name: String,
-    city:{
-        type:String
-    },
-    centerId:{
-        type:string,
+    name:{
+        type: String,               //email of that Hotel
         required: true,
     },
-    address: {
-        type:String,                // Adress of that Hotel
-        required
+    cityId:{
+        type:String,
+        required: true,
     },
-    addressCoordinates:{
-        type:Array,                 //Array of Longitudes and Latitudes 
-        required: true              //of that DeliveryBoy on map
+    location: {
+        type: {
+          type: String, // Don't do `{ location: { type: String } }`
+          enum: ['Point'], // 'location.type' must be 'Point'
+          required: true
+        },
+        coordinates: {
+          type: [Number],
+          required: true
+        }
+    },
+    phoneNumber:{
+        type:String,
+        required:true
     },
     orders:{
         type:Array,                 //Array of all object _id of Orders
         default:[]                  //that are delivered by that deliveryBoy
     },
+    currentOrder:{
+        type:String,
+        dafault:""
+    },
     reviews:{
         type:Array,                 //Array of all object _id of Reviews
         default:[]                  // of that DeliveryBoy
-    },                
+    }, 
+    ratings:{
+        type:Number,
+        default:0
+    },      
+    numberofRatings:{
+        type:Number,
+        default:0
+    },               
     createdAt: {                   
         type: Date,
         default: Date.now()

@@ -10,13 +10,13 @@ const userAuth = (req, res, next) => {
     next();
 };
 
-const adminAuth = (req, res, next) => {
+const cityAdminAuth = (req, res, next) => {
     if (!req.session.userId) {
         res.status(401).send('Not Logged In');
         return;
     }
-    if(req.session.userType!='admin'){
-        res.status(401).send('Only admin has access to this');
+    if(req.session.userType!='cityAdmin'){
+        res.status(401).send('Only Admin of respective city has access to this');
         return;
     }
     next();
@@ -47,5 +47,5 @@ const hotelAuth = (req, res, next) => {
 };
 
 module.exports = {
-    userAuth,adminAuth,deliveryBoyAuth,hotelAuth
+    userAuth,cityAdminAuth,deliveryBoyAuth,hotelAuth
 };

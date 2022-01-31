@@ -52,8 +52,6 @@ class Footer extends Component {
                                 <a href="#"><h1 style={{color:"white",textDecoration:"none"}}>Foodie</h1></a>
                             </div>
                             <div className="footer-text">
-                                <p>Lorem ipsum dolor sit amet, consec tetur adipisicing elit, sed do eiusmod tempor incididuntut consec tetur adipisicing
-                                elit,Lorem ipsum dolor sit amet.</p>
                             </div>
                             <div className="footer-social-icon">
                                 <span>Follow us</span>
@@ -70,15 +68,10 @@ class Footer extends Component {
                             </div>
                             <ul>
                                 <li><a href="#">Home</a></li>
-                                <li><a href="#">about</a></li>
                                 <li><a href="#">services</a></li>
-                                <li><a href="#">portfolio</a></li>
                                 <li><a href="#">Contact</a></li>
                                 <li><a href="#">About us</a></li>
-                                <li><a href="#">Our Services</a></li>
-                                <li><a href="#">Expert Team</a></li>
                                 <li><a href="#">Contact us</a></li>
-                                <li><a href="#">Latest News</a></li>
                             </ul>
                         </div>
                     </div>
@@ -88,20 +81,8 @@ class Footer extends Component {
         </div>
         <div className="copyright-area">
             <div className="container">
-                <div className="row">
-                    <div className="col-xl-6 col-lg-6 text-center text-lg-left">
-                    </div>
-                    <div className="col-xl-6 col-lg-6 d-none d-lg-block text-right">
-                        <div className="footer-menu">
-                            <ul>
-                                <li><a href="#">Home</a></li>
-                                <li><a href="#">Terms</a></li>
-                                <li><a href="#">Privacy</a></li>
-                                <li><a href="#">Policy</a></li>
-                                <li><a href="#">Contact</a></li>
-                            </ul>
-                        </div>
-                    </div>
+                <div className="row" style={{color:"white",textAlign:"center",justifyContent:"center"}}>
+                    Made by KDSURVE
                 </div>
             </div>
         </div>

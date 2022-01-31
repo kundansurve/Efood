@@ -1,6 +1,6 @@
 const express = require('express');
 const router = express.Router();
-const loginCredential = require('../models/user-credential');
+const loginCredential = require('../models/loginCredentials');
 const bcrypt = require('bcryptjs');
 
 router.post('/',(req,res)=>{
@@ -42,8 +42,8 @@ router.post('/',(req,res)=>{
 
 router.delete('/me', (req, res) => {
     delete req.session.userId;
-    console.log("deleted userid");
-    res.status(204).send();
+    //console.log("deleted userid");
+    res.status(204).send("deleted userid");
 });
 
 module.exports=router;

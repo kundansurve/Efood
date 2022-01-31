@@ -12,23 +12,54 @@ const orderSchema = new Schema({
     },
     assignedToDeliveryBoyId: {
         type: String,
+        default:null
+    },
+    userInfo:{
+        type:Object,
+        required:true,
+        default:null
+    },
+    cityId:{
+        type: String,
         required: true
     },
-    diliverToAdress:{
-        type: Object,
-        required:true
+    hotelAccepted:{
+        type:Boolean,
+        default:null
     },
-    dishes: {
-        type:Array,
-        required:true
+    deliveryLocation: {
+        type: {
+          type: String,
+          enum: ['Point'],
+          required: true
+        },
+        coordinates: {
+          type: [Number],
+          required: true
+        }
     },
-    quantity: {
-        type:Array,
+    orderPickup:{
+        type: {
+            type: String,
+            enum: ['Point'],
+            required: true
+          },
+          coordinates: {
+            type: [Number],
+            required: true
+          }
+    },
+    order:{
+        type:Object,
         required:true
     },
     isPaid:{
-        type:boolean,
+        type:Boolean,
         required: true
+    },
+    deliverCharges:{
+        type:Number,
+        required:true
     },
     totalPrice:{
         type:Number,
@@ -36,15 +67,11 @@ const orderSchema = new Schema({
     },
     status:{
         type: String,
-        default: "Order is Being Processed"
+        default: "Food is Being Processed"
     },
     placedAt: {
         type: Date,
         default: Date.now()
-    },
-    deliveryBoyReachedHotelAt: {
-        type: Date,
-        default:null
     },
     deliveryBoyRecievedOrderAt: {
         type: Date,
@@ -54,6 +81,7 @@ const orderSchema = new Schema({
         type: Date,
         defualt:null
     }
+
 });
 
 module.exports = mongoose.model('order', orderSchema );
