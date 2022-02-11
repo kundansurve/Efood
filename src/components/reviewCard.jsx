@@ -1,10 +1,4 @@
 import React,{Component} from 'react';
-import { Navbar,
-    Nav,
-    Container,
-    Form,
-    } from 'react-bootstrap';
-import 'bootstrap/dist/css/bootstrap.min.css';
 import './CSS files/reviewCard.css';
 
 function Review(props){

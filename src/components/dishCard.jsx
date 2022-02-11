@@ -25,24 +25,29 @@ class Dish extends Component {
       }
   render(){
       return (
-        <div className="Card" id={this.state.id} style={{margin:"0.5em",height:"150px",borderRadius:"5px 5px 5px 5px",boxShadow:"0 0 10px rgba(0, 0, 255, .2)",width:"90%",maxWidth:"600px",display:"flex",justifyContent:"center",alignItems:"center" ,padding:"1em 2em 1em 1em"}}>
-        <Image style={{marginLeft:"2px",height:"120px",width: "120px",borderRadius:"5px 5px 5px 5px", opacity:"1"}} src={Img} />
-      <Card.Body style={{width:"80px"}}>
-      <div>
-        <Card.Title>Card Title
-        </Card.Title>
-        <Card.Text >
-            Ratings:<span style={{color:"rgb(255,213,5)"}}> &#9733; &#9734;</span>
+        <div id={this.state.id} style={{display:"flex",justifyContent:"space-between",alignItems:"center",margin:"1em",height:"8em",borderRadius:"5px 5px 5px 5px",boxShadow:"0 0 10px rgba(0, 0, 255, .2)",width:"97%",maxWidth:"600px" ,padding:"1em 2em 1em 1em"}}>
+          
+      <div style={{display:"flex",justifyContent:"flex-start",alignItems:"center"}}>
+      <img style={{height:"4em",borderRadius:"5px 5px 5px 5px", opacity:"1"}} src={Img} />
+      <div style={{width:"80%",padding:"1em 0.5em"}}>
+        
+        <h6>Card Title
+        </h6>
+        <p >
+            Ratings:<span style={{color:"rgb(255,213,5)"}}> &#9733;&#9734;&#9734;&#9734;&#9734;</span>
 
-        </Card.Text>
+        </p>
         </div>
         
-      </Card.Body>
-      <div className="quantity">
+      </div>
+      <div style={{height:"100%",display:"flex",flexWrap:"wrap",justifyContent:"center",alignItems:"center"}}>
+          <div className="quantity" >
             <div onClick={this.decreaseValue} className="quantity__minus"><span>-</span></div>
             <input name="quantity" type="text" style={{height:"100%"}} className="quantity__input" value={this.state.quantity}/>
             <div onClick={this.increaseValue} className="quantity__plus"><span>+</span></div>
         </div>
+        </div>
+      
     </div>
       );
       }

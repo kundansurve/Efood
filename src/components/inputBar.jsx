@@ -5,10 +5,10 @@ import './someadditional.js';
 function InputBar(props){
 
      return(
-        <div class="wrapper">
-        <div class="search_box">
-            <div class="dropdown">
-                <div class="default_option" onClick={function(){
+        <div className="wrapper">
+        <div className="search_box">
+            <div className="dropdown">
+                <div className="default_option" onClick={function(){
     document.querySelector(".dropdown ul").classList.add("active");}}>All</div>  
                 <ul>
                   <li>All</li>
@@ -16,9 +16,9 @@ function InputBar(props){
                   <li>Popular</li>
                 </ul>
             </div>
-            <div class="search_field">
-              <input type="text" class="input" placeholder="Search"/>
-              <i class="fas fa-search"></i>
+            <div className="search_field">
+              <input type="text" className="input" placeholder="Search"/>
+              <i className="fas fa-search"></i>
           </div>
         </div>
     </div>

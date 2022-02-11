@@ -5,7 +5,9 @@ import InputBar from '../components/inputBar';
 import homeImage from '../assets/img/HomeImg.jpg';
 import Dish from '../components/dishCard'; 
 import Review from '../components/reviewCard';
-import './CSS files/hotel.css'
+import './CSS files/hotel.css';
+import DishSection from '../section/dishSection';
+import ReviewSection from '../section/reviews';
 
 class Hotel extends Component{
     constructor(props){
@@ -20,74 +22,30 @@ class Hotel extends Component{
         return ( 
           <div >
             <div  style={{backgroundImage:`url(${homeImage})`,position:"absolute",top:"0px",left:"0px",width:"100%",height:"70vh",zIndex:"-1"}}></div>
-            <div style={{width:"100%",height:"50vh",display:"flex",justifyContent:"flex-start",alignItems:"center",background:"rgba(0,0,0,0.6)"}}>
+            <div style={{width:"100%",height:"50vh",display:"flex",justifyContent:"center",alignItems:"center",background:"rgba(0,0,0,0.6)"}}>
                 
-                <div style={{display:"flex",flexDirection:"column",justifyContent:"flex-start",alignItems:"flex-start",color:"white",margin:"3em"}}>
-                  <h2>Hotel Name</h2>
+                <div style={{display:"flex",flexDirection:"column",justifyContent:"center",alignItems:"center",color:"white",margin:"3em"}}>
+                  <h1>Hotel Name</h1>
                   <span style={{fontWeight:"1px",fontSize:"20px"}}>Ratings</span>
-                  <p>Location</p>
+                  <h6>Location</h6>
                 </div>
               </div>
+              <div>
             <div style={{display:"flex",backgroundColor:"white",justifyContent:"center",alignItems:"center",width:"100%"}}>
-              
-            <div style={{width:"100%",maxWidth:"1000px",marginTop:"2em"}}>
-            <Tabs
-      id="controlled-tab-example"
-      activeKey={this.state.key}
-      onSelect={(k) => this.setState({key:k})}
-      className="mb-3"
-      
-    >
-        <Tab eventKey="Dishes" title="Dishes" >
-        <div >
-            <div style={{display:"flex",width:'100%',padding:"1em"}}>
-        <Form.Group className="mb-3" controlId="formBasicEmail">
-    <Form.Control type="text" placeholder="Search for a dish" />
-  </Form.Group>
-  <Dropdown>
-  <Dropdown.Toggle variant="success" id="dropdown-basic">
-    Filter
-  </Dropdown.Toggle>
+              <div style={{maxWidth:"1000px",width:"100%",padding:"2em"}}>
+                <div style={{display:"flex",justifyContent:"center", alignContent:"center",width:"100%",margin:"1em",padding:"1em"}}>
+                  <button id="dish-section" style={{backgroundColor:"transparent",borderRadius:"2px",padding:"1em",paddingBottom:"0em",border:(this.state.key==='Dishes')?"2px solid #efefef":"none",borderBottom:(this.state.key==='Dishes')?"none":"2px solid #efefef"}} onClick={()=>{this.setState({key:"Dishes"});}}>Dishes</button>
+                  <button id="review-section" style={{backgroundColor:"transparent",borderRadius:"2px",padding:"1em",paddingBottom:"0em",border:(this.state.key==='Reviews')?"2px solid #efefef":"none",borderBottom:(this.state.key==='Reviews')?"none":"2px solid #efefef"}} onClick={()=>{this.setState({key:"Reviews"})}}>Reviews</button>
+                  <div style={{padding:"1em",paddingBottom:"0em",width:"100%",hieght:"100%",borderBottom:"2px solid #efefef"}}></div>
+                </div>
+        <div style={{display:(this.state.key==='Dishes')?"":"none",width:"95%" }} >
+        <DishSection/>
+        </div>
 
-  <Dropdown.Menu>
-    <Dropdown.Item href="#hello">Action</Dropdown.Item>
-    <Dropdown.Item href="#/action-2">Another action</Dropdown.Item>
-    <Dropdown.Item href="#/action-3">Something else</Dropdown.Item>
-  </Dropdown.Menu>
-</Dropdown>
-  </div>
-        <Container className="dishes" style={{display:"flex",height:"fit-content",flexDirection:"column",marginLeft:"0px"}}>
-            <Dish id="hey"/>
-            <Dish id="hey"/>
-            <Dish id="hey"/>
-            <Dish id="hey"/>
-            <Dish id="hey"/>
-            <Dish id="hey"/>
-            <Dish id="hey"/>
-            <Dish id="hey"/>
-            <Dish id="hey"/>
-            <Dish id="hey"/>
-            <Dish id="hey"/>
-            <Dish id="hello"/>
-            <Dish id="hey"/>
-            <Dish id="hey"/>
-            <Dish id="hey"/>
-            <Dish id="hey"/>
-            <Dish id="hello"/>
-        </Container>
+        <div style={{display:(this.state.key==='Reviews')?"":"none",width:"95%"}}>
+          <ReviewSection/>
         </div>
-        </Tab>
-        <Tab eventKey="Reviews" title="Reviews">
-        <section id="testimonials">
-        
-        <div class="testimonial-box-container">
-        <Review invert="invert(0%)" />
-        <Review invert="invert(100%)"/>
         </div>
-        </section>
-        </Tab>
-        
-        </Tabs>
         </div>
         </div>
         </div>

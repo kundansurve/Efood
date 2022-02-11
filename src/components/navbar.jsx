@@ -12,20 +12,17 @@ class NavbarInstance extends Component {
     
   render(){
       return (
-        <Navbar collapseOnSelect expand="lg" style={{backgroundColor:"var(--color1)",color:"var(--color3)"}}>
-  <Container>
-  <Navbar.Brand href="#home" style={{color:"var(--color3)"}}>Foddie</Navbar.Brand>
-  <Navbar.Toggle aria-controls="responsive-navbar-nav" />
-  <Navbar.Collapse id="responsive-navbar-nav">
-    <Nav className="me-auto" >
-    </Nav>
-    <Nav >
-      <LoginPage title={"Login"} color={"white"}/>
-      <LoginPage  title={"Sign Up"} color={"white"}/>
-    </Nav>
-  </Navbar.Collapse>
-  </Container>
-</Navbar>
+        <nav style={{width:"100%",height:"4em",background:"var(--color1)",}}>
+          <div style={{height:"100%",width:"5em",color:"white",fontSize:"25px",fontWeight:"500",display:"flex",justifyContent:"center",alignItems:"center",float:"left"}}>Foodie</div>
+          <div style={{float:"right",marginRight:"1em",padding:"0.5em",display:"none",height:"100%",justifyContent:"center",alignItems:"center"}}>
+          <img src="https://img.icons8.com/ultraviolet/40/000000/test-account.png"/>
+          </div>
+          <div style={{float:"right",marginRight:"1em",display:"flex",height:"100%",justifyContent:"center",alignItems:"center"}}>
+            <LoginPage title="Login"/>
+            <LoginPage title="SignUp"/>
+          </div>
+          <div className="hamburger"></div>
+        </nav>
       );
       }
   }
