@@ -1,11 +1,11 @@
 import React, {Component} from 'react';
 import { render } from '@testing-library/react';
-import './CSS files/cart.css';
-import Dish from './../components/dishCard';
+import '../CSS files/cart.css';
+import Dish from '../../components/user/dishCard';
 
 class Cart extends React.Component{
     render(){
-        return (<div >
+        return (<div style={{paddingBottom:"4em"}}>
             <h2 style={{margin:"1em"}}>Checkout</h2>
             <div style={{display:"flex",flexWrap:"wrap",width:"100%",justifyContent:"center"}}>
                 

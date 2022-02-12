@@ -2,7 +2,7 @@ import React, { Component } from 'react';
 import {Container,Button,Form,Tabs,Tab,Dropdown,Image} from 'react-bootstrap'
 import 'bootstrap/dist/css/bootstrap.min.css';
 import homeImage from '../assets/img/HomeImg.jpg'; 
-import Review from '../components/reviewCard';
+import Review from '../components/user/reviewCard';
 
 class ReviewSection extends Component{
     constructor(props){

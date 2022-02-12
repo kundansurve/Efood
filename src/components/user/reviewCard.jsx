@@ -1,5 +1,5 @@
 import React,{Component} from 'react';
-import './CSS files/reviewCard.css';
+import '../CSS files/reviewCard.css';
 
 function Review(props){
     return (<div  className="testimonial-box" style={{ width:"80%"}}>

@@ -1,9 +1,8 @@
 import React,{Component} from 'react';
 import { Card,Image } from 'react-bootstrap';
 import 'bootstrap/dist/css/bootstrap.min.css';
-import './CSS files/footer.css';
-import './CSS files/dishCard.css';
-import Img from './../assets/img/HomeImg.jpg';
+import '../CSS files/dishCard.css';
+import Img from '../../assets/img/HomeImg.jpg';
 
 
 class Dish extends Component {

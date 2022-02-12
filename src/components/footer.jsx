@@ -3,7 +3,7 @@ import { Navbar,
     Nav,
     Container,
     } from 'react-bootstrap';
-import 'bootstrap/dist/css/bootstrap.min.css';
+
 import LoginPage from './login';
 import './CSS files/footer.css';
 

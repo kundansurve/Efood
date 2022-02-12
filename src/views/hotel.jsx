@@ -3,8 +3,8 @@ import {Container,Button,Form,Tabs,Tab,Dropdown,Image} from 'react-bootstrap'
 import 'bootstrap/dist/css/bootstrap.min.css';
 import InputBar from '../components/inputBar';
 import homeImage from '../assets/img/HomeImg.jpg';
-import Dish from '../components/dishCard'; 
-import Review from '../components/reviewCard';
+import Dish from '../components/user/dishCard'; 
+import Review from '../components/user/reviewCard';
 import './CSS files/hotel.css';
 import DishSection from '../section/dishSection';
 import ReviewSection from '../section/reviews';

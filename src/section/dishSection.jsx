@@ -2,7 +2,7 @@ import React, { Component } from 'react';
 import {Container,Button,Form,Tabs,Tab,Dropdown,Image} from 'react-bootstrap'
 import 'bootstrap/dist/css/bootstrap.min.css';
 import homeImage from '../assets/img/HomeImg.jpg'; 
-import Dish from '../components/dishCard';
+import Dish from '../components/user/dishCard';
 
 class DishSection extends Component{
     constructor(props){
