@@ -35,7 +35,7 @@ class Home extends Component{
                 <span className='title'>Hotels Near You</span>
                     <div style={{display:"flex",alignItems:"center",justifyContent:"center",marginTop:"3em",width:"100%"}}>
                     
-                    <ul style={{flexWrap:"wrap",display:"flex",alignItems:"center",justifyContent:"center"}}>
+                    <ul style={{flexWrap:"wrap",display:"flex"}}>
                     <HotelCard/>
                     <HotelCard/>
                     <HotelCard/>
