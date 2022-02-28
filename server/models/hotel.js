@@ -12,6 +12,11 @@ const hotelSchema = new Schema({
         required: true,
         unique: true
     },
+    phoneNumber:{
+        type:String,
+        required:true,
+        unique:true
+    },
     cityId:{
         type:String,
         required: true,

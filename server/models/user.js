@@ -42,8 +42,49 @@ const userSchema = new Schema({
         default:[]
     },
     cart:{
-        type:Object,
-        default:{"hotelId":null,"items":{}}
+        hotelId:{
+            type:String,
+            default:null
+        },
+        items:{
+            type:Object,
+            default:{}
+        },
+        address:{
+            address:{
+                type:String,
+                default:null
+            },
+            deliveryLocation: {
+                type: {
+                    type: String,
+                    enum: ['Point'],
+                    default:null
+                },
+                coordinates: {
+                    type: [Number],
+                    default:null
+                },
+            },
+        },
+        offer:{
+            type:String,
+            default:null
+        },
+        price:{
+            type:Number,
+            default:0
+        },
+        orderingFor:{
+            name:{
+                type:String,
+                required:true
+            },
+            phoneNumber:{
+                type:String,
+                required:true
+            }
+        }
     },
     createdAt: {
         type: Date,

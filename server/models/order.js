@@ -57,7 +57,7 @@ const orderSchema = new Schema({
         type:Boolean,
         required: true
     },
-    deliverCharges:{
+    deliveryCharges:{
         type:Number,
         required:true
     },
