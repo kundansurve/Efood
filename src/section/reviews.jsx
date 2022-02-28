@@ -22,4 +22,4 @@ class ReviewSection extends Component{
         </section>);
     }
 }
-export default ReviewSection; 
+export default ReviewSection;

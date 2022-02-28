@@ -11,6 +11,7 @@ import NotFoundPage from './views/notfound';
 import DeliveryAdmin from './views/deliveryExecutive/orders';
 import OrdersForDeliveryExecutive from './views/deliveryExecutive/order';
 import PrevOrders from './views/deliveryExecutive/prevOrders';
+import HotelAdmin from './views/hotelAdmin';
 
 function App() {
   return (
@@ -20,6 +21,7 @@ function App() {
       <Routes>
       <Route exact path="/" element={<Home/>}/>
       <Route exact path="/hotel/:hotelName" element={<Hotel/>}/>
+      <Route exact path="/hotel/" element={<HotelAdmin/>}/>
       <Route exact path="/user/mycart" element={<Cart/>}/>
       <Route exact path="/user/orders" element={<Orders/>}/>
       <Route exact path="/user/orders/order/:orderid" element={<OrderTrack/>}/>
