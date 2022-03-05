@@ -1,5 +1,6 @@
 import './App.css';
 import { BrowserRouter as Router, Route,Routes} from 'react-router-dom';
+import React,{useEffect, useState} from 'react';
 import Home from "./views/home";
 import Hotel from "./views/hotel";
 import NavbarInstance from './components/navbar.jsx';
@@ -12,10 +13,24 @@ import DeliveryAdmin from './views/deliveryExecutive/orders';
 import OrdersForDeliveryExecutive from './views/deliveryExecutive/order';
 import PrevOrders from './views/deliveryExecutive/prevOrders';
 import HotelAdmin from './views/hotelAdmin';
+import {UserType} from './context';
+//import {data} from './store';
 
 function App() {
+  const [data,setData]=useState({
+    userType:sessionStorage.getItem('userType'),
+    setUserType:function(type){
+        alert(this.userType);
+        this.userType=type;
+        alert(this.userType);
+    }
+});
+useEffect(()=>{
+      sessionStorage.setItem('userType',data['userType']);
+})
   return (
     <>
+    <UserType.Provider value={[data,setData]}>
     <NavbarInstance/>
     <Router>
       <Routes>
@@ -32,6 +47,7 @@ function App() {
       </Routes>
     </Router>
     <Footer/>
+  </UserType.Provider>
     </>
   );
 }

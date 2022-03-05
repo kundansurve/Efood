@@ -34,6 +34,8 @@ router.post('/signUp',(req,res)=>{
         LoginCredential.save().then(()=>{
             const User =new user({_id:LoginCredential._id, email,firstName,lastName,phoneNumber});
             User.save().then(()=>{
+                req.session.userType = 'User';
+                req.session.userId = LoginCredential._id;
                 res.status(201).send({_id: LoginCredential._id ,email,firstName:firstName ,lastName:lastName,phoneNumber});
             });
         });

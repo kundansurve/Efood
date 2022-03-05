@@ -32,9 +32,13 @@ router.post('/',(req,res)=>{
             res.status(400).send({error: "Incorrect email or password"});
             return;
         }
-        req.session.type = user.userType;
+        
+        req.session.userType = 'User';
         req.session.userId = user.id;
-        res.status(204).send(user);
+        console.log("userid"+req.session.userId);
+        console.log("type"+req.session.userType)
+        res.status(201).send({userType:"User"});
+        return;
     }).catch(() => {
         res.status(500).send({ error: "Internal Server Error" });
     });

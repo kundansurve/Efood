@@ -12,6 +12,7 @@ const review = require('../models/review');
 router.get('/me',(req,res)=>{
     const _id=req.session.userId;
     const userType=req.session.userType;
+    console.log(req.session.userId+" "+req.session.userType);
     if(userType==='City'){
         city.findOne({_id})
         .then((City)=>{
@@ -27,10 +28,10 @@ router.get('/me',(req,res)=>{
                 return;
         });
     }
-    if(userType==='Admin'){
+    else if(userType==='Admin'){
         admin.findOne({_id})
         .then((Admin)=>{
-            res.status(200).send({Admin});
+            res.status(201).send({Admin});
             return;
         })
         .catch((error)=>{
@@ -42,7 +43,7 @@ router.get('/me',(req,res)=>{
                 return;
         });
     }
-    if(userType==='Hotel'){
+    else if(userType==='Hotel'){
         hotel.findOne({_id})
         .then((user)=>{
             res.status(200).send({user});
@@ -57,9 +58,10 @@ router.get('/me',(req,res)=>{
                 return;
         });
     }
-    if(userType==='User'){
+    else if(userType==='User' || userType==='USER'){
         user.findOne({_id})
         .then((user)=>{
+            console.log({user});
             res.status(200).send({user});
             return;
         })
@@ -72,7 +74,7 @@ router.get('/me',(req,res)=>{
                 return;
         });
     }
-    if(userType==='DeliveryBoy'){
+    else if(userType==='DeliveryBoy'){
         deliveryBoy.findOne({_id})
         .then((user)=>{
             res.status(200).send({user});
@@ -86,6 +88,8 @@ router.get('/me',(req,res)=>{
             res.status(400).send({error:"Internal Server Error"});
                 return;
         });
+    }else{
+        res.status(400).send({error:"No such type of User"});
     }
 });
 

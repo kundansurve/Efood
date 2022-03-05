@@ -2,6 +2,7 @@ const express = require('express');
 const router = express.Router();
 const user = require('./routes/user');
 const sessions = require('./routes/sessions');
+const authenticate =require('./routes/authenticate');
 const hotel = require('./routes/hotels');
 const deliveryBoy = require('./routes/deliveryBoy');
 const city = require('./routes/city');
@@ -15,6 +16,8 @@ router.use('/user', user);
 router.use('/hotel',hotel);
 
 router.use('/deliveryboy',deliveryBoy);
+
+router.use('/authenticate',authenticate);
 
 router.use('/city',city);
 

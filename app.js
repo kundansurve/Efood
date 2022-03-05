@@ -1,18 +1,24 @@
 var express = require('express');
 var app = express();
 const path = require('path');
-
+var http = require('http');
 var genuuid = require('uuid').v4;
 const session = require('express-session');
 const MongoStore = require('connect-mongo');
 
 require('dotenv').config();
 
-const port = process.env.PORT || 5000;
+const port = process.env.PORT || 4000;
 //const movies = require('./src/movies');
 const api = require('./server/api');
 const db = require('./server/db');
 
+var allowCrossDomain = function(req, res, next) {
+    res.header('Access-Control-Allow-Origin', "*");
+    res.header('Access-Control-Allow-Methods', 'GET,PUT,POST,DELETE');
+    res.header('Access-Control-Allow-Headers', 'Content-Type');
+    next();
+} 
 
 db.connect({
     host: process.env.DB_HOST,
@@ -29,7 +35,7 @@ db.connect({
         secret: 'hellokundan',
         resave: false,
         saveUninitialized: true,
-    }), api);
+    }), allowCrossDomain,api);
 
     //Handle non-api routes with static build folder
     /*app.use(express.static(path.join(__dirname, 'build')));

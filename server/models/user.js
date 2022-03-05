@@ -59,11 +59,11 @@ const userSchema = new Schema({
                 type: {
                     type: String,
                     enum: ['Point'],
-                    default:null
+                    //default:null
                 },
                 coordinates: {
                     type: [Number],
-                    default:null
+                    //default:null
                 },
             },
         },
@@ -78,11 +78,11 @@ const userSchema = new Schema({
         orderingFor:{
             name:{
                 type:String,
-                required:true
+                //required:true
             },
             phoneNumber:{
                 type:String,
-                required:true
+                //required:true
             }
         }
     },
