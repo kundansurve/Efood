@@ -172,7 +172,7 @@ class HotelAdmin extends Component{
                       width: "95%",
                     }}
                   >
-                    <Dishes/>
+                    <Dishes />
                   </div>
 
                   <div
@@ -181,7 +181,7 @@ class HotelAdmin extends Component{
                       width: "95%",
                     }}
                   >
-                    <Orders/>
+                    <Orders />
                   </div>
                 </div>
               </div>

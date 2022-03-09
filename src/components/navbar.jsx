@@ -45,4 +45,5 @@ class NavbarInstance extends Component {
       );
       }
   }
-  export default NavbarInstance;
+
+export default NavbarInstance;
