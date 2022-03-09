@@ -8,7 +8,7 @@ import Img from '../../assets/img/HomeImg.jpg';
 class Dish extends Component {
     constructor(props){
         super(props);
-        this.state={quantity:0,id:props.id};
+        this.state={quantity:0,id:props.id,...props};
         this.increaseValue = this.increaseValue.bind(this);
         this.decreaseValue = this.decreaseValue.bind(this);
     }
@@ -28,13 +28,17 @@ class Dish extends Component {
           
       <div style={{display:"flex",justifyContent:"flex-start",alignItems:"center"}}>
       <img style={{height:"4em",borderRadius:"5px 5px 5px 5px", opacity:"1"}} src={Img} />
-      <div style={{width:"80%",padding:"1em 0.5em"}}>
+      <div style={{width:"80%",padding:"0.5em 0.5em"}}>
         
-        <h6>Card Title
+        <h6 style={{margin:"0px", padding:"0px"}}>{this.state.name}
         </h6>
         <p >
-            Ratings:<span style={{color:"rgb(255,213,5)"}}> &#9733;&#9734;&#9734;&#9734;&#9734;</span>
-
+            Ratings: <span style={{color:"rgb(255,213,5)"}}> {[...Array(5)].map((e, i) =>{if(i<this.state.ratings)return<>&#9733;</>; return<>&#9734;</>; }) }</span>
+            {this.state.noOfRatings} Votes
+            <br/>
+            Type: {this.state.type}
+            <br />
+            Price: {this.state.price}
         </p>
         </div>
         

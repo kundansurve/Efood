@@ -1,36 +1,37 @@
-import React, {  useContext, useState } from 'react';
+import React, {  useContext, useEffect, useState } from 'react';
 import 'bootstrap/dist/css/bootstrap.min.css';
-import InputBar from '../components/inputBar';
 import homeImage from '../assets/img/HomeImg.jpg';
 import Dish from '../components/user/dishCard'; 
 import Review from '../components/user/reviewCard';
 import './CSS files/hotel.css';
 import DishSection from '../section/dishSection';
 import ReviewSection from '../section/reviews';
-import {UserType} from '../context';
-import {setUserType} from '../store';
+import {City, UserType} from '../context';
 
 function Hotel(props){
-  const [data,setData]=useContext(UserType);
+  const [city,setCity]=useContext(City);
   const [state,setState]=useState({key:'Dishes'});
-    /*constructor(props){
-        super(props);
-         state={key:'Dishes'};
-    }
+  const [hotelData,setHotelData] = useState({});
 
-    componentDidMount(){
-        console.log("Hello")
-    }
-    render(){*/
-        return ( 
+    useEffect(()=>{
+      fetch("http://localhost:4000/api/hotel/"+window.location.pathname.split('/').pop())
+    .then(response=>response.json())
+    .then((data)=>{
+      setHotelData(data["hotel"]);
+    }).catch(error=>console.log(error));
+  },[]);
+
+        return ( (hotelData.cityId!=city)?(
+        <div style={{display:"flex",justifyContent:"center",alignItems:"center",height:"60vh",width:"100%"}}><h2>No Such Hotel is present in this City</h2></div>)
+        :
           <div >
             <div  style={{backgroundImage:`url(${homeImage})`,position:"absolute",top:"0px",left:"0px",width:"100%",height:"70vh",zIndex:"-1"}}></div>
             <div style={{width:"100%",height:"50vh",display:"flex",justifyContent:"center",alignItems:"center",background:"rgba(0,0,0,0.6)"}}>
                 
                 <div style={{display:"flex",flexDirection:"column",justifyContent:"center",alignItems:"center",color:"white",margin:"3em"}}>
-                  <h1>{data['userType']}</h1>
-                  <span style={{fontWeight:"1px",fontSize:"20px"}}>Ratings</span>
-                  <h6 onClick={()=>{setData({userType:"Hotel"})}}>Location</h6>
+                  <h1>{hotelData.name}</h1>
+                  <span style={{fontWeight:"1px",fontSize:"20px"}}>Ratings: <span style={{color:"rgb(255,213,5)"}}> {[...Array(5)].map((e, i) =>{if(i<hotelData.ratings)return<>&#9733;</>; return<>&#9734;</>; }) }</span></span>
+                  <h6>Location: {city}</h6>
                 </div>
               </div>
               <div>
@@ -53,6 +54,5 @@ function Hotel(props){
         </div>
         </div>
         );
-    //}
 }
 export default Hotel;

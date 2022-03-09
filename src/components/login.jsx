@@ -63,7 +63,7 @@ function LoginPage(props) {
     return (
       (action.title=='Login')?
       <>
-        <div  className="colors" type="button" style={{color:"white",padding:"0.5em"}} onClick={handleShow}>
+        <div  className="colors" type="button" style={{color:props.buttonColor,padding:"0.5em"}} onClick={handleShow}>
         {props.title}
         </div>
         <div className="loginSection" style={{display:(show)?"flex":"none",position:"fixed",top:"0px",zIndex:"999"}} >
@@ -97,7 +97,7 @@ function LoginPage(props) {
       </>
     :
     <>
-        <div className="colors"  type="button" style={{color:"white",padding:"0.5em"}} onClick={handleShow}>
+        <div className="colors"  type="button" style={{color:props.buttonColor,padding:"0.5em"}} onClick={handleShow}>
           {props.title}
         </div>
         <div className="loginSection" style={{display:(show)?"flex":"none",position:"fixed",top:"0px",zIndex:"999"}} >

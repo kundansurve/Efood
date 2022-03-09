@@ -37,6 +37,10 @@ code {
   font-size: 2em;
   margin: 2em 0em 0em 1em;
 }
+.hamburger{
+  display: none;
+}
+
 @media only screen and (max-width: 600px) {
   .menu{
     display: none;

@@ -13,8 +13,7 @@ const dishSchema = new Schema({
     type: {
         type: String,
         required: true
-    },                       // Types of dish: Starters, MainCourse, Chineese, Salad, Bread, Curry , Soup,
-                             // Drinks, Street dish, Desert and etc..
+    },                      
     img: String,
     price: {
         type: Number,

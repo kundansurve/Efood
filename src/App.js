@@ -13,41 +13,73 @@ import DeliveryAdmin from './views/deliveryExecutive/orders';
 import OrdersForDeliveryExecutive from './views/deliveryExecutive/order';
 import PrevOrders from './views/deliveryExecutive/prevOrders';
 import HotelAdmin from './views/hotelAdmin';
-import {UserType} from './context';
+import {UserType,City} from './context';
 //import {data} from './store';
 
 function App() {
-  const [data,setData]=useState({
-    userType:sessionStorage.getItem('userType'),
-    setUserType:function(type){
-        alert(this.userType);
-        this.userType=type;
-        alert(this.userType);
-    }
-});
-useEffect(()=>{
-      sessionStorage.setItem('userType',data['userType']);
-})
+  
+  const [userData,setUserData]=useState({
+    userType:null,
+  });
+  
+  const [city,setCity] = useState("6225d3ee02b267ae9583f1c3");
+
+  useEffect(()=>{
+    // fetching the data of user if user is login
+    fetch('http://localhost:4000/api/authenticate/me')
+    .then(response => response.json())
+    .then((data)=>{
+      if(data['error']){
+        alert(data['error']);
+        return;
+      }
+      sessionStorage.setItem('userData',JSON.stringify(data))
+    }).catch(error=>console.log(error));
+    sessionStorage.setItem('City',city);
+  },[]);
+
+  useEffect(()=>sessionStorage.setItem('City',city));
   return (
     <>
-    <UserType.Provider value={[data,setData]}>
+    <City.Provider value={[city,setCity]}>
     <NavbarInstance/>
     <Router>
       <Routes>
       <Route exact path="/" element={<Home/>}/>
       <Route exact path="/hotel/:hotelName" element={<Hotel/>}/>
-      <Route exact path="/hotel/" element={<HotelAdmin/>}/>
-      <Route exact path="/user/mycart" element={<Cart/>}/>
-      <Route exact path="/user/orders" element={<Orders/>}/>
-      <Route exact path="/user/orders/order/:orderid" element={<OrderTrack/>}/>
-      <Route exact path='/delivery-executive/orders' element={<DeliveryAdmin/>}/>
-      <Route exact path='/delivery-executive/orders/previous' element={<PrevOrders/>}/>
-      <Route exact path='/delivery-executive/orders/order/:orderid' element={<OrdersForDeliveryExecutive/>}/>
-      <Route  exact path="*" element={<NotFoundPage/>}/>
+      {(userData && userData.userType==='City')?(
+        <>{/* City Admin Proctected Paths*/}
+          <Route exact path="/cityAdmin/" element={<>City Admin</>}/>
+        </>)
+        :null
+      }
+      {(true)?(
+        <>{/* Hotel Admin Proctected Paths*/}
+          <Route exact path="/hotelAdmin/" element={<HotelAdmin/>}/>
+        </>)
+        :null
+      }
+      {(userData && userData.userType==='User')?(
+        <>{/* User Proctected Paths*/}
+          <Route exact path="/mycart" element={<Cart/>}/>
+          <Route exact path="/orders" element={<Orders/>}/>
+          <Route exact path="/orders/order/:orderid" element={<OrderTrack/>}/>
+        </>):
+        null
+      }
+      {(userData && userData.userType==='DeliveryExecutive')?(
+        <>{/* User Proctected Paths*/}
+          <Route exact path='/delivery-executive/orders' element={<DeliveryAdmin/>}/>
+          <Route exact path='/delivery-executive/orders/previous' element={<PrevOrders/>}/>
+          <Route exact path='/delivery-executive/orders/order/:orderid' element={<OrdersForDeliveryExecutive/>}/>
+        </>):
+        null
+      }
+        <Route  exact path="*" element={<NotFoundPage/>}/>
       </Routes>
     </Router>
     <Footer/>
-  </UserType.Provider>
+    </City.Provider>
     </>
   );
 }

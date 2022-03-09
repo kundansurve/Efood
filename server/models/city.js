@@ -24,22 +24,20 @@ const city = new Schema({
         type: {
           type: String, // Don't do `{ location: { type: String } }`
           enum: ['Polygon'], // 'location.type' must be 'Point'
-          required: true
+          //required: true
         },
         coordinates: {
           type: [Number],
-          required: true
+          //required: true
         }
     },
     hotels:{
         type:Array,
         default:[],
-        unique: true
     },
     deliveryBoys:{
         type:Array,
         default:[],
-        unique: true
     },
     createdAt: {                   
         type: Date,

@@ -13,8 +13,7 @@ function Review(props){
             </div>
              
             <div  className="name-user" style={{ }}>
-                <strong>Liam mendes</strong>
-                <span>@liammendes</span>
+                <strong>{props.name}</strong>
             </div>
         </div>
          
@@ -22,10 +21,10 @@ function Review(props){
     </div>
      </div>
      <div  className="reviews" >
-        Ratings:<span style={{color:"rgb(255,213,5)"}}> &#9733; &#9733; &#9733; &#9733; &#9734;</span>
+        Rating: <span style={{color:"rgb(255,213,5)"}}> {[...Array(5)].map((e, i) =>{if(i<props.ratings)return<>&#9733;</>; return<>&#9734;</>; }) }</span>
         </div>
     <div  className="client-comment" >
-        <p>Lorem ipsum dolor sit amet consectetur adipisicing elit. Exercitationem, quaerat quis? Provident temporibus architecto asperiores nobis maiores nisi a. Quae doloribus ipsum aliquam tenetur voluptates incidunt blanditiis sed atque cumque.</p>
+        <p>{props.review}</p>
     </div>
 </div>);
 }
