@@ -14,7 +14,7 @@ import OrdersForDeliveryExecutive from './views/deliveryExecutive/order';
 import PrevOrders from './views/deliveryExecutive/prevOrders';
 import HotelAdmin from './views/hotelAdmin';
 import {UserType} from './context';
-//import {data} from './store';
+
 
 function App() {
   const [data,setData]=useState({
