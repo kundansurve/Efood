@@ -53,7 +53,7 @@ function App() {
         </>)
         :null
       }
-      {(true)?(
+      {(userData && userData.userType==='Hotel')?(
         <>{/* Hotel Admin Proctected Paths*/}
           <Route exact path="/hotelAdmin/" element={<HotelAdmin/>}/>
         </>)
