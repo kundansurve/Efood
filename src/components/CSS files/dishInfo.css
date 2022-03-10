@@ -17,17 +17,19 @@
   }
 
   @media only screen 
-  and (max-width: 360px) {
+  and (max-width: 440px) {
 
     .dish_box {
       display: flex;
       flex-direction: column;
       justify-content: center;
       align-items: center;
+
     }
 
     .dish_box1{
       flex-wrap: wrap;
+      justify-content: center;
     }
 
 }

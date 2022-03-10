@@ -1,5 +1,5 @@
 import React, { Component } from 'react';
-import {Container,Button,Form,Tabs,Tab,Dropdown,Image} from 'react-bootstrap'
+// import {Container,Button,Form,Tabs,Tab,Dropdown,Image} from 'react-bootstrap'
 import 'bootstrap/dist/css/bootstrap.min.css';
 // import InputBar from '../components/inputBar';
 import homeImage from '../assets/img/HomeImg.jpg';

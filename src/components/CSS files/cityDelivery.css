@@ -1,0 +1,87 @@
+#submit-btn {
+    background: -webkit-linear-gradient(right, #a6f77b, var(--color1));
+    border: none;
+    border-radius: 2em;
+    box-shadow: 0px 1px 8px var(--color1);
+    cursor: pointer;
+    color: white;
+    font-family: "Raleway SemiBold", sans-serif;
+    height: 2.5em;
+    margin: 0 50px;
+    /* margin-top: 50px; */
+    transition: 0.25s;
+    width: 100px;
+  }
+  #submit-btn:hover {
+    box-shadow: 0px 1px 18px #24c64f;
+  }
+
+  .dish_box1{
+    justify-content: flex-start;
+  }
+
+  .hotel_info{
+    margin-left: 1em;
+  }
+
+  .hotel_info h6{
+    font-size: 1.2em;
+  }
+
+  .hotel_details{
+    border: none;
+    text-align: left;
+  }
+ 
+  @media (min-width:440px)
+  and (max-width: 768px){
+    .dish_box{
+      display: flex;
+      flex-direction: column;
+      align-items: center;
+    }
+
+    .dish_box1{
+      display: flex;
+      justify-content: space-between;
+      width: 90%;
+    }
+
+    #submit-btn{
+    margin-top: 20px;
+  }
+  }
+
+  @media (min-width: 320px)
+  and (max-width: 440px) {
+
+    .dish_box {
+      display: flex;
+      flex-direction: column;
+      justify-content: center;
+      align-items: center;
+
+    }
+
+    .dish_box1{
+      flex-wrap: wrap;
+      display: flex;
+      text-align: center;
+      justify-content: center;
+    }
+
+    .hotel_info{
+    margin-left: 0;
+  }
+
+  #submit-btn{
+    margin-top: 10px;
+  }
+
+  .hotel_details{
+    border: 2px solid #cfcfcf;
+    border-radius:5px;  
+    text-align: left;
+    padding: 0.4em;
+  }
+}
