@@ -13,13 +13,14 @@ import DeliveryAdmin from './views/deliveryExecutive/orders';
 import OrdersForDeliveryExecutive from './views/deliveryExecutive/order';
 import PrevOrders from './views/deliveryExecutive/prevOrders';
 import HotelAdmin from './views/hotelAdmin';
+import CityAdmin from './views/cityAdmin';
 import {UserType,City} from './context';
 //import {data} from './store';
 
 function App() {
   
   const [userData,setUserData]=useState({
-    userType:null,
+    userType:"City",
   });
   
   const [city,setCity] = useState("6225d3ee02b267ae9583f1c3");
@@ -49,7 +50,7 @@ function App() {
       <Route exact path="/hotel/:hotelName" element={<Hotel/>}/>
       {(userData && userData.userType==='City')?(
         <>{/* City Admin Proctected Paths*/}
-          <Route exact path="/cityAdmin/" element={<>City Admin</>}/>
+          <Route exact path="/cityAdmin/" element={<CityAdmin/>}/>
         </>)
         :null
       }
