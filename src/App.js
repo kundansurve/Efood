@@ -14,13 +14,13 @@ import OrdersForDeliveryExecutive from './views/deliveryExecutive/order';
 import PrevOrders from './views/deliveryExecutive/prevOrders';
 import HotelAdmin from './views/hotelAdmin';
 import CityAdmin from './views/cityAdmin';
-import {UserType,City} from './context';
+import {UserData,City} from './context';
 //import {data} from './store';
 
 function App() {
   
   const [userData,setUserData]=useState({
-    userType:"City",
+    userType:null,
   });
   
   const [city,setCity] = useState("6225d3ee02b267ae9583f1c3");
@@ -34,7 +34,9 @@ function App() {
         alert(data['error']);
         return;
       }
-      sessionStorage.setItem('userData',JSON.stringify(data))
+      sessionStorage.setItem('userData',JSON.stringify(data));
+      setUserData(data);
+      
     }).catch(error=>console.log(error));
     sessionStorage.setItem('City',city);
   },[]);
@@ -42,6 +44,7 @@ function App() {
   useEffect(()=>sessionStorage.setItem('City',city));
   return (
     <>
+    <UserData.Provider value={[userData,setUserData]}>
     <City.Provider value={[city,setCity]}>
     <NavbarInstance/>
     <Router>
@@ -81,6 +84,7 @@ function App() {
     </Router>
     <Footer/>
     </City.Provider>
+    </UserData.Provider>
     </>
   );
 }

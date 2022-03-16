@@ -41,15 +41,15 @@ function LoginPage(props) {
       })
         .then((res) => {
           // setTimeout(() => {
-          //   fetch("http://localhost:4000/api/authenticate/me")
-          //     .then((response) => response.json())
-          //     .then((data) => {
-          //       alert(JSON.stringify(data));
-          //       sessionStorage.setItem("userData", JSON.stringify(data));
-          //       handleClose();
-          //     })
-          //     .catch((error) => alert(error));
-          // }, 4000);
+             fetch("http://localhost:4000/api/authenticate/me")
+               .then((response) => response.json())
+               .then((data) => {
+                 alert(JSON.stringify(data));
+                 sessionStorage.setItem("userData", JSON.stringify(data));
+                 handleClose();
+               })
+               .catch((error) => alert(error));
+           //}, 4000);
         })
         .catch((error) => alert(error));
     } catch (err) {
@@ -58,8 +58,13 @@ function LoginPage(props) {
   };
   const signUp = () => {
     try {
-      axios
-        .post("http://localhost:4000/api/user/signUp", signUpDetails)
+      fetch('http://localhost:4000/api/user/me/signUp', {
+  method: 'POST',
+  headers: {
+    'Content-Type': 'application/json',
+  },
+  body: JSON.stringify(signUpDetails),
+}).then(response=>response.json())
         .then((data) => {
           sessionStorage.setItem("userData", JSON.stringify(data));
           handleClose();

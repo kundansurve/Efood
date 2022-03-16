@@ -20,7 +20,7 @@ router.get('/me',(req,res)=>{
     if(userType==='City'){
         city.findOne({_id})
         .then((City)=>{
-            res.status(200).send({City});
+            res.status(200).send({user:City,userType:'City'});
             return;
         })
         .catch((error)=>{
@@ -35,7 +35,8 @@ router.get('/me',(req,res)=>{
     else if(userType==='Admin'){
         admin.findOne({_id})
         .then((Admin)=>{
-            res.status(201).send({Admin});
+            Admin.userType='Admin';
+            res.status(201).send({user:Admin,userType:'Admin'});
             return;
         })
         .catch((error)=>{
@@ -50,7 +51,7 @@ router.get('/me',(req,res)=>{
     else if(userType==='Hotel'){
         hotel.findOne({_id})
         .then((user)=>{
-            res.status(200).send({user});
+            res.status(200).send({user,userType:'Hotel'});
             return;
         })
         .catch((error)=>{
@@ -65,8 +66,7 @@ router.get('/me',(req,res)=>{
     else if(userType==='User' || userType==='USER'){
         user.findOne({_id})
         .then((user)=>{
-            console.log({user});
-            res.status(200).send({user});
+            res.status(200).send({user,userType:'User'});
             return;
         })
         .catch((error)=>{
@@ -81,7 +81,8 @@ router.get('/me',(req,res)=>{
     else if(userType==='DeliveryBoy'){
         deliveryBoy.findOne({_id})
         .then((user)=>{
-            res.status(200).send({user});
+            user.userType='Deliveryboy';
+            res.status(200).send({user,userType:'Deliveryboy'});
             return;
         })
         .catch((error)=>{

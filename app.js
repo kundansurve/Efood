@@ -38,12 +38,12 @@ db.connect({
     }), allowCrossDomain,api);
 
     //Handle non-api routes with static build folder
-    /*app.use(express.static(path.join(__dirname, 'build')));
+    app.use(express.static(path.join(__dirname, 'build')));
 
     //Return index.html for routes not handled by build folder
     app.get('*', function (req, res) {
     res.sendFile(path.join(__dirname, 'build', 'index.html'));
-    });*/
+    });
 
     //Start listening on port
     app.listen(port, () => {
