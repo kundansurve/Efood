@@ -1,5 +1,6 @@
 import React,{useState,useEffect,useContext} from 'react';
-import './CSS files/navbar.css'
+import './CSS files/navbar.css';
+import { Link } from 'react-router-dom';
 import LoginPage from './login';
 import {UserData,City} from './../context';
 
@@ -17,7 +18,23 @@ function NavbarInstance(props){
           <button style={{color:"wheat",zIndex:"4"}}>Register Hotel</button>
           </div>
           <div className="largeDevice" style={{float:"right",color:"white",marginRight:"1em",height:"100%",justifyContent:"center",alignItems:"center"}}>
-          {(userData['user'])?<><img  style={{margin:"1em"}} src="https://img.icons8.com/color/30/26e07f/test-account.png"/>Hello! {userData['user']['firstName']}
+          {(userData['userType']==='User')?
+          <>
+          <a href='/mycart'>
+          <div  className="colors" type="button" style={{color:'white',padding:"0.5em"}}>
+            Cart
+        </div></a>
+        <a href='/orders'>
+          <div  className="colors" type="button" style={{color:'white',padding:"0.5em"}}>
+            Orders
+        </div></a>
+        </>:null}
+
+        
+          {(userData['user'])?
+          <>
+          
+          <img  style={{margin:"1em"}} src="https://img.icons8.com/color/30/26e07f/test-account.png"/>Hello! {userData['user']['firstName']}
             </>:<><span type="button"  style={{color:"white",borderRadius:"5px",border:"1px solid white",padding:"0.3em"}}>Register Hotel</span>
             <LoginPage  title="Login" buttonColor={'white'}/>
             <LoginPage  title="SignUp" buttonColor={'white'}/></>

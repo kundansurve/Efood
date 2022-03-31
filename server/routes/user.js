@@ -65,14 +65,15 @@ router.put('/addtocart',(req,res)=>{
                     if(USER["cart"]["items"][dishId]){
                         const newCart = USER["cart"];
                         newCart['items'][dishId]=parseInt(newCart["items"][dishId])+1;
-                        newCart['price']=parse
+                        newCart['price']=newCart['price'] + Dish['price'];
                         user.updateOne({_id},{$set:{cart:newCart}})
                         .then((user)=>res.status(200).send(user.cart))
                         .catch(err=>res.status(400).send(err));
                         return;
                     }else{
-                        const newCart = {"hotelId":Dish["hotelId"],"items":{}};
+                        const newCart =USER["cart"];
                         newCart['items'][dishId]=1;
+                        newCart['price']=newCart['price'] + Dish['price'];2
                         user.updateOne({_id},{$set:{cart:newCart}})
                         .then((user)=>res.status(200).send(user.cart))
                         .catch(err=>res.status(400).send(err));

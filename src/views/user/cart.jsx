@@ -2,10 +2,28 @@ import React, {Component} from 'react';
 import { render } from '@testing-library/react';
 import '../CSS files/cart.css';
 import Dish from '../../components/user/dishCard';
+import SetAddress from '../../components/map';
 
 class Cart extends React.Component{
+    constructor(props){
+        super(props);
+        this.state={
+            openModal:false,
+            address:{
+                coordinates:[],
+                address:'',
+                detailAddress:'',
+            }
+        }
+    }
+    componentDidMount(){
+        alert(JSON.stringify(this.state.address));
+    }
     render(){
-        return (<div style={{paddingBottom:"4em"}}>
+        return (
+            (this.state.openModal)?<>
+        <SetAddress close={()=>{this.setState({openModal:false})}} onclick={(address)=>{this.setState({address:address})}}/></>
+        :<div style={{paddingBottom:"4em"}}>
             <h2 style={{margin:"1em"}}>Checkout</h2>
             <div style={{display:"flex",flexWrap:"wrap",width:"100%",justifyContent:"center"}}>
                 
@@ -46,8 +64,8 @@ class Cart extends React.Component{
             </div>
             <div style={{width:"90%",padding:"1em",border:"2px solid #efefef",borderRadius:"5px",margin:"1em"}}>
                 <h5>Delivery Address</h5>
-                <p>Dhule,</p>
-                <button style={{margin:"auto auto",background:"transparent",border:"none", textDecoration:"underline", textAlign:"center"}}>Change Address</button>
+                <p>{this.state.address.address}</p>
+                <button style={{margin:"auto auto",background:"transparent",border:"none", textDecoration:"underline", textAlign:"center"}} onClick={()=>{this.setState({openModal:true})}}>Change Address</button>
             </div>
             <div style={{display:"flex",flexDirection:"column",width:"90%",padding:"1em",border:"2px solid #efefef",borderRadius:"5px",margin:"1em"}}>
                 <h5>Billing</h5>

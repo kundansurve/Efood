@@ -20,7 +20,7 @@ import {UserData,City} from './context';
 function App() {
   
   const [userData,setUserData]=useState({
-    userType:null,
+    userType:'User',
   });
   
   const [city,setCity] = useState("6225d3ee02b267ae9583f1c3");
