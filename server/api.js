@@ -88,6 +88,10 @@ router.get('/hotels/:cityId',(req,res)=>{
 
 
 router.get('/hotel/:hotelId',(req,res)=>{
+    if(!req.params.hotelId){
+        res.status(400).send("Hotel id is absent in api call");
+        return;
+    }
     Hotel.findOne({_id:req.params.hotelId})
         .then((HOTEL)=>{
             res.status(200).send({"hotel":{_id:Hotel._id,"name":HOTEL.name ,"ratings":HOTEL.ratings, "phoneNumber":HOTEL.phoneNumber, "location": HOTEL.location,"cityId": HOTEL.cityId}});

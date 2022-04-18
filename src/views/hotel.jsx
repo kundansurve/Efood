@@ -6,13 +6,13 @@ import Review from "../components/user/reviewCard";
 import "./CSS files/hotel.css";
 import DishSection from "../section/dishSection";
 import ReviewSection from "../section/reviews";
-import { City, UserType } from "../context";
+import { City, UserType,UserData } from "../context";
 
 function Hotel(props) {
   const [city, setCity] = useContext(City);
   const [state, setState] = useState({ key: "Dishes" });
   const [hotelData, setHotelData] = useState({});
-
+  const [userData,setUserData]=useContext(UserData);
   useEffect(() => {
     fetch(
       "http://localhost:4000/api/hotel/" +

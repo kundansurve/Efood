@@ -102,7 +102,7 @@ function LoginPage(props) {
         <a href="#">
           <legend id="forgot-pass">Forgot password?</legend>
         </a>
-        <input id="submit-btn" onClick={login} type="button" name="submit" value="LOGIN" />
+        <input id="submit-btn" onClick={login} type="button" name="submit" value="LOGIN" style={{margin:"1em auto"}}/>
         <a href="#" id="signup" onClick={()=>{setAction({title:'SignUp'})}}>Don't have account yet?</a>
       </form>
     </div>
@@ -220,6 +220,7 @@ function LoginPage(props) {
                 type="button"
                 name="submit"
                 value="SIGNUP"
+                style={{margin:"1em auto"}}
               />
               <a
                 href="#"

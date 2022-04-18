@@ -3,6 +3,7 @@ import './CSS files/navbar.css';
 import { Link } from 'react-router-dom';
 import LoginPage from './login';
 import {UserData,City} from './../context';
+import RegisterHotel from './hotelRegister';
 
 
 function NavbarInstance(props){
@@ -35,7 +36,8 @@ function NavbarInstance(props){
           <>
           
           <img  style={{margin:"1em"}} src="https://img.icons8.com/color/30/26e07f/test-account.png"/>Hello! {userData['user']['firstName']}
-            </>:<><span type="button"  style={{color:"white",borderRadius:"5px",border:"1px solid white",padding:"0.3em"}}>Register Hotel</span>
+            </>:<>
+            <RegisterHotel/>
             <LoginPage  title="Login" buttonColor={'white'}/>
             <LoginPage  title="SignUp" buttonColor={'white'}/></>
             }
@@ -50,6 +52,7 @@ function NavbarInstance(props){
             <img src="https://img.icons8.com/ios-glyphs/30/ffffff/delete-sign.png" style={{float:"right",margin:"1em"}} onClick={()=>setOpenHamburger(false)}/>
               <div style={{display:"flex",backgroundColor:"var(--color1)",justifyContent:"flex-start",alignItems:"center",padding:"1em",flexDirection:"column",width:"100%",height:"100%"}}>
               <img style={{margin:"1em"}} src="https://img.icons8.com/color/80/26e07f/test-account.png"/>
+              
               <span type="button" style={{color:"white",borderRadius:"5px",border:"1px solid white",padding:"0.3em"}}>Register Hotel</span>
               <LoginPage title="Login" buttonColor={'white'}/>
               <LoginPage title="SignUp" buttonColor={'white'}/>

@@ -19,9 +19,7 @@ import {UserData,City} from './context';
 
 function App() {
   
-  const [userData,setUserData]=useState({
-    userType:'User',
-  });
+  const [userData,setUserData]=useState({"userType":"Hotel"});
   
   const [city,setCity] = useState("6225d3ee02b267ae9583f1c3");
 

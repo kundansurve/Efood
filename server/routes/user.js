@@ -36,6 +36,7 @@ router.post('/signUp',(req,res)=>{
             User.save().then(()=>{
                 req.session.userType = 'User';
                 req.session.userId = LoginCredential._id;
+                console.log({_id: LoginCredential._id ,email,firstName:firstName ,lastName:lastName,phoneNumber});
                 res.status(201).send({_id: LoginCredential._id ,email,firstName:firstName ,lastName:lastName,phoneNumber});
             });
         });
@@ -47,13 +48,14 @@ router.post('/signUp',(req,res)=>{
 
 // update cart
 router.put('/addtocart',(req,res)=>{
-    const _id=req.session._id;
+    const _id=req.session.userId;
     const {dishId}=req.body;
     dish.findOne({_id:dishId})
     .then((Dish)=>{
         if(Dish){
             user.findOne({_id})
             .then((USER)=>{
+                console.log(USER);
                 if(Dish['hotelId']!=USER['cart']['hotelId']){
                     const newCart = {...USER.cart,"hotelId":Dish["hotelId"],"items":{},"price":Dish["price"]};
                     newCart['items'][dishId]=1;
@@ -90,7 +92,7 @@ router.put('/addtocart',(req,res)=>{
 // Remove from Cart
 
 router.put('/removefromcart',(req,res)=>{
-    const _id=req.session.userId;;
+    const _id=req.session.userId;
     const {dishId}=req.body;
     dish.findOne({_id:dishId})
     .then((Dish)=>{
@@ -102,17 +104,20 @@ router.put('/removefromcart',(req,res)=>{
                         if(USER['cart']['items'][dishId]>1){
                             const newCart = USER['cart'];
                             newCart['items'][dishId]=parseInt(newCart["items"][dishId])-1;
+                            newCart['price']=newCart['price'] - Dish['price'];
                             user.updateOne({_id},{$set:{cart:newCart}})
-                            .then((user)=>res.status(200).send(user.cart))
+                            .then(()=>res.status(200).send())
                             .catch(err=>res.status(400).send(err));
                         }else{
-                            const newCart = {"hotelId":Dish["hotelId"],"items":{}};
+                            const newCart = USER['cart'];
                             delete newCart['items'][dishId];
+                            console.log(newCart);
+                            newCart['price']=newCart['price'] - Dish['price'];
                             if(Object.keys(newCart['items']).length==0){
                                 newCart['hotelId']=null;
                             }
                             user.updateOne({_id},{$set:{cart:newCart}})
-                            .then((user)=>res.status(200).send(user.cart))
+                            .then(()=>res.status(200).send())
                             .catch(err=>res.status(400).send(err));
                             return;
                         }
@@ -128,7 +133,8 @@ router.put('/removefromcart',(req,res)=>{
         }else{
             res.status(404).send("No such Dish is present");
         }        
-    })
+    }).catch(err=>console.log(err))
+
 });
 
 
