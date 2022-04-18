@@ -11,6 +11,7 @@ class Dish extends Component {
     this.state = { userType:props.login,quantity: props.count, id: props.id, ...props };
     this.increaseValue = this.increaseValue.bind(this);
     this.decreaseValue = this.decreaseValue.bind(this);
+    console.log("Constructor count "+props.count);
   }
   increaseValue() {
     if(this.state.userType!=='User'){

@@ -19,8 +19,8 @@ function DishSection(props){
         return (<div className="dishes" style={{display:"flex",height:"fit-content",flexDirection:"column",marginLeft:"0px",alignItems:"center"}}>
         {
             dishesData.map((data)=>{
-                console.log(userData.user.cart.items)
-                return <Dish login={userData.userType} name={data.name} ratings={data.ratings} noOfRatings={data.numberofRatings} type={data.type} id={data._id} price={data.price} isVeg={data.isVeg} img={data.img} count={(userData.cart && userData.cart.items[data._id])?userData.user.cart.items[data._id]:0}/>
+                console.log(userData.user.cart.items + " "+ userData.user.cart.items[data._id]+" "+data._id)
+                return <Dish login={userData.userType} name={data.name} ratings={data.ratings} noOfRatings={data.numberofRatings} type={data.type} id={data._id} price={data.price} isVeg={data.isVeg} img={data.img} count={(userData.user!=undefined && userData.user.cart.items[data._id]!=undefined)?userData.user.cart.items[data._id]:0}/>
             })
         }
         
