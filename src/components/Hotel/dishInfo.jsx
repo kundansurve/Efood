@@ -8,12 +8,21 @@ import "../CSS files/dishInfo.css";
 class DishInfo extends Component {
   constructor(props) {
     super(props);
-    this.state = { quantity: 0, id: props.id };
+    this.state = {
+      key: props.id,
+      quantity: 0,
+      id: props.id,
+      title: props.name,
+      rating: props.numberofRatings,
+      price: props.price,
+      about: props.type,
+    };
   }
   render() {
     return (
       <div
         className="dish_box"
+        key={this.state.key}
         id={this.state.id}
         style={{
           display: "flex",
@@ -30,7 +39,7 @@ class DishInfo extends Component {
         }}
       >
         <div
-        className="dish_box1"
+          className="dish_box1"
           style={{
             display: "flex",
             // flexWrap: "wrap",
@@ -49,15 +58,16 @@ class DishInfo extends Component {
             alt=""
           />
           <div style={{ width: "80%", padding: "0.5em 0.5em" }}>
-            <h6>Card Title</h6>
+            <h6>{this.state.title}</h6>
             <p style={{ marginBottom: "0.1em" }}>
               <span style={{ color: "rgb(255,213,5)" }}>
                 {" "}
                 &#9733;&#9734;&#9734;&#9734;&#9734;
+                {/* Ratings : <b style={{ color: "black" }}>{this.state.rating}</b> */}
               </span>
             </p>
-            <p style={{ marginBottom: "0.1em" }}>₹ 255</p>
-            <p style={{ marginBottom: "0.1em" }}>A hot and spicy appetizer</p>
+            <p style={{ marginBottom: "0.1em" }}>{this.state.price}</p>
+            <p style={{ marginBottom: "0.1em" }}>{this.state.about}</p>
           </div>
         </div>
         <div
@@ -70,7 +80,7 @@ class DishInfo extends Component {
           }}
         >
           <div className="quantity">
-            <input id="submit-btn" type="submit" name="submit" value="Save" />
+            <input id="submit-btn" type="submit" name="submit" value="Edit" />
           </div>
         </div>
       </div>

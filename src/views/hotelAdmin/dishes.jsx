@@ -1,4 +1,4 @@
-import React, { Component } from "react";
+import React, { Component, useEffect, useState } from "react";
 import { render } from "@testing-library/react";
 import { Link } from "react-router-dom";
 import InsertDish from "../../components/Hotel/insertDish";
@@ -6,51 +6,84 @@ import InsertDish from "../../components/Hotel/insertDish";
 // import mapboxgl from "mapbox-gl";
 import DishInfo from "../../components/Hotel/dishInfo";
 
-class Dishes extends Component {
-  componentDidMount() {}
-  render() {
-    return (
+function Dishes(props) {
+  const [dishDetails, setDishDetails] = useState({
+    dishes: [],
+  });
+
+  useEffect(() => {
+    console.log("Usefect");
+    fetch("http://localhost:4000/api/hotel/dishes/6225e37a02b267ae9583f1d3", {
+      method: "GET",
+      // body: JSON.stringify(dishDetails),
+      headers: {
+        "Content-type": "application/json; charset=UTF-8",
+      },
+    })
+      .then((response) => response.json())
+      .then((data) => {
+        console.log("Fetch Data:" + JSON.stringify(data));
+        setDishDetails(data);
+        console.log("First element" + JSON.stringify(dishDetails["dishes"][0]));
+      })
+      .catch((error) => {
+        console.log(error);
+      });
+  }, []);
+  console.log("dishes+" + JSON.stringify(dishDetails));
+  // componentDidMount() {}
+  return (
+    <div
+      style={{
+        width: "100%",
+        maxWidth: "1000px",
+        margin: "auto",
+        padding: "1em",
+        display: "flex",
+        flexDirection: "column",
+        alignItems: "center",
+      }}
+    >
+      {dishDetails.dishes.map((dishes, index) => {
+        console.log("dishmap " + index + JSON.stringify(dishes));
+        return (
+          <DishInfo
+            id={dishes._id}
+            name={dishes.name}
+            numberofRatings={dishes.numberofRatings}
+            price={dishes.price}
+            type={dishes.type}
+          />
+        );
+      })}
+      {/* <DishInfo {...dishDetails} />
+      <DishInfo />
+      <DishInfo />
+      <DishInfo /> */}
+
       <div
+        className="add"
+        type="button"
+        value="add"
         style={{
-          width: "100%",
-          maxWidth: "1000px",
-          margin: "auto",
-          padding: "1em",
+          float: "unset",
+          margin: "1.1em",
+          fontSize: "1em",
+          fontWeight: "600",
+          color: "black",
+          padding: "0.2em",
           display: "flex",
-          flexDirection: "column",
-          alignItems: "center"
+          alignItems: "center",
+          justifyContent: "center",
+          boxShadow: "0px 1px 5px #24c64f",
+          borderRadius: "10px",
+          width: "20%",
+          // color: "#24c64f",
         }}
       >
-        <DishInfo />
-        <DishInfo />
-        <DishInfo />
-        <DishInfo />
-        <DishInfo />
-        {/* <InsertDish /> */}
-        <div
-          className="add"
-          type="button"
-          value="add"
-          style={{
-            float: "unset",
-            margin: "1.1em",
-            fontSize: "1em",
-            fontWeight: "600",
-            color: "black",
-            padding: "0.2em",
-            display: "flex",
-            alignItems: "center",
-            justifyContent: "center",
-            boxShadow: "0px 1px 5px #24c64f",
-            borderRadius: "10px",
-            width: "20%",
-            // color: "#24c64f",
-          }}
-        >
-          <InsertDish title="Add Dish" />
-        </div>
+        <InsertDish title="Add Dish" />
       </div>
-    );
-  }
+    </div>
+  );
 }
 export default Dishes;
