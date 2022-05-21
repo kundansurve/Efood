@@ -12,7 +12,6 @@ function Dishes(props) {
   });
 
   useEffect(() => {
-    console.log("Usefect");
     fetch("http://localhost:4000/api/hotel/dishes/6225e37a02b267ae9583f1d3", {
       method: "GET",
       // body: JSON.stringify(dishDetails),
@@ -22,15 +21,12 @@ function Dishes(props) {
     })
       .then((response) => response.json())
       .then((data) => {
-        console.log("Fetch Data:" + JSON.stringify(data));
         setDishDetails(data);
-        console.log("First element" + JSON.stringify(dishDetails["dishes"][0]));
       })
       .catch((error) => {
         console.log(error);
       });
   }, []);
-  console.log("dishes+" + JSON.stringify(dishDetails));
   // componentDidMount() {}
   return (
     <div
@@ -45,7 +41,6 @@ function Dishes(props) {
       }}
     >
       {dishDetails.dishes.map((dishes, index) => {
-        console.log("dishmap " + index + JSON.stringify(dishes));
         return (
           <DishInfo
             id={dishes._id}

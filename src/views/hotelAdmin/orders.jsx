@@ -5,7 +5,22 @@ import mapboxgl from "mapbox-gl";
 import Order from "../../components/Hotel/order";
 
 class Orders extends Component {
-  componentDidMount() {}
+  constructor(props){
+    super(props);
+    this.state={
+      orders:[]
+    }
+  }
+  componentDidMount() {
+    fetch("http://localhost:4000/api/hotel/me/orders")
+    .then(resp=>resp.json())
+    .then(data=>{
+      console.log(data.orders);
+      this.setState({orders:data.orders});
+    }).catch(error=>{
+      console.log(error);
+    })
+  }
   render() {
     return (
       <div
@@ -17,12 +32,10 @@ class Orders extends Component {
         }}
       >
         <h3 style={{padding: "0 1em 0"}}>All Orders</h3>
-        <Order status="Delivered" />
-        <Order status="Cancelled" />
-        <Order status="In Process" />
-        <Order/>
-        <Order/>
-        <Order/>
+        {this.state.orders.map(order=>{
+          console.log()
+          return <Order status="In Process" />
+        })}
       </div>
     );
   }
