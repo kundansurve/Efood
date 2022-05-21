@@ -41,15 +41,15 @@ function LoginPage(props) {
       })
         .then((res) => {
           // setTimeout(() => {
-             fetch("http://localhost:4000/api/authenticate/me")
-               .then((response) => response.json())
-               .then((data) => {
-                 alert(JSON.stringify(data));
-                 sessionStorage.setItem("userData", JSON.stringify(data));
-                 handleClose();
-               })
-               .catch((error) => alert(error));
-           //}, 4000);
+          fetch("http://localhost:4000/api/authenticate/me")
+            .then((response) => response.json())
+            .then((data) => {
+              alert(JSON.stringify(data));
+              sessionStorage.setItem("userData", JSON.stringify(data));
+              handleClose();
+            })
+            .catch((error) => alert(error));
+          //}, 4000);
         })
         .catch((error) => alert(error));
     } catch (err) {
@@ -58,13 +58,14 @@ function LoginPage(props) {
   };
   const signUp = () => {
     try {
-      fetch('http://localhost:4000/api/user/me/signUp', {
-  method: 'POST',
-  headers: {
-    'Content-Type': 'application/json',
-  },
-  body: JSON.stringify(signUpDetails),
-}).then(response=>response.json())
+      fetch("http://localhost:4000/api/user/me/signUp", {
+        method: "POST",
+        headers: {
+          "Content-Type": "application/json",
+        },
+        body: JSON.stringify(signUpDetails),
+      })
+        .then((response) => response.json())
         .then((data) => {
           sessionStorage.setItem("userData", JSON.stringify(data));
           handleClose();
@@ -74,55 +75,129 @@ function LoginPage(props) {
     }
   };
 
-    return (
-      (action.title=='Login')?
-      <>
-        <div  className="colors" type="button" style={{color:props.buttonColor,padding:"0.5em"}} onClick={handleShow}>
-        {props.title}
-        </div>
-        <div className="loginSection" style={{display:(show)?"flex":"none",position:"fixed",top:"0px",zIndex:"999"}} >
-        <div id="logincard" >
-        <img type="button" className="close" src="https://img.icons8.com/ios/50/000000/delete-sign--v1.png" name="close" style={{width:"20px",float:"right",margin:"1em"}} onClick={handleClose}/>
-    <div id="logincard-content">
-    
-      <div id="logincard-title">
-        <h2 >LOGIN</h2>
-        <div className="underline-title"></div>
-      </div>
-      <form method="post" className="form">
-        <label for="user-email" style={{paddingTop:"13px"}}>
-            &nbsp;Email
-          </label>
-        <input id="user-email" className="form-content" type="email" name="email" autocomplete="on" required value={loginDetails.email} onChange={(e)=>setLoginDetails({...loginDetails,email:e.target.value})}/>
-        <div className="form-border"></div>
-        <label for="user-password" style={{paddingTop:"22px"}}>&nbsp;Password
-          </label>
-        <input id="user-password" className="form-content" type="password" name="password" required value={loginDetails.password} onChange={(e)=>setLoginDetails({...loginDetails,password:e.target.value})}/>
-        <div className="form-border"></div>
-        <a href="#">
-          <legend id="forgot-pass">Forgot password?</legend>
-        </a>
-        <input id="submit-btn" onClick={login} type="button" name="submit" value="LOGIN" style={{margin:"1em auto"}}/>
-        <a href="#" id="signup" onClick={()=>{setAction({title:'SignUp'})}}>Don't have account yet?</a>
-      </form>
-    </div>
-  </div>
-</div>
-      </>
-    :
+  return action.title == "Login" ? (
     <>
-        <div className="colors"  type="button" style={{color:props.buttonColor,padding:"0.5em"}} onClick={handleShow}>
-          {props.title}
+      <div
+        className="colors"
+        type="button"
+        style={{ color: props.buttonColor, padding: "0.5em" }}
+        onClick={handleShow}
+      >
+        {props.title}
+      </div>
+      <div
+        className="loginSection"
+        style={{
+          display: show ? "flex" : "none",
+          position: "fixed",
+          top: "0px",
+          zIndex: "999",
+        }}
+      >
+        <div id="logincard">
+          <img
+            type="button"
+            alt=""
+            className="close"
+            src="https://img.icons8.com/ios/50/000000/delete-sign--v1.png"
+            name="close"
+            style={{ width: "20px", float: "right", margin: "1em" }}
+            onClick={handleClose}
+          />
+          <div id="logincard-content">
+            <div id="logincard-title">
+              <h2>LOGIN</h2>
+              <div className="underline-title"></div>
+            </div>
+            <form method="post" className="form">
+              <label for="user-email" style={{ paddingTop: "13px" }}>
+                &nbsp;Email
+              </label>
+              <input
+                id="user-email"
+                className="form-content"
+                type="email"
+                name="email"
+                autocomplete="on"
+                required
+                value={loginDetails.email}
+                onChange={(e) =>
+                  setLoginDetails({ ...loginDetails, email: e.target.value })
+                }
+              />
+              <div className="form-border"></div>
+              <label for="user-password" style={{ paddingTop: "22px" }}>
+                &nbsp;Password
+              </label>
+              <input
+                id="user-password"
+                className="form-content"
+                type="password"
+                name="password"
+                required
+                value={loginDetails.password}
+                onChange={(e) =>
+                  setLoginDetails({ ...loginDetails, password: e.target.value })
+                }
+              />
+              <div className="form-border"></div>
+              <a href="#">
+                <legend id="forgot-pass">Forgot password?</legend>
+              </a>
+              <input
+                id="submit-btn"
+                onClick={login}
+                type="button"
+                name="submit"
+                value="LOGIN"
+                style={{ margin: "1em auto" }}
+              />
+              <a
+                href="#"
+                id="signup"
+                onClick={() => {
+                  setAction({ title: "SignUp" });
+                }}
+              >
+                Don't have account yet?
+              </a>
+            </form>
+          </div>
         </div>
-        <div className="loginSection" style={{display:(show)?"flex":"none",position:"fixed",top:"0px",zIndex:"999"}} >
-        <div id="logincard" >
-        <img type="button" className="close" src="https://img.icons8.com/ios/50/000000/delete-sign--v1.png" name="close" style={{width:"20px",float:"right",margin:"1em"}} onClick={handleClose}/>
-    <div id="logincard-content">
-    
-      <div id="logincard-title">
-        <h2 >SIGN UP</h2>
-        <div className="underline-title"></div>
-
+      </div>
+    </>
+  ) : (
+    <>
+      <div
+        className="colors"
+        type="button"
+        style={{ color: props.buttonColor, padding: "0.5em" }}
+        onClick={handleShow}
+      >
+        {props.title}
+      </div>
+      <div
+        className="loginSection"
+        style={{
+          display: show ? "flex" : "none",
+          position: "fixed",
+          top: "0px",
+          zIndex: "999",
+        }}
+      >
+        <div id="logincard">
+          <img
+            type="button"
+            className="close"
+            src="https://img.icons8.com/ios/50/000000/delete-sign--v1.png"
+            name="close"
+            style={{ width: "20px", float: "right", margin: "1em" }}
+            onClick={handleClose}
+          />
+          <div id="logincard-content">
+            <div id="logincard-title">
+              <h2>SIGN UP</h2>
+              <div className="underline-title"></div>
             </div>
             <form method="post" className="form">
               <label for="user-email" style={{ paddingTop: "13px" }}>
@@ -220,7 +295,7 @@ function LoginPage(props) {
                 type="button"
                 name="submit"
                 value="SIGNUP"
-                style={{margin:"1em auto"}}
+                style={{ margin: "1em auto" }}
               />
               <a
                 href="#"

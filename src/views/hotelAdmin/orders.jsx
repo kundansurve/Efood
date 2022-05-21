@@ -1,10 +1,10 @@
-import React, { Component } from "react";
+import React, { useState, useEffect } from "react";
 import { render } from "@testing-library/react";
 // import "../JS files/delivery";
 import mapboxgl from "mapbox-gl";
 import Order from "../../components/Hotel/order";
 
-class Orders extends Component {
+class Orders extends React.Component {
   constructor(props){
     super(props);
     this.state={
