@@ -7,17 +7,11 @@ import "./CSS files/hotelAdmin.css";
 import Hotels from "./cityAdmin/hotels";
 import DeliveryExecutive from "./cityAdmin/deliveryExcecutive";
 // import Orders from "../views/hotelAdmin/orders";
+import { UserData } from "../context";
 
-class CityAdmin extends Component {
-  constructor(props) {
-    super(props);
-    this.state = { key: "Hotel" };
-  }
-
-  componentDidMount() {
-    console.log("Hello");
-  }
-  render() {
+function CityAdmin(props){
+    const [key,setKey] = React.useState("Hotel");
+    const [hotelUser,setHotelUser]=React.useContext(UserData);
     return (
       <div>
         <div
@@ -87,12 +81,12 @@ class CityAdmin extends Component {
                     padding: "1em",
                     paddingBottom: "0.5em",
                     border:
-                      this.state.key === "Hotel" ? "2px solid #efefef" : "none",
+                      key === "Hotel" ? "2px solid #efefef" : "none",
                     borderBottom:
-                      this.state.key === "Hotel" ? "none" : "2px solid #efefef",
+                      key === "Hotel" ? "none" : "2px solid #efefef",
                   }}
                   onClick={() => {
-                    this.setState({ key: "Hotel" });
+                    setKey( "Hotel" );
                   }}
                 >
                   Hotels
@@ -106,16 +100,16 @@ class CityAdmin extends Component {
                     padding: "1em",
                     paddingBottom: "0.5em",
                     border:
-                      this.state.key === "Delivery_Executive"
+                      key === "Delivery_Executive"
                         ? "2px solid #efefef"
                         : "none",
                     borderBottom:
-                      this.state.key === "Delivery_Executive"
+                      key === "Delivery_Executive"
                         ? "none"
                         : "2px solid #efefef",
                   }}
                   onClick={() => {
-                    this.setState({ key: "Delivery_Executive" });
+                    setKey("Delivery_Executive" );
                   }}
                 >
                   Delivery Executive
@@ -132,7 +126,7 @@ class CityAdmin extends Component {
               </div>
               <div
                 style={{
-                  display: this.state.key === "Hotel" ? "" : "none",
+                  display:key === "Hotel" ? "" : "none",
                   width: "95%",
                 }}
               >
@@ -143,17 +137,17 @@ class CityAdmin extends Component {
               <div
                 style={{
                   display:
-                    this.state.key === "Delivery_Executive" ? "" : "none",
+                    key === "Delivery_Executive" ? "" : "none",
                   width: "95%",
                 }}
               >
-                <DeliveryExecutive/>
+                <DeliveryExecutive hotelUser={hotelUser}/>
               </div>
             </div>
           </div>
         </div>
       </div>
     );
-  }
+  
 }
 export default CityAdmin;

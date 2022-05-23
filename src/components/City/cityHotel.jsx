@@ -5,16 +5,12 @@ import { render } from "@testing-library/react";
 import Img from "../../assets/img/HomeImg.jpg";
 import "../CSS files/cityHotel.css";
 
-class CityHotel extends Component {
-  constructor(props) {
-    super(props);
-    this.state = { quantity: 0, id: props.id };
-  }
-  render() {
+function CityHotel(props) {
+  const [hotel,setHotel]=React.useState(props.hotel);
     return (
       <div
         className="dish_box"
-        id={this.state.id}
+        id={hotel.id}
         style={{
           display: "flex",
           justifyContent: "space-between",
@@ -50,16 +46,17 @@ class CityHotel extends Component {
             style={{ width: "95%", padding: "0.5em 0.5em" }}
             className="hotel_info"
           >
-            <h6>Hotel Name</h6>
+            <h6>{hotel.name}</h6>
             <p style={{ marginBottom: "0.1em" }}>
               <span style={{ color: "rgb(255,213,5)" }}>
-                {" "}
-                &#9733;&#9734;&#9734;&#9734;&#9734;
+              {[...Array(5)].map((e, i) => {
+                if (i < hotel.ratings) return <>&#9733;</>;
+                return <>&#9734;</>;
+              })}
               </span>
             </p>
             <div className="hotel_details">
-              <p style={{ marginBottom: "0.1em" }}>Type</p>
-              <p style={{ marginBottom: "0.1em" }}>A hot and spicy appetizer</p>
+              <p style={{ marginBottom: "0.1em" }}>Phone Number: {hotel.phoneNumber}</p>
               <p style={{ marginBottom: "0.1em" }}>
                 Address : Bibwewadi, East, Pune
               </p>
@@ -81,6 +78,6 @@ class CityHotel extends Component {
         </div>
       </div>
     );
-  }
+  
 }
 export default CityHotel;

@@ -2,19 +2,15 @@ import React, { Component } from "react";
 // import { Navbar, Nav, Container } from "react-bootstrap";
 import "bootstrap/dist/css/bootstrap.min.css";
 import { render } from "@testing-library/react";
-import Img from "../../assets/img/HomeImg.jpg";
+import Img from "../../assets/img/Untitled.png";
 import "../CSS files/cityDelivery.css";
 
-class CityDelivery extends Component {
-  constructor(props) {
-    super(props);
-    this.state = { quantity: 0, id: props.id };
-  }
-  render() {
+function CityDelivery(props) {
+  const [deliveryExecutive,setDeliveryExecutive] = React.useState(props.deliveryExecutive);
     return (
       <div
         className="dish_box"
-        id={this.state.id}
+        id={deliveryExecutive.id}
         style={{
           display: "flex",
           justifyContent: "space-between",
@@ -40,7 +36,9 @@ class CityDelivery extends Component {
             style={{
               alignSelf: "center",
               height: "4.5em",
-              borderRadius: "5px 5px 5px 5px",
+              borderRadius: "50% 50%",
+              border:"2px solid rgba(255, 165, 0,0.4)",
+              boxShadow:"3px 5px rgba(255, 165, 0,0.4)",
               opacity: "1",
             }}
             src={Img}
@@ -50,17 +48,22 @@ class CityDelivery extends Component {
             style={{ width: "95%", padding: "0.5em 0.5em" }}
             className="hotel_info"
           >
-            <h6>Person Name</h6>
+            <h6>{deliveryExecutive.name}</h6>
             <p style={{ marginBottom: "0.1em" }}>
               <span style={{ color: "rgb(255,213,5)" }}>
-                {" "}
-                &#9733;&#9734;&#9734;&#9734;&#9734;
+              <span style={{ color: "rgb(255,213,5)" }}>
+              {" "}
+              {[...Array(5)].map((e, i) => {
+                if (i < deliveryExecutive.ratings) return <>&#9733;</>;
+                return <>&#9734;</>;
+              })}
+            </span>
               </span>
             </p>
             <div className="hotel_details">
-              <p style={{ marginBottom: "0.1em" }}>Gender</p>
+              <p style={{ marginBottom: "0.1em" }}>Phone Number: {deliveryExecutive.phoneNumber}</p>
               <p style={{ marginBottom: "0.1em" }}>
-                Address : Bibwewadi, East, Pune
+                Status: {(deliveryExecutive.isFree)?"Free":"Busy in a Delivery"}
               </p>
             </div>
           </div>
@@ -80,6 +83,6 @@ class CityDelivery extends Component {
         </div>
       </div>
     );
-  }
+
 }
 export default CityDelivery;

@@ -19,7 +19,8 @@ import {UserData,City} from './context';
 
 function App() {
   
-  const [userData,setUserData]=useState({"userType":"Hotel"});
+  const [userData,setUserData]=useState({"userType":"DeliveryExecutive","location":{"coordinates":[20.933614859088873,74.77857721534356]},"isFree":false,
+  "currentOrder":"628875dedf5099b86184788a"});
   
   const [city,setCity] = useState("6225d3ee02b267ae9583f1c3");
 
@@ -72,7 +73,7 @@ function App() {
       {(userData && userData.userType==='DeliveryExecutive')?(
         <>{/* User Proctected Paths*/}
           <Route exact path='/delivery-executive/orders' element={<DeliveryAdmin/>}/>
-          <Route exact path='/delivery-executive/orders/previous' element={<PrevOrders/>}/>
+          <Route exact path='/delivery-executive/previous/orders' element={<PrevOrders/>}/>
           <Route exact path='/delivery-executive/orders/order/:orderid' element={<OrdersForDeliveryExecutive/>}/>
         </>):
         null

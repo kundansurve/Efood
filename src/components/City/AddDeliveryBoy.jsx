@@ -3,21 +3,44 @@ import "../CSS files/addDeliveryBoy.css";
 import NotFoundPage from "../../views/notfound";
 
 function AddDeliveryBoy(props) {
+  const location = {...props.hotelUser.location,"type":"Point"};
   const [show, setShow] = useState(false);
-  const mainFunc = { title: props.title };
-  const [action, setAction] = useState({ title: props.title });
+  const [name, setName] = useState("");
+  const [phoneNumber,setPhoneNumber]=useState("");
+  const [email,setEmail] = useState("");
+  const [password,setPassword] = useState("");
+  const resetDeliveryExecutives=props.resetDeliveryExecutives;
   const handleClose = (e) => {
     if (
       e.target.className == "close" ||
       e.target.className == "loginSection close"
     ) {
-      setAction(mainFunc);
       setShow(false);
+      setName("");
+      setPhoneNumber("");
+      setEmail("");
+      setPassword("");
     }
   };
-
+  const onClickAdd=()=>{
+    fetch("http://localhost:4000/api/city/me/new-delivery-executive", {
+        method: "POST",
+        body: JSON.stringify({email,name,location,password,phoneNumber}),
+        headers: {
+          "Content-type": "application/json; charset=UTF-8",
+        },
+      }).then(res=>res.json())
+      .then(data=>{
+        resetDeliveryExecutives();
+        setShow(false);
+      setName("");
+      setPhoneNumber("");
+      setEmail("");
+      setPassword("");
+      }).catch(error=>console.log(error))
+  }
   const handleShow = () => setShow(true);
-  return action.title == "Add Delivery Boy" ? (
+  return  (
     <>
       <div
         className="colors"
@@ -51,7 +74,7 @@ function AddDeliveryBoy(props) {
           <div id="dishCard-content">
             <div id="dishCard-title">
               <h2>Add a Delivery Boy</h2>
-              {/* <div className="underline-title"></div> */}
+ 
             </div>
             <form method="post" className="form">
               <label for="dish-image" style={{ paddingTop: "13px" }}>
@@ -63,170 +86,78 @@ function AddDeliveryBoy(props) {
                 className="form-content"
                 name="image"
                 autocomplete="on"
-                required
-                //   value={signUpDetails.phoneNumber}
-                //   onChange={(e) =>
-                //     setSignUpDetails({
-                //       ...signUpDetails,
-                //       phoneNumber: e.target.value,
-                //     })
-                //   }
+                
               />
-              {/* <div className="form-border"></div> */}
-              <label for="dish-name" style={{ paddingTop: "13px" }}>
+              <label for="name" style={{ paddingTop: "13px" }}>
                 &nbsp;Name
               </label>
               <input
-                id="dish-name"
+                id="name"
                 className="form-content"
                 type="text"
-                name="dishName"
+                name="name"
                 autocomplete="on"
                 required
-                //   value={signUpDetails.email}
-                //   onChange={(e) =>
-                //     setSignUpDetails({
-                //       ...signUpDetails,
-                //       email: e.target.value,
-                //     })
-                //   }
+                value={name}
+                onChange={(e)=>{setName(e.target.value)}}
               />
               <div className="form-border"></div>
-              <label for="dish-price" style={{ paddingTop: "13px" }}>
-                &nbsp;Age
+              <label for="email" style={{ paddingTop: "13px" }}>
+                &nbsp;Email
               </label>
               <input
-                id="dish-price"
+                id="email"
                 className="form-content"
-                name="dishPrice"
+                name="email"
                 autocomplete="on"
                 required
-                //   value={signUpDetails.firstName}
-                //   onChange={(e) =>
-                //     setSignUpDetails({
-                //       ...signUpDetails,
-                //       firstName: e.target.value,
-                //     })
-                //   }
+                type="email"
+                value={email}
+                onChange={(e)=>{setEmail(e.target.value)}}
               />
               <div className="form-border"></div>
-              <label for="dish-about" style={{ paddingTop: "13px" }}>
-                &nbsp;About
+              <label for="phoneNumber" style={{ paddingTop: "13px" }}>
+                &nbsp;Phone Number
               </label>
               <input
-                id="dishAbout"
+                id="phoneNumber"
                 className="form-content"
-                name="AboutDish"
+                name="phoneNumber"
                 autocomplete="on"
                 required
-                //   value={signUpDetails.lastName}
-                //   onChange={(e) =>
-                //     setSignUpDetails({
-                //       ...signUpDetails,
-                //       lastName: e.target.value,
-                //     })
-                //   }
+                value={phoneNumber}
+                onChange={(e)=>{setPhoneNumber(e.target.value)}}
               />
-
               <div className="form-border"></div>
-              <label for="meal-type" style={{ paddingTop: "22px" }}>
-                &nbsp;Gender
+              <label for="password" style={{ paddingTop: "13px" }}>
+                &nbsp;Password
               </label>
-              <div
-                className="meal-radio"
-                style={{
-                  display: "flex",
-                  justifyContent: "space-around",
-                  padding: "1em",
-                }}
-              >
-                <label
-                  for="male"
-                  style={{
-                    display: "flex",
-                    alignItems: "center",
-                    padding: "0.4em",
-                  }}
-                >
-                  Male
-                  <input
-                    id="male"
-                    className="form-content"
-                    type="radio"
-                    name="gender"
-                    value={"male"}
-                    placeholder="male"
-                    required
-                    //   value={signUpDetails.password}
-                    //   onChange={(e) =>
-                    //     setSignUpDetails({
-                    //       ...signUpDetails,
-                    //       password: e.target.value,
-                    //     })
-                    //   }
-                  />
-                </label>
-                <label
-                  for="Female"
-                  style={{
-                    display: "flex",
-                    alignItems: "center",
-                    padding: "0.4em",
-                  }}
-                >
-                  Female
-                  <input
-                    id="female"
-                    className="form-content"
-                    type="radio"
-                    name="gender"
-                    value={"Female"}
-                    required
-                    //   value={signUpDetails.password}
-                    //   onChange={(e) =>
-                    //     setSignUpDetails({
-                    //       ...signUpDetails,
-                    //       password: e.target.value,
-                    //     })
-                    //   }
-                  />
-                </label>
-              </div>
+              <input
+                id="password"
+                className="form-content"
+                name="password"
+                autocomplete="on"
+                required
+                type="password"
+                value={password}
+                onChange={(e)=>{setPassword(e.target.value)}}
+              />
+              <div className="form-border"></div>
               <div className="dish_btns">
                 <input
-                  //   onClick={signUp}
-                  className="btns"
-                  id="edit-btn"
-                  type="button"
-                  // name="submit"
-                  value="Edit"
-                />
-                <input
-                  //   onClick={signUp}
                   className="btns"
                   id="btn-submit"
                   type="button"
                   name="submit"
-                  value="Save"
+                  value="Add"
+                  onClick={onClickAdd}
                 />
-
-                {/* <a
-                  href="#"
-                  id="signup"
-                  onClick={() => {
-                    setAction({ title: "Login" });
-                  }}
-                >
-                  Already have an account?
-                </a> */}
               </div>
             </form>
           </div>
         </div>
       </div>
     </>
-  ) : (
-    <NotFoundPage />
   );
 }
 

@@ -1,13 +1,28 @@
-import React, { Component } from "react";
+import React, { Component, useEffect } from "react";
 import { render } from "@testing-library/react";
 import "../JS files/delivery";
 // import mapboxgl from "mapbox-gl";
 import CityDelivery from "../../components/City/cityDelivery";
 import AddDeliveryBoy from "../../components/City/AddDeliveryBoy";
 
-class DeliveryExecutive extends Component {
-  componentDidMount() {}
-  render() {
+function DeliveryExecutive(props) {
+  const hotelUser=props.hotelUser;
+  const [deliveryExecutives,setdeliveryExecutives] = React.useState([]); 
+  useEffect(()=>{
+    fetch("http://localhost:4000/api/city/me/delivery-executives")
+    .then((resp)=>resp.json())
+    .then(data=>{
+      setdeliveryExecutives(data.deliveryExecutives);
+    }).catch(error=>console.log(error))
+  },[])
+
+  const resetDeliveryExecutives=()=>{
+    fetch("http://localhost:4000/api/city/me/delivery-executives")
+    .then((resp)=>resp.json())
+    .then(data=>{
+      setdeliveryExecutives(data.deliveryExecutives);
+    }).catch(error=>console.log(error))
+  }
     return (
       <div
         style={{
@@ -20,9 +35,9 @@ class DeliveryExecutive extends Component {
           alignItems: "center",
         }}
       >
-       <CityDelivery/>
-       <CityDelivery/>
-       <CityDelivery/>
+        {deliveryExecutives.map(deliveryExecutive=>{
+          return <CityDelivery deliveryExecutive={deliveryExecutive}/>
+        })}
         <div
           className="add"
           type="button"
@@ -39,15 +54,13 @@ class DeliveryExecutive extends Component {
             justifyContent: "center",
             boxShadow: "0px 1px 5px #24c64f",
             borderRadius: "10px",
-            width: "20%",
-            // color: "#24c64f",
+            width: "20%"
           }}
         >
           {/* <InsertDish title="Add Dish" /> */}
-          <AddDeliveryBoy title="Add Delivery Boy" />
+          <AddDeliveryBoy title="Add Delivery Boy" hotelUser={hotelUser} resetDeliveryExecutives={resetDeliveryExecutives}/>
         </div>
       </div>
     );
-  }
 }
 export default DeliveryExecutive;

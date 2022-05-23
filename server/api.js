@@ -20,7 +20,7 @@ router.use('/user/me', user);
 
 router.use('/hotel/me',hotel);
 
-router.use('/deliveryboy/me',deliveryBoy);
+router.use('/delivery-executive/me',deliveryBoy);
 
 router.use('/authenticate',authenticate);
 

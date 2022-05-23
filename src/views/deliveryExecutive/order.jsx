@@ -6,15 +6,26 @@ import mapboxgl from 'mapbox-gl';
 mapboxgl.accessToken = 'pk.eyJ1IjoiZm9vZGllMjM2IiwiYSI6ImNreTgzMTFkOTE2eWgydnMxMHJ1ZzVqZ3MifQ.KHB9VYX_nKPKaN5RkSnoeQ';
 
 class Order extends Component{
+    constructor(props){
+        super(props)
+        this.state={
+            orderDetails:{},
+            orderId:(window.location.pathname.split("/")[window.location.pathname.split("/").length-1])
+        }
+    }
     componentDidMount(){
         const map = new mapboxgl.Map({
             container: 'map', // container ID
             style: 'mapbox://styles/mapbox/streets-v11', // style URL
             center: [74.7749, 20.9042], // starting position [lng, lat]
             zoom: 9 // starting zoom
-            
         });
-        console.log(map);
+        fetch(`http://localhost:4000/api/delivery-executive/me/order/${this.state.orderId}`)
+        .then(resp=>resp.json())
+        .then(data=>{
+            this.setState({orderDetails:data.order})
+        }).catch(error=>console.log(error));
+
     }
     render(){
         return (
@@ -24,7 +35,7 @@ class Order extends Component{
                 <h3>Order Details</h3>
                 <div style={{width:"90%", padding:"1em",border:"2px solid #efefef",backgroundColor:"#efefef",borderRadius:"5px",margin:"1em"}}>
                     <h5>Order Status:</h5>
-                    <p style={{marginBottom:"0px"}}>Food is Being Prepared</p>
+                    <p style={{marginBottom:"0px"}}>{this.state.orderDetails.status}</p>
                     <span style={{alignItems:"center",display:"flex"}}>
                         <p style={{margin:"0px"}}></p>
                     </span>
