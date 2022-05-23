@@ -11,7 +11,7 @@ function Dishes(props) {
     dishes: [],
   });
 
-  useEffect(() => {
+  const resetDishes = () => {
     fetch("http://localhost:4000/api/hotel/dishes/6225e37a02b267ae9583f1d3", {
       method: "GET",
       // body: JSON.stringify(dishDetails),
@@ -24,8 +24,12 @@ function Dishes(props) {
         setDishDetails(data);
       })
       .catch((error) => {
-        console.log(error);
+        alert(error);
       });
+  };
+
+  useEffect(() => {
+    resetDishes();
   }, []);
   // componentDidMount() {}
   return (
@@ -76,7 +80,7 @@ function Dishes(props) {
           // color: "#24c64f",
         }}
       >
-        <InsertDish title="Add Dish" />
+        <InsertDish title="Add Dish" resetDishes={resetDishes} />
       </div>
     </div>
   );

@@ -31,8 +31,8 @@ router.get("/orders", (req, res) => {
 });
 
 router.post("/newdish", (req, res) => {
-  const { name, isVeg, type, img, price } = req.body;
-  const hotelId = req.session.userId;
+  const { name, isVeg, type, price } = req.body;
+  const hotelId = "6225e37a02b267ae9583f1d3";
   dish
     .find({ name, hotelId })
     .then((oldDish) => {
@@ -47,7 +47,6 @@ router.post("/newdish", (req, res) => {
               name,
               isVeg,
               type,
-              img,
               price,
               hotelId,
               cityId: Hotel.cityId,
@@ -59,26 +58,32 @@ router.post("/newdish", (req, res) => {
                   .findOne({ _id })
                   .then((Dish) => {
                     res.status.send(Dish);
+                    return;
                   })
                   .catch((error) => {
                     res.status(401).send({ error });
+                    return;
                   });
               })
               .catch((error) => {
                 res.status(401).send({ error });
+                return;
               });
           })
           .catch((error) => {
             if (error) {
               res.status(400).send({ error });
+              return;
             } else {
               res.status(400).send({ error: "Server Error" });
+              return;
             }
           });
       }
     })
     .catch((error) => {
       res.status(401).send({ error });
+      return;
     });
 });
 

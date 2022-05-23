@@ -8,10 +8,11 @@ class Order extends Component {
   constructor(props) {
     super(props);
     this.state = {
-      // delivery_boy: props.d_boy,
-      // quantity: props.quantity,
-      // food: props.food,
-      // status: props.status
+      delivery_boy: props.d_boy,
+      quantity: props.quantity,
+      food: props.food,
+      status: props.status,
+      paid: props.paid,
     };
   }
   render() {
@@ -27,7 +28,7 @@ class Order extends Component {
       >
         <p style={{ width: "100%", textAlign: "right" }}>Date: 13/02/2022</p>
         <h5>Order Summary:</h5>
-        <span
+        {/* <span
           style={{
             display: "flex",
             justifyContent: "flex-start",
@@ -37,7 +38,7 @@ class Order extends Component {
         >
           <h6 style={{}}>Delivery Detail : </h6>
           <h6 style={{}}> Ranvir Kapoor</h6>
-        </span>
+        </span> */}
         <h6>Order:</h6>
         <span
           style={{
@@ -48,8 +49,8 @@ class Order extends Component {
         >
           <p style={{ fontWeight: "bold" }}>Food</p>
           <p style={{ fontWeight: "bold", textAlign: "right" }}>Quantity</p>
-          <p>Shahi Paneer</p>
-          <p style={{ textAlign: "right" }}>1</p>
+          <p>{this.state.food}</p>
+          <p style={{ textAlign: "right" }}>{this.state.quantity}</p>
         </span>
         <div
           style={{

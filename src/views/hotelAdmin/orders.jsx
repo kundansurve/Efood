@@ -5,21 +5,22 @@ import mapboxgl from "mapbox-gl";
 import Order from "../../components/Hotel/order";
 
 class Orders extends React.Component {
-  constructor(props){
+  constructor(props) {
     super(props);
-    this.state={
-      orders:[]
-    }
+    this.state = {
+      orders: [],
+    };
   }
   componentDidMount() {
     fetch("http://localhost:4000/api/hotel/me/orders")
-    .then(resp=>resp.json())
-    .then(data=>{
-      console.log(data.orders);
-      this.setState({orders:data.orders});
-    }).catch(error=>{
-      console.log(error);
-    })
+      .then((resp) => resp.json())
+      .then((data) => {
+        console.log(data.orders);
+        this.setState({ orders: data.orders });
+      })
+      .catch((error) => {
+        console.log(error);
+      });
   }
   render() {
     return (
@@ -31,10 +32,10 @@ class Orders extends React.Component {
           padding: "1em",
         }}
       >
-        <h3 style={{padding: "0 1em 0"}}>All Orders</h3>
-        {this.state.orders.map(order=>{
-          console.log()
-          return <Order status="In Process" />
+        <h3 style={{ padding: "0 1em 0" }}>All Orders</h3>
+        {this.state.orders.map((order) => {
+          console.log();
+          return <Order status="In Process" />;
         })}
       </div>
     );

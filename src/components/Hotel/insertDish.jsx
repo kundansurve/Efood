@@ -1,11 +1,20 @@
-import React, { useState } from "react";
+import React, { useState, useEffect } from "react";
 import "../CSS files/insertDish.css";
 import NotFoundPage from "../../views/notfound";
 
 function InsertDish(props) {
   const [show, setShow] = useState(false);
+  const resetDishes = props.resetDishes;
   const mainFunc = { title: props.title };
   const [action, setAction] = useState({ title: props.title });
+  const [dishDetails, setDishDetails] = useState({
+    name: " ",
+    numberofRatings: " ",
+    price: " ",
+    isVeg: " ",
+    type: " ",
+  });
+
   const handleClose = (e) => {
     if (
       e.target.className == "close" ||
@@ -17,7 +26,7 @@ function InsertDish(props) {
   };
 
   const handleShow = () => setShow(true);
-  return  action.title == "Add Dish" ?(
+  return action.title == "Add Dish" ? (
     <>
       <div
         className="colors"
@@ -62,15 +71,15 @@ function InsertDish(props) {
                 id="dish-image"
                 className="form-content"
                 name="image"
-                autocomplete="on"
-                required
-                //   value={signUpDetails.phoneNumber}
-                //   onChange={(e) =>
-                //     setSignUpDetails({
-                //       ...signUpDetails,
-                //       phoneNumber: e.target.value,
-                //     })
-                //   }
+                // autocomplete="on"
+                // required
+                // value={dishDetails.id}
+                // onChange={(e) =>
+                //   setDishDetails({
+                //     ...dishDetails,
+                //     id: e.target.value,
+                //   })
+                // }
               />
               {/* <div className="form-border"></div> */}
               <label for="dish-name" style={{ paddingTop: "13px" }}>
@@ -83,13 +92,13 @@ function InsertDish(props) {
                 name="dishName"
                 autocomplete="on"
                 required
-                //   value={signUpDetails.email}
-                //   onChange={(e) =>
-                //     setSignUpDetails({
-                //       ...signUpDetails,
-                //       email: e.target.value,
-                //     })
-                //   }
+                value={dishDetails.name}
+                onChange={(e) =>
+                  setDishDetails({
+                    ...dishDetails,
+                    name: e.target.value,
+                  })
+                }
               />
               <div className="form-border"></div>
               <label for="dish-price" style={{ paddingTop: "13px" }}>
@@ -101,13 +110,13 @@ function InsertDish(props) {
                 name="dishPrice"
                 autocomplete="on"
                 required
-                //   value={signUpDetails.firstName}
-                //   onChange={(e) =>
-                //     setSignUpDetails({
-                //       ...signUpDetails,
-                //       firstName: e.target.value,
-                //     })
-                //   }
+                value={dishDetails.price}
+                onChange={(e) =>
+                  setDishDetails({
+                    ...dishDetails,
+                    price: e.target.value,
+                  })
+                }
               />
               <div className="form-border"></div>
               <label for="dish-about" style={{ paddingTop: "13px" }}>
@@ -119,13 +128,13 @@ function InsertDish(props) {
                 name="AboutDish"
                 autocomplete="on"
                 required
-                //   value={signUpDetails.lastName}
-                //   onChange={(e) =>
-                //     setSignUpDetails({
-                //       ...signUpDetails,
-                //       lastName: e.target.value,
-                //     })
-                //   }
+                value={dishDetails.type}
+                onChange={(e) =>
+                  setDishDetails({
+                    ...dishDetails,
+                    type: e.target.value,
+                  })
+                }
               />
 
               <div className="form-border"></div>
@@ -157,13 +166,12 @@ function InsertDish(props) {
                     value={"Veg"}
                     placeholder="Veg"
                     required
-                    //   value={signUpDetails.password}
-                    //   onChange={(e) =>
-                    //     setSignUpDetails({
-                    //       ...signUpDetails,
-                    //       password: e.target.value,
-                    //     })
-                    //   }
+                    onChange={(e) =>
+                      setDishDetails({
+                        ...dishDetails,
+                        isVeg: true,
+                      })
+                    }
                   />
                 </label>
                 <label
@@ -182,52 +190,63 @@ function InsertDish(props) {
                     name="MealType"
                     value={"Non-veg"}
                     required
-                    //   value={signUpDetails.password}
-                    //   onChange={(e) =>
-                    //     setSignUpDetails({
-                    //       ...signUpDetails,
-                    //       password: e.target.value,
-                    //     })
-                    //   }
+                    onChange={(e) =>
+                      setDishDetails({
+                        ...dishDetails,
+                        isVeg: false,
+                      })
+                    }
                   />
                 </label>
               </div>
               <div className="dish_btns">
-                <input
+                {/* <input
                   //   onClick={signUp}
                   className="btns"
                   id="edit-btn"
                   type="button"
                   // name="submit"
                   value="Edit"
-                />
+                /> */}
                 <input
-                  //   onClick={signUp}
                   className="btns"
                   id="btn-submit"
                   type="button"
                   name="submit"
                   value="Save"
-                />
-
-                {/* <a
-                  href="#"
-                  id="signup"
                   onClick={() => {
-                    setAction({ title: "Login" });
+                    fetch("http://localhost:4000/api/hotel/me/newdish", {
+                      method: "POST",
+                      body: JSON.stringify(dishDetails),
+                      headers: {
+                        "Content-type": "application/json; charset=UTF-8",
+                      },
+                    })
+                      .then((response) => response.json())
+                      .then((data) => {
+                        resetDishes();
+                        setDishDetails({
+                          name: " ",
+                          numberofRatings: " ",
+                          price: " ",
+                          isVeg: null,
+                          type: " ",
+                        });
+                        setShow(false);
+                      })
+                      .catch((error) => {
+                        console.log(error);
+                      });
                   }}
-                >
-                  Already have an account?
-                </a> */}
+                />
               </div>
             </form>
           </div>
         </div>
       </div>
     </>
-  ):(
-    <NotFoundPage/>
-
+  ) : (
+    <NotFoundPage />
   );
 }
 
