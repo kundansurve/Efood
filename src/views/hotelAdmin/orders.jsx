@@ -9,14 +9,22 @@ class Orders extends React.Component {
     super(props);
     this.state = {
       orders: [],
+      dishes: [],
     };
   }
   componentDidMount() {
     fetch("http://localhost:4000/api/hotel/me/orders")
       .then((resp) => resp.json())
       .then((data) => {
-        console.log(data.orders);
         this.setState({ orders: data.orders });
+      })
+      .catch((error) => {
+        console.log(error);
+      });
+    fetch("http://localhost:4000/api/hotel/dishes/6225e37a02b267ae9583f1d3")
+      .then((resp) => resp.json())
+      .then((data) => {
+        this.setState({ dishes: data.dishes });
       })
       .catch((error) => {
         console.log(error);
@@ -24,20 +32,27 @@ class Orders extends React.Component {
   }
   render() {
     return (
-      <div
-        style={{
-          width: "100%",
-          maxWidth: "1000px",
-          margin: "auto",
-          padding: "1em",
-        }}
-      >
-        <h3 style={{ padding: "0 1em 0" }}>All Orders</h3>
-        {this.state.orders.map((order) => {
-          console.log();
-          return <Order status="In Process" />;
-        })}
-      </div>
+      <>
+        <div
+          style={{
+            width: "100%",
+            maxWidth: "1000px",
+            margin: "auto",
+            padding: "1em",
+          }}
+        >
+          <h3 style={{ padding: "0 1em 0" }}>All Orders</h3>
+          {this.state.orders.map((order) => {
+            return (
+              <Order
+                status="In Process"
+                order={order}
+                dishes={this.state.dishes}
+              />
+            );
+          })}
+        </div>
+      </>
     );
   }
 }

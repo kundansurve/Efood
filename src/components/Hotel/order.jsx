@@ -8,11 +8,9 @@ class Order extends Component {
   constructor(props) {
     super(props);
     this.state = {
-      delivery_boy: props.d_boy,
-      quantity: props.quantity,
-      food: props.food,
       status: props.status,
-      paid: props.paid,
+      order: props.order,
+      dishes: props.dishes,
     };
   }
   render() {
@@ -49,8 +47,19 @@ class Order extends Component {
         >
           <p style={{ fontWeight: "bold" }}>Food</p>
           <p style={{ fontWeight: "bold", textAlign: "right" }}>Quantity</p>
-          <p>{this.state.food}</p>
-          <p style={{ textAlign: "right" }}>{this.state.quantity}</p>
+
+          {this.state.dishes.map((dish) => {
+            if (!this.state.order.order[dish._id]) return <></>;
+
+            return (
+              <>
+                <p>{dish.name}</p>
+                <p style={{ textAlign: "right" }}>
+                  {this.state.order.order[dish._id]}
+                </p>
+              </>
+            );
+          })}
         </span>
         <div
           style={{
