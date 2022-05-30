@@ -2,7 +2,7 @@ import React, {Component} from 'react';
 import { render } from '@testing-library/react';
 import '../JS files/delivery';
 import mapboxgl from 'mapbox-gl';
-import Order from '../../components/Delivery Exexcutive/order';
+import Order from '../../components/Delivery Exexcutive/prevOrder';
 
 
 function Orders(props){

@@ -10,6 +10,7 @@ const City = require('./models/city');
 const Dish = require('./models/dish');
 const Hotel =require('./models/hotel');
 const Review =require('./models/review');
+const userDb = require('./models/user');
 
 
 router.use(express.json());
@@ -87,7 +88,7 @@ router.get('/hotels/:cityId',(req,res)=>{
 });
 
 
-router.get('/hotel/:hotelId',(req,res)=>{
+router.get('/hotels/hotel/:hotelId',(req,res)=>{
     if(!req.params.hotelId){
         res.status(400).send("Hotel id is absent in api call");
         return;
@@ -121,6 +122,15 @@ router.get('/deliveryBoy/:deliveryBoyId',(req,res)=>{
         );
 });
 
+router.get('/users/user/:userId',(req,res)=>{
+    const userId=req.params.userId;
+    userDb.findOne({_id:userId})
+    .then(userData=>{
+        res.status(200).send({firstName:userData.firstName,lastName:userData.lastName,phoneNumber:userData.phoneNumber});
+    }).catch(err=>{
+        res.status(400).send(err);
+    });
+}) 
 router.get('/usercity',(req,res)=>{
     const {coordinates} = req.body;
     if(!coordinates){

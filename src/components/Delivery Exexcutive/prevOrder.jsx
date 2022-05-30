@@ -1,4 +1,5 @@
 import { useEffect, useState } from "react";
+import {Link} from 'react-router-dom';
 
 export default function Order(props){
     const order=props.order;
@@ -13,22 +14,6 @@ export default function Order(props){
         }).catch(error=>console.log(error))
     },[])
 
-    const onClickAccept=()=>{
-        
-        fetch(`http://localhost:4000/api/delivery-executive/me/accept/order/${order._id}`, {
-        method: "PUT",
-        headers: {
-          "Content-type": "application/json; charset=UTF-8",
-        },
-      }).then(resp=>resp.json())
-      .then(data=>{
-          alert(JSON.stringify(data));
-          if(data.error){
-              return;
-          }
-          resetOrders();
-      }).catch(error=>console.log(error));
-    }
     return (<div style={{width:"90%",padding:"1.5em",border:"2px solid #efefef",borderRadius:"5px",margin:"1em"}}>
     <h5>Delivery Details:</h5>
     <span style={{display:"flex",marginLeft:"2em",justifyContent:"flex-start",flexWrap:"wrap",alignItems:"center"}}>
@@ -51,7 +36,10 @@ export default function Order(props){
     </span>
     
     <div style={{display:"flex",justifyContent:"flex-end"}} >
-        <button style={{padding:"0.5rem",margin:"0.5rem",borderRadius:"5px",color:"white",backgroundColor:"var(--color1)",border:"none"}} onClick={onClickAccept}>Accept</button>
+        <span style={{color:(order.status=="Cancelled")?"red":"green",padding:"0.5rem",margin:"0.5em"}}>{order.status}</span>
+    <Link to={`/delivery-executive/orders/order/${order._id}`}>
+        <button style={{padding:"0.5rem",margin:"0.5rem",borderRadius:"5px",color:"white",backgroundColor:"var(--color1)",border:"none"}} >View</button>
+        </Link>
     </div>
 </div>);
 }

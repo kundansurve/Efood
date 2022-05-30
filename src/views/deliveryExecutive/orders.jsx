@@ -10,7 +10,9 @@ export default function DeliveryAdmin(props){
         fetch("http://localhost:4000/api/delivery-executive/me/ordersincity")
         .then(resp=>resp.json())
         .then(data=>{
+            alert(data.orders)
             setOrders(data.orders);
+            
         }).catch(error=>console.log(error));
     },[])
     const resetOrders=()=>{

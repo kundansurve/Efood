@@ -19,10 +19,10 @@ import { UserData, City } from "./context";
 
 function App() {
   const [userData, setUserData] = useState({
-    userType: "Hotel",
+    userType: "DeliveryExecutive",
     location: { coordinates: [20.933614859088873, 74.77857721534356] },
-    isFree: false,
-    currentOrder: "628875dedf5099b86184788a",
+    isFree: true,
+    currentOrder: "",
   });
 
   const [city, setCity] = useState("6225d3ee02b267ae9583f1c3");
@@ -87,7 +87,7 @@ function App() {
                   />
                   <Route
                     exact
-                    path="/delivery-executive/previous/orders"
+                    path="/delivery-executive/orders/previous"
                     element={<PrevOrders />}
                   />
                   <Route
