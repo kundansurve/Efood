@@ -1,6 +1,7 @@
 const express = require('express');
 const router = express.Router();
 const {cityAdminAuth}=require('../middlewares/auth');
+const loginCredential = require('../models/loginCredentials');
 const hotel=require('../models/hotel');
 const deliveryBoy= require('../models/review');
 const bcrypt = require('bcryptjs');
@@ -8,17 +9,16 @@ const user = require('../models/user');
 const review = require('../models/review');
 const order = require('../models/order');
 
-router.post('/newhotel',(req,res)=>{
-    const cityId= "61ed7d6f3db0669d5c1aabac";
-    const {email,name,phoneNumber,location,password}=req.body;
-    if(!email || !name || !cityId || !location || !password){
-        res.status(400).send("Incomplete request");
+router.post('/',(req,res)=>{
+    const {email,name,phoneNumber,location,cityId,password}=req.body;
+    if(!email || !name || !phoneNumber || !cityId || !location || !password){
+        res.status(404).send("Incomplete request");
         return;
     }
     const hash=bcrypt.hashSync(password);
-    const LoginCredential=new loginCredential({ email,phoneNumber, password: hash,userType:"User"});
+    const LoginCredential=new loginCredential({ email,phoneNumber, password: hash,userType:"Hotel"});
     LoginCredential.save().then(()=>{
-        const Hotel = new hotel({_id: LoginCredential._id,email,name,cityId,location});
+        const Hotel = new hotel({_id: LoginCredential._id,phoneNumber,email,name,cityId,location});
         Hotel.save().then(()=>{
             res.status(200).send({hotel:Hotel})
             return;

@@ -1,11 +1,13 @@
-import React, { useState, useEffect } from "react";
+import React, { useState, useEffect, useContext } from "react";
 import "./CSS files/login.css";
 import axios from "axios";
+import { City, UserType,UserData,fetchUserInfo } from "../context";
 
 function LoginPage(props) {
   const [show, setShow] = useState(false);
   const mainFunc = { title: props.title };
   const [action, setAction] = useState({ title: props.title });
+  const fetchUserInfoFunc = useContext(fetchUserInfo);
   const handleClose = (e) => {
     // alert(e.target.className);
     if (
@@ -40,16 +42,9 @@ function LoginPage(props) {
         },
       })
         .then((res) => {
-          // setTimeout(() => {
-          fetch("http://localhost:4000/api/authenticate/me")
-            .then((response) => response.json())
-            .then((data) => {
-              alert(JSON.stringify(data));
-              sessionStorage.setItem("userData", JSON.stringify(data));
-              handleClose();
-            })
-            .catch((error) => alert(error));
-          //}, 4000);
+          setAction(mainFunc);
+          setShow(false);
+          fetchUserInfoFunc();
         })
         .catch((error) => alert(error));
     } catch (err) {
@@ -68,7 +63,8 @@ function LoginPage(props) {
         .then((response) => response.json())
         .then((data) => {
           sessionStorage.setItem("userData", JSON.stringify(data));
-          handleClose();
+          setAction(mainFunc);
+          setShow(false);
         });
     } catch (err) {
       alert(err);

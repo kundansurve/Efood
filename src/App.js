@@ -14,18 +14,33 @@ import OrdersForDeliveryExecutive from "./views/deliveryExecutive/order";
 import PrevOrders from "./views/deliveryExecutive/prevOrders";
 import HotelAdmin from "./views/hotelAdmin";
 import CityAdmin from "./views/cityAdmin";
-import { UserData, City } from "./context";
+import { UserData, City, fetchUserInfo} from "./context";
 //import {data} from './store';
 
 function App() {
   const [userData, setUserData] = useState({
-    userType: "DeliveryExecutive",
+    userType: "User",
+    user:{  "_id": {    "$oid": "622ee28c71f99c3c14dcfa91"  },  "email": "kundansurve01@gmail.com",  "firstName": "Kundan",  "lastName": "Surve",  "location": {    "coordinates": []  },  "phoneNumber": "8623046619",  "orders": [],  "pastSearches": [],  "cart": {    "address": {      "deliveryLocation": {        "coordinates": []      },      "address": null    },    "orderingFor": {},    "hotelId": "6225e37a02b267ae9583f1d3",    "items": {      "62261a02d3140ef33b6f438d": 2,      "622619f6d3140ef33b6f438c": 2    },    "offer": null,    "price": 1040  },  "createdAt": {    "$date": {      "$numberLong": "1647239607985"    }  },  "updatedAt": {    "$date": {      "$numberLong": "1647239607985"    }  },  "__v": 0},
     location: { coordinates: [20.933614859088873, 74.77857721534356] },
     isFree: true,
     currentOrder: "",
   });
 
   const [city, setCity] = useState("6225d3ee02b267ae9583f1c3");
+  const fetchUserInfoFunc=()=>{
+    fetch("http://localhost:4000/api/authenticate/me")
+      .then((response) => response.json())
+      .then((data) => {
+        if (data["error"]) {
+          alert(data["error"]);
+          return;
+        }
+        sessionStorage.setItem("userData", JSON.stringify(data));
+        setUserData(data);
+      })
+      .catch((error) => console.log(error));
+    sessionStorage.setItem("City", city);
+  }
 
   useEffect(() => {
     // fetching the data of user if user is login
@@ -48,6 +63,7 @@ function App() {
     <>
       <UserData.Provider value={[userData, setUserData]}>
         <City.Provider value={[city, setCity]}>
+          <fetchUserInfo.Provider value={fetchUserInfoFunc}>
           <NavbarInstance />
           <Router>
             <Routes>
@@ -101,6 +117,7 @@ function App() {
             </Routes>
           </Router>
           <Footer />
+          </fetchUserInfo.Provider>
         </City.Provider>
       </UserData.Provider>
     </>

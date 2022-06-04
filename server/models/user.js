@@ -55,6 +55,10 @@ const userSchema = new Schema({
                 type:String,
                 default:null
             },
+            detailAddress:{
+                type:String,
+                default:null
+            },
             deliveryLocation: {
                 type: {
                     type: String,

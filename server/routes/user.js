@@ -48,7 +48,8 @@ router.post('/signUp',(req,res)=>{
 
 // update cart
 router.put('/addtocart',(req,res)=>{
-    const _id=req.session.userId;
+    //const _id=req.session.userId;
+    const _id="622ee28c71f99c3c14dcfa91";
     const {dishId}=req.body;
     dish.findOne({_id:dishId})
     .then((Dish)=>{
@@ -89,10 +90,39 @@ router.put('/addtocart',(req,res)=>{
     })
 });
 
+router.put('/changeaddress', (req, res) => {
+    //const _id=req.session.userId;
+    const _id = "622ee28c71f99c3c14dcfa91";
+    const address = req.body;
+    user.findOne({ _id })
+        .then((USER) => {
+            if (!USER) {
+                res.status(400).send({ error: "Wrong User" });
+                return;
+            }
+            if (USER.cart.hotelId==null) {
+                res.status(400).send({ error: "Cart is empty." });
+                return;
+            }
+            const newCart = USER["cart"];
+            newCart['address'] = address;
+            user.updateOne({ _id }, { $set: { cart: newCart } })
+                .then((user) => {
+                    console.log(user.cart);
+                    res.status(200).send(user.cart);
+                    return;
+                })
+                .catch(err => res.status(400).send(err));
+            return;
+
+        }).catch(err => res.status(400).send(err));
+});
+
 // Remove from Cart
 
 router.put('/removefromcart',(req,res)=>{
-    const _id=req.session.userId;
+    //const _id=req.session.userId;
+    const _id="622ee28c71f99c3c14dcfa91";
     const {dishId}=req.body;
     dish.findOne({_id:dishId})
     .then((Dish)=>{
@@ -143,7 +173,8 @@ router.put('/removefromcart',(req,res)=>{
 
 //get past searches 
 router.put('/pastsearches',(req,res)=>{
-    const _id=req.session.userId;;
+     //const _id=req.session.userId;
+     const _id="622ee28c71f99c3c14dcfa91";
     const {searchData} = req.body;
     user.findOne({_id})
     .then((USER)=>{
@@ -166,8 +197,10 @@ router.put('/pastsearches',(req,res)=>{
 
 // update user info
 router.put('/update',(req,res)=>{
+     //const _id=req.session.userId;
+     const _id="622ee28c71f99c3c14dcfa91";
     const update = req.body;
-    user.UpdateOne({_id:req.session.userId},{$set:update})
+    user.UpdateOne({_id:_id},{$set:update})
     .then((USER)=>{
         res.status(200).send(USER);
     }).catch(err=>{
@@ -177,7 +210,9 @@ router.put('/update',(req,res)=>{
 
 // get order by id
 router.get('/orders',(req,res)=>{
-    order.find({placedByUserId:req.session.userId})
+     //const _id=req.session.userId;
+     const _id="622ee28c71f99c3c14dcfa91";
+    order.find({placedByUserId:_id})
     .then((orders)=>{
         res.status(200).send({orders});
     }).catch(err=>{
@@ -188,8 +223,8 @@ router.get('/orders',(req,res)=>{
 
 //place order
 router.post('/placeorder',(req,res)=>{
-    const placedByUserId=req.session.userId;
-    
+    //const placedByUserId=req.session.userId;
+    const placedByUserId="622ee28c71f99c3c14dcfa91";
     const {cityId,deliveryLocation,isPaid,deliverCharges,totalPrice}=req.body;
     if(!cityId || !deliveryLocation || !isPaid || !deliverCharges || !totalPrice){
         res.status(401).send("Insufficient Data in request");
@@ -204,13 +239,17 @@ router.post('/placeorder',(req,res)=>{
         }
         hotel.findOne({_id:USER.cart["hotelId"]})
         .then(HOTEL=>{
-            if(hotel.cityId!=cityId){
+            if(HOTEL){
                 res.status(404).send("No such Hotel present in this city.");
                 return;
             }
             const placedInHotelId = HOTEL._id;
             const userInfo = {name:USER.name,phoneNumber:USER.phoneNumber};
-            const ORDER = new order({cityId,deliveryLocation,userInfo,isPaid,deliverCharges,totalPrice})
+            const ORDER = new order({cityId,deliveryLocation,userInfo,isPaid,deliverCharges,totalPrice});
+            ORDER.save()
+            .then(()=>{
+                res.status(200).send("Order Placed Succesfully!")
+            })
         }).catch(err=>{
             res.status(400).send({err});
         })
@@ -231,7 +270,8 @@ router.delete('/delete/order/orderId',(req,res)=>{
 });
 
 router.post('/hotel/review',(req,res)=>{
-    const _id = res.session.userId;
+    //const _id=req.session.userId;
+    const _id="622ee28c71f99c3c14dcfa91";
     const reviewType = 'Hotel';
     const {reviewForId,review,rating} =  req.body;
     review.findOne({reviewdById:_id,reviewForId})
@@ -255,7 +295,8 @@ router.post('/hotel/review',(req,res)=>{
 });
 
 router.delete('/hotel/review/delete/:reviewId',(req,res)=>{
-    const _id = res.session.userId;
+    //const _id=req.session.userId;
+    const _id="622ee28c71f99c3c14dcfa91";
     const reviewType = 'Hotel';
     const reviewId = req.params.reviewId;
     review.findOne({_id})
@@ -291,7 +332,8 @@ router.delete('/hotel/review/delete/:reviewId',(req,res)=>{
 
 
 router.post('/dish/review',(req,res)=>{
-    const _id = res.session.userId;
+    //const _id=req.session.userId;
+    const _id="622ee28c71f99c3c14dcfa91";
     const reviewType = 'Dish';
     const {reviewForId,review,rating} =  req.body;
     review.findOne({reviewdById:_id,reviewForId})
@@ -315,7 +357,8 @@ router.post('/dish/review',(req,res)=>{
 });
 
 router.delete('/dish/review/delete/:reviewId',(req,res)=>{
-    const _id = res.session.userId;
+    //const _id=req.session.userId;
+    const _id="622ee28c71f99c3c14dcfa91";
     const reviewType = 'Dish';
     const reviewId = req.params.reviewId;
     review.findOne({_id})
@@ -350,7 +393,8 @@ router.delete('/dish/review/delete/:reviewId',(req,res)=>{
 
 
 router.post('/deliveryboy/review',(req,res)=>{
-    const _id = res.session.userId;
+    //const _id=req.session.userId;
+    const _id="622ee28c71f99c3c14dcfa91";
     const reviewType = 'DeliveryBoy';
     const {reviewForId,review,rating} =  req.body;
     review.findOne({reviewdById:_id,reviewForId})
@@ -374,7 +418,8 @@ router.post('/deliveryboy/review',(req,res)=>{
 });
 
 router.delete('/deliveryboy/review/delete/:reviewId',(req,res)=>{
-    const _id = res.session.userId;
+    //const _id=req.session.userId;
+    const _id="622ee28c71f99c3c14dcfa91";
     const reviewType = 'DeliveryBoy';
     const reviewId = req.params.reviewId;
     review.findOne({_id})

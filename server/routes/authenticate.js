@@ -78,11 +78,11 @@ router.get('/me',(req,res)=>{
                 return;
         });
     }
-    else if(userType==='DeliveryBoy'){
+    else if(userType==='DeliveryExecutive'){
         deliveryBoy.findOne({_id})
         .then((user)=>{
-            user.userType='Deliveryboy';
-            res.status(200).send({user,userType:'Deliveryboy'});
+            user.userType='DeliveryExecutive';
+            res.status(200).send({user,userType:'DeliveryExecutive'});
             return;
         })
         .catch((error)=>{

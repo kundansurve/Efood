@@ -40,7 +40,7 @@ router.post('/new-delivery-executive',(req,res)=>{
         return;
     }
     const hash=bcrypt.hashSync(password);
-    const LoginCredential=new loginCredential({ email, password: hash,userType:"User"});
+    const LoginCredential=new loginCredential({ email, password: hash,userType:"DeliveryExecutive"});
     LoginCredential.save().then(()=>{
         const DeliveryBoy = new deliveryBoy({_id: LoginCredential._id,email,name,cityId,location,phoneNumber});
         DeliveryBoy.save().then(()=>{

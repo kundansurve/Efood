@@ -33,7 +33,7 @@ router.post('/',(req,res)=>{
             return;
         }
         
-        req.session.userType = 'User';
+        req.session.userType = user.userType;
         req.session.userId = user.id;
         console.log("userid"+req.session.userId);
         console.log("type"+req.session.userType)
@@ -46,6 +46,7 @@ router.post('/',(req,res)=>{
 
 router.delete('/me', (req, res) => {
     delete req.session.userId;
+    delete req.session.userType;
     //console.log("deleted userid");
     res.status(204).send("deleted userid");
 });

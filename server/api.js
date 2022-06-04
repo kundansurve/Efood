@@ -11,6 +11,7 @@ const Dish = require('./models/dish');
 const Hotel =require('./models/hotel');
 const Review =require('./models/review');
 const userDb = require('./models/user');
+const registerHotel=require('./routes/registerHotel');
 
 
 router.use(express.json());
@@ -28,6 +29,8 @@ router.use('/authenticate',authenticate);
 router.use('/city/me',city);
 
 router.use('/sessions', sessions);
+
+router.use('/hotel/register',registerHotel);
 
 router.get('/hotel/dishes/:hotelId',(req,res)=>{
     console.log(req.params.hotelId);
@@ -185,9 +188,19 @@ router.get('/cities/',(req,res)=>{
     .then(data=>{
         const citiesData=[];
         data.map((city)=>{
+            console.log(city);
             citiesData.push({_id:city._id,name:city.cityName,location:city.location})
         })  
         res.status(200).send({cities:citiesData});
+    })
+})
+
+router.get('/cities/city/:id',(req,res)=>{
+    const _id=req.params.id;
+    City.findOne({_id:_id})
+    .then(data=>{
+        const city=({_id:data._id,name:data.cityName,location:data.location})  
+        res.status(200).send({city:city});
     })
 })
 
