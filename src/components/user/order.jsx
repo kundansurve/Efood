@@ -7,6 +7,7 @@ import { Navbar,
 import LoginPage from '../login';
 import '../CSS files/footer.css';
 import { useEffect } from 'react';
+import { Link } from 'react-router-dom';
 
 export default function Order(props){
     const [orderDetail,setOrderDetail]=React.useState(props.orderDetail);
@@ -50,7 +51,9 @@ export default function Order(props){
         )}
     </span>
     <div style={{width:"100%",margin:"0.2em",padding:"0em",justifyContent:"space-between",display:"flex",alignItems:"center"}}>
+    <Link to={`/orders/${orderDetail._id}`}>
     <span type="button" style={{marginBottom:"0.5em",color:"blue",textAlign:"center"}}>View More</span>
+    </Link>
     <span style={{marginBottom:"0.5em",color:(orderDetail.status=="Delivered")?"green":"red",float:"right"}}>{orderDetail.status}</span>
         </div>
     </div>;

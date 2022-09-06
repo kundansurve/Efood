@@ -4,6 +4,7 @@ import { Link } from 'react-router-dom';
 import LoginPage from './login';
 import {UserData,City} from './../context';
 import RegisterHotel from './hotelRegister';
+import './navbar.css';
 
 
 function NavbarInstance(props){
@@ -12,15 +13,19 @@ function NavbarInstance(props){
   const [openHamburger,setOpenHamburger]=useState(false);
 
       return (
-        <nav style={{width:"100%",height:"4em",background:"var(--color1)",}}>
-          <div style={{height:"100%",width:"5em",color:"white",fontSize:"25px",fontWeight:"500",display:"flex",justifyContent:"center",alignItems:"center",float:"left"}}>Foodie</div>
-          <div style={{float:"right",marginRight:"1em",padding:"0.5em",display:"none",height:"100%",justifyContent:"center",alignItems:"center"}}>
+        <nav className="navbar" style={{width:"100%",height:"4em",background:"var(--color1)",position:"fixed",left:"0px",top:"0px"}}>
+          <a href="http://localhost:3000/"><div style={{height:"100%",width:"5em",color:"white",fontSize:"25px",fontWeight:"500",display:"flex",justifyContent:"center",alignItems:"center",float:"left"}}>Foodie</div>
+          </a><div style={{float:"right",marginRight:"1em",padding:"0.5em",display:"none",height:"100%",justifyContent:"center",alignItems:"center"}}>
           <img src="https://img.icons8.com/ultraviolet/40/000000/test-account.png"/>
           <button style={{color:"wheat",zIndex:"4"}}>Register Hotel</button>
           </div>
           <div className="largeDevice" style={{float:"right",color:"white",marginRight:"1em",height:"100%",justifyContent:"center",alignItems:"center"}}>
-          {(userData['userType']==='User')?
+          {(userData['userType'] && userData['userType']==='User')?
           <>
+          <a href='http://localhost:3000/'>
+          <div  className="colors" type="button" style={{color:'white',padding:"0.5em"}}>
+            Home
+        </div></a>
           <a href='/mycart'>
           <div  className="colors" type="button" style={{color:'white',padding:"0.5em"}}>
             Cart
@@ -29,13 +34,63 @@ function NavbarInstance(props){
           <div  className="colors" type="button" style={{color:'white',padding:"0.5em"}}>
             Orders
         </div></a>
+
         </>:null}
 
-        
-          {(userData['user'])?
+        {(userData['userType'] && userData['userType']==='Hotel')?
           <>
+          <a href='http://localhost:3000/'>
+          <div  className="colors" type="button" style={{color:'white',padding:"0.5em"}}>
+            Home
+        </div></a>
+        <a href='/hotelAdmin'>
+          <div  className="colors" type="button" style={{color:'white',padding:"0.5em"}}>
+            Admin Page
+        </div></a>
+        <></>
+        </>:null}
+
+        {(userData['userType'] && userData['userType']==='City')?
+          <>
+          <a href='http://localhost:3000/'>
+          <div  className="colors" type="button" style={{color:'white',padding:"0.5em"}}>
+            Home
+        </div></a>
+        <a href='/cityAdmin'>
+          <div  className="colors" type="button" style={{color:'white',padding:"0.5em"}}>
+            Admin Page
+        </div></a>
+        <></>
+        </>:null}
+
+        {(userData['userType'] && userData['userType']==='DeliveryExecutive')?
+          <>
+          <a href='http://localhost:3000/'>
+          <div  className="colors" type="button" style={{color:'white',padding:"0.5em"}}>
+            Home
+        </div></a>
+          <a href='/delivery-executive/orders'>
+          <div  className="colors" type="button" style={{color:'white',padding:"0.5em"}}>
+            Orders
+        </div></a>
+        <a href='/delivery-executive/orders/previous'>
+          <div  className="colors" type="button" style={{color:'white',padding:"0.5em"}}>
+            Previous Orders
+        </div></a>
+
+        </>:null}
+        
+          {(userData['userType'])?
+          <>
+          <div style={{width:"200px",margin:"0px"}}> 
+          <div class="dropdown" style={{width:"100%"}}>
+        <img className="dropbtn" style={{margin:"auto"}} src="https://img.icons8.com/color/30/26e07f/test-account.png"/>Hello! {userData['user']['firstName']}
+
+    <div className="dropdown-content">
+      <a href="#">Logout</a>
+      </div></div>
           
-          <img  style={{margin:"1em"}} src="https://img.icons8.com/color/30/26e07f/test-account.png"/>Hello! {userData['user']['firstName']}
+        </div>
             </>:<>
             <RegisterHotel/>
             <LoginPage  title="Login" buttonColor={'white'}/>
@@ -52,10 +107,72 @@ function NavbarInstance(props){
             <img src="https://img.icons8.com/ios-glyphs/30/ffffff/delete-sign.png" style={{float:"right",margin:"1em"}} onClick={()=>setOpenHamburger(false)}/>
               <div style={{display:"flex",backgroundColor:"var(--color1)",justifyContent:"flex-start",alignItems:"center",padding:"1em",flexDirection:"column",width:"100%",height:"100%"}}>
               <img style={{margin:"1em"}} src="https://img.icons8.com/color/80/26e07f/test-account.png"/>
-              
-              <span type="button" style={{color:"white",borderRadius:"5px",border:"1px solid white",padding:"0.3em"}}>Register Hotel</span>
-              <LoginPage title="Login" buttonColor={'white'}/>
-              <LoginPage title="SignUp" buttonColor={'white'}/>
+              {(userData['userType'])?<p style={{color:"white"}}>Hello! {userData['user']['firstName']}</p>:null}
+              {(userData['userType'])?
+          <> </>:<>
+            <RegisterHotel/>
+            <LoginPage  title="Login" buttonColor={'white'}/>
+            <LoginPage  title="SignUp" buttonColor={'white'}/></>
+            }
+            {(userData['userType'] && userData['userType']==='User')?
+          <>
+          <a href='http://localhost:3000/'>
+          <div  className="colors" type="button" style={{color:'white',padding:"0.5em"}}>
+            Home
+        </div></a>
+          <a href='/mycart'>
+          <div  className="colors" type="button" style={{color:'white',padding:"0.5em"}}>
+            Cart
+        </div></a>
+        <a href='/orders'>
+          <div  className="colors" type="button" style={{color:'white',padding:"0.5em"}}>
+            Orders
+        </div></a>
+
+        </>:null}
+
+        {(userData['userType'] && userData['userType']==='Hotel')?
+          <>
+          <a href='http://localhost:3000/'>
+          <div  className="colors" type="button" style={{color:'white',padding:"0.5em"}}>
+            Home
+        </div></a>
+        <a href='/hotelAdmin'>
+          <div  className="colors" type="button" style={{color:'white',padding:"0.5em"}}>
+            Admin Page
+        </div></a>
+        <></>
+        </>:null}
+
+        {(userData['userType'] && userData['userType']==='City')?
+          <>
+          <a href='http://localhost:3000/'>
+          <div  className="colors" type="button" style={{color:'white',padding:"0.5em"}}>
+            Home
+        </div></a>
+        <a href='/cityAdmin'>
+          <div  className="colors" type="button" style={{color:'white',padding:"0.5em"}}>
+            Admin Page
+        </div></a>
+        <></>
+        </>:null}
+
+        {(userData['userType'] && userData['userType']==='DeliveryExecutive')?
+          <>
+          <a href='http://localhost:3000/'>
+          <div  className="colors" type="button" style={{color:'white',padding:"0.5em"}}>
+            Home
+        </div></a>
+          <a href='/delivery-executive/orders'>
+          <div  className="colors" type="button" style={{color:'white',padding:"0.5em"}}>
+            Orders
+        </div></a>
+        <a href='/delivery-executive/orders/previous'>
+          <div  className="colors" type="button" style={{color:'white',padding:"0.5em"}}>
+            Previous Orders
+        </div></a>
+
+        </>:null}
               </div>
             </div>
           </div>

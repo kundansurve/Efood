@@ -23,7 +23,7 @@ class Orders extends Component{
     }
     render(){
         return (
-            <div style={{width:"100%",maxWidth:"1000px",margin:"auto",padding:"1em"}}>
+            <div style={{width:"100%",maxWidth:"1000px",margin:"auto",marginTop:"3em",padding:"1em"}}>
             <h3>All Orders</h3>
             {this.state.orders &&
                 this.state.orders.map((orderDetail)=>{

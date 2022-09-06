@@ -88,7 +88,7 @@ function App() {
                   <Route exact path="/orders" element={<Orders />} />
                   <Route
                     exact
-                    path="/orders/order/:orderid"
+                    path="/orders/:orderid"
                     element={<OrderTrack />}
                   />
                 </>

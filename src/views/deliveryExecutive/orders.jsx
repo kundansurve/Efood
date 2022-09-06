@@ -22,7 +22,7 @@ export default function DeliveryAdmin(props){
             setOrders(data.orders);
         }).catch(error=>console.log(error));
     }
-    return(<>{(deliveryExecutiveUser.isFree)? <div style={{width:"100%",maxWidth:"1000px",margin:"auto",marginTop:"2em",padding:"1em",minHeight:"500px"}}>
+    return(<>{(deliveryExecutiveUser.isFree)? <div style={{width:"100%",maxWidth:"1000px",margin:"auto",marginTop:"3.5em",padding:"1em",minHeight:"500px"}}>
     <h3>Orders in Your City</h3>
     {orders.map((order,index)=>{
         return <Order order={order} resetOrders={resetOrders}/>;

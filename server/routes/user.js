@@ -224,7 +224,7 @@ router.get('/orders/:orderId',(req,res)=>{
     //const _id=req.session.userId;
     const orderId=req.params.orderId;
     const _id="622ee28c71f99c3c14dcfa91";
-    order.find({placedByUserId:_id,_id:orderId})
+    order.findOne({placedByUserId:_id,_id:orderId})
     .then((OrderDetail)=>{
         res.status(200).send({OrderDetail});
     }).catch(error=>{

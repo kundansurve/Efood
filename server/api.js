@@ -7,6 +7,7 @@ const hotel = require('./routes/hotels');
 const deliveryBoy = require('./routes/deliveryBoy');
 const city = require('./routes/city');
 const City = require('./models/city');
+const DeliveryBoy = require('./models/deliveryBoy');
 const Dish = require('./models/dish');
 const Hotel =require('./models/hotel');
 const Review =require('./models/review');
@@ -111,9 +112,10 @@ router.get('/hotels/hotel/:hotelId',(req,res)=>{
 });
 
 router.get('/deliveryBoy/:deliveryBoyId',(req,res)=>{
-    deliveryBoy.find({_id:req.params.deliveryBoyId})
+    DeliveryBoy.findOne({_id:req.params.deliveryBoyId})
         .then((DB)=>{
-            res.status(200).send({"deliveryBoy":{name:DB.name , phoneNumber:DB.phoneNumber}});
+            console.log(DB);
+            res.status(200).send({"deliveryBoy":{"name":DB.name , "phoneNumber":DB.phoneNumber,"ratings":DB.ratings}});
             return;
         })
         .catch(

@@ -15,7 +15,7 @@ function Orders(props){
         }).catch(error=>console.log(error));
     },[])
         return (
-            <div style={{width:"100%",maxWidth:"1000px",margin:"auto",marginTop:"2em",minHeight:"400px",padding:"1em"}}>
+            <div style={{width:"100%",maxWidth:"1000px",margin:"auto",marginTop:"3em",minHeight:"400px",padding:"1em"}}>
                 <h3>Previous Orders</h3>
                 {orders.map((order,index)=>{
                     return <Order order={order}/>
