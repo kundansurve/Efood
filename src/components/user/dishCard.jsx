@@ -73,7 +73,7 @@ class Dish extends Component {
   Price: {this.state.price}
 </p>
 </div>
-          <div className="quantity" >
+          <div className="quantity" type="button">
             <div onClick={this.decreaseValue} className="quantity__minus"><span>-</span></div>
             <input name="quantity" type="text" style={{ height: "100%" }} className="quantity__input" value={this.state.quantity} />
             <div onClick={this.increaseValue} className="quantity__plus"><span>+</span></div>

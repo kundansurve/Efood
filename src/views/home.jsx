@@ -189,9 +189,9 @@ function Home(props){
                     </ul>
                     </div>
                     {(searchedData.hotels.length>0)?<span className='title'>HOTELS</span>:null}
-                    <div style={{display:"flex",alignItems:"center",justifyContent:"center",marginTop:"0.7em",marginBottom:"1.5em",width:"100%"}}>
+                    <div style={{display:"flex",alignItems:"center",justifyContent:"flex-start",marginTop:"0.7em",marginBottom:"1.5em",width:"100%"}}>
                     
-                    <ul className="scroll" style={{padding:"0.2em",display:"flex",flexWrap:"wrap",justifyContent:"flex-start",alignItems:"flex-start",msOverflowStyle:"none",scrollbarWidth: "none"}}>
+                    <ul className="scroll" style={{padding:"0.2em",display:"flex",justifyContent:"flex-start",flexWrap:"wrap",alignItems:"flex-start",msOverflowStyle:"none",scrollbarWidth: "none"}}>
                         {searchedData.hotels.map(( hotel)=>{
                           return <HotelCard name={hotel.name} id={hotel._id} ratings={hotel.ratings} img={hotel.img}/>
                         })
