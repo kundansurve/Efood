@@ -50,6 +50,24 @@ router.get('/hotel/dishes/:hotelId',(req,res)=>{
         );
 })
 
+router.get('/hotels/top-rated/:cityId',(req,res)=>{
+    Hotel.find({cityId:req.params.cityId}).limit(10)
+    .then((data)=>{
+        res.status(200).send({hotels:data});
+    }).catch(error=>{
+        res.status(400).send({error:error});
+    })
+})
+
+router.get('/dishes/top-rated/:cityId',(req,res)=>{
+    Dish.find({cityId:req.params.cityId}).limit(10)
+    .then((data)=>{
+        res.status(200).send({dishes:data});
+    }).catch(error=>{
+        res.status(400).send({error:error});
+    })
+})
+
 router.get('/city/dishes/:cityId',(req,res)=>{
     Dish.find({cityId:req.params.cityId})
         .then((dishes)=>{
@@ -110,6 +128,8 @@ router.get('/hotels/hotel/:hotelId',(req,res)=>{
             }
         );
 });
+
+
 
 router.get('/deliveryBoy/:deliveryBoyId',(req,res)=>{
     DeliveryBoy.findOne({_id:req.params.deliveryBoyId})
