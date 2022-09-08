@@ -20,7 +20,35 @@ import { UserData, City, fetchUserInfo} from "./context";
 function App() {
   const [userData, setUserData] = useState({
     userType: "User",
-    user:{  "_id": {    "$oid": "622ee28c71f99c3c14dcfa91"  },  "email": "kundansurve01@gmail.com",  "firstName": "Kundan",  "lastName": "Surve",  "location": {    "coordinates": []  },  "phoneNumber": "8623046619",  "orders": [],  "pastSearches": [],  "cart": {    "address": {      "deliveryLocation": {        "coordinates": []      },      "address": null    },    "orderingFor": {},    "hotelId": "6225e37a02b267ae9583f1d3",    "items": {      "62261a02d3140ef33b6f438d": 2,      "622619f6d3140ef33b6f438c": 2    },    "offer": null,    "price": 1040  },  "createdAt": {    "$date": {      "$numberLong": "1647239607985"    }  },  "updatedAt": {    "$date": {      "$numberLong": "1647239607985"    }  },  "__v": 0},
+    user:{
+      "_id":"622ee28c71f99c3c14dcfa91",
+      "email": "kundansurve01@gmail.com",
+      "firstName": "Kundan",
+      "lastName": "Surve",
+      "location": {
+        "coordinates": []
+      },
+      "phoneNumber": "8623046619",
+      "orders": [],
+      "pastSearches": [],
+      "cart": {
+        "orderingFor": {},    "hotelId": "6225e37a02b267ae9583f1d3",    "items": {      "62261a02d3140ef33b6f438d": 2,      "622619f6d3140ef33b6f438c": 2    },
+        "offer": null,
+        "price": 1040,
+        "isPaid": false,
+        "deliveryLocation": {
+          "address": "DHULE PRABHAT NAGAR",
+          "detailAddress": null,
+          "lnglat": {
+            "type": null,
+            "coordinates": null
+          }
+        }
+      },
+      "createdAt": "null",
+      "updatedAt": "null",
+      "__v": 0
+    },
     location: { coordinates: [20.933614859088873, 74.77857721534356] },
     isFree: true,
     currentOrder: "",

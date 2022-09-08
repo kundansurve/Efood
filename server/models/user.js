@@ -50,7 +50,7 @@ const userSchema = new Schema({
             type:Object,
             default:{}
         },
-        address:{
+        deliveryLocation:{
             address:{
                 type:String,
                 default:null
@@ -59,7 +59,7 @@ const userSchema = new Schema({
                 type:String,
                 default:null
             },
-            deliveryLocation: {
+            lngLat: {
                 type: {
                     type: String,
                     enum: ['Point'],

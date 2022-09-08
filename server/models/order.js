@@ -26,17 +26,26 @@ const orderSchema = new Schema({
     hotelAccepted:{
         type:Boolean,
         default:null
-    },
-    deliveryLocation: {
-        type: {
-          type: String,
-          enum: ['Point'],
-          required: true
+    },deliveryLocation:{
+        address:{
+            type:String,
+            default:null
         },
-        coordinates: {
-          type: [Number],
-          required: true
-        }
+        detailAddress:{
+            type:String,
+            default:null
+        },
+        lngLat: {
+            type: {
+                type: String,
+                enum: ['Point'],
+                //default:null
+            },
+            coordinates: {
+                type: [Number],
+                default:null
+            },
+        },
     },
     orderPickup:{
         type: {

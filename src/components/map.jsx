@@ -22,10 +22,10 @@ function SetAddress(props){
             .then(res=>res.json())
             .then((data)=>{
                 setState({coordinates:[coordinates.lat,coordinates.lng],address:data.features[0].place_name,detailAddress:data.features[0].place_name});
+                
                 }).catch((error)=>{alert(error)});
             marker.setLngLat(coordinates).addTo(map);
         }
-    
 
     useEffect(()=>{
         map = new mapboxgl.Map({
@@ -35,7 +35,7 @@ function SetAddress(props){
             zoom: 13
         });
         
-         map.setMaxBounds(props.bounds);
+        map.setMaxBounds(props.bounds);
         map.on('click', add_marker);
     },[])
     

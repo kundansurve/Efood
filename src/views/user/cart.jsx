@@ -36,10 +36,10 @@ function Cart(props) {
 
     const [dishesData, setDishesData] = useState([]);
     const changeAddress = (data) => {
-        const tempAddress = {
+        const deliveryLocation = {
             address: data.address,
             detailAddress: data.detailAddress,
-            deliveryLocation: {
+            lnglat: {
                 type: {
                     type: String,
                     enum: ['Point'],
@@ -49,7 +49,7 @@ function Cart(props) {
         };
         fetch("http://localhost:4000/api/user/me/changeaddress", {
             method: "PUT",
-            body: JSON.stringify(tempAddress),
+            body: JSON.stringify(deliveryLocation),
             headers: {
                 "Content-type": "application/json; charset=UTF-8",
             },
@@ -84,7 +84,7 @@ function Cart(props) {
 
     return (
         (state.openModal) ? <>
-            <SetAddress close={() => { }} onclick={(address) => { setState({ ...state, openModal: false, address: address }); changeAddress(address) }} bounds={[[city.location.coordinates[1], city.location.coordinates[0]], [city.location.coordinates[3], city.location.coordinates[2]]]} center={[(city.location.coordinates[1] + city.location.coordinates[3]) / 2, (city.location.coordinates[0] + city.location.coordinates[2]) / 2]} /></>
+            <SetAddress close={() => { }} onclick={(address) => { setState({ ...state, openModal: false, address: address }); changeAddress(address) }} bounds={[[city.location.coordinates[1]-0.04462452399, city.location.coordinates[0]-0.04736856406600], [city.location.coordinates[1]+0.04462452399, city.location.coordinates[0]+0.04736856406356]]} center={[city.location.coordinates[1], city.location.coordinates[0] ]} /></>
             : <div style={{ paddingBottom: "4em" }}>
                 <h2 style={{ margin: "1em" }}>Checkout</h2>
                 <div style={{ display: "flex", flexWrap: "wrap", width: "100%", justifyContent: "center" }}>
@@ -130,7 +130,7 @@ function Cart(props) {
             </div>*/}
                         <div style={{ width: "90%", padding: "1em", border: "2px solid #efefef", borderRadius: "5px", margin: "1em" }}>
                             <h5>Delivery Address</h5>
-                            <p>{userData.user.cart.address.address}</p>
+                            <p>{userData.user.cart.deliveryLocation.address}</p>
                             <button style={{ margin: "auto auto", background: "transparent", border: "none", textDecoration: "underline", textAlign: "center" }} onClick={() => { if (!hotel || hotel == "") { return; } setState({ ...state, openModal: true }) }}>Change Address</button>
                         </div>
                         <div style={{ display: "flex", flexDirection: "column", width: "90%", padding: "1em", border: "2px solid #efefef", borderRadius: "5px", margin: "1em" }}>
