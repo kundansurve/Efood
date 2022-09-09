@@ -15,6 +15,7 @@ import PrevOrders from "./views/deliveryExecutive/prevOrders";
 import HotelAdmin from "./views/hotelAdmin";
 import CityAdmin from "./views/cityAdmin";
 import { UserData, City, fetchUserInfo} from "./context";
+import { Link,Navigate } from "react-router-dom";
 //import {data} from './store';
 
 function App() {
@@ -60,7 +61,7 @@ function App() {
       .then((response) => response.json())
       .then((data) => {
         if (data["error"]) {
-          alert(data["error"]);
+          console.log(data["error"]);
           return;
         }
         sessionStorage.setItem("userData", JSON.stringify(data));
@@ -69,14 +70,13 @@ function App() {
       .catch((error) => console.log(error));
     sessionStorage.setItem("City", city);
   }
-
   useEffect(() => {
     // fetching the data of user if user is login
     fetch("http://localhost:4000/api/authenticate/me")
       .then((response) => response.json())
       .then((data) => {
         if (data["error"]) {
-          alert(data["error"]);
+          console.log(data["error"]);
           return;
         }
         sessionStorage.setItem("userData", JSON.stringify(data));
@@ -87,6 +87,42 @@ function App() {
   }, []);
 
   useEffect(() => sessionStorage.setItem("City", city));
+  
+  function showPosition(position) {
+    if(userData.userType==='DeliveryExecutive' && position){
+      fetch('http://localhost:4000/api/delivery-executive/me/tracking',{
+        method: "PUT",
+        body: JSON.stringify({coords:[position.coords.longitude,position.coords.latitude]}),
+        headers: {
+          "Content-type": "application/json; charset=UTF-8",
+        },
+      }).then(resp=>resp.json())
+      .then((res)=>{
+        console.log(res);
+      }).catch(error=>{
+        console.log(error);
+      })
+    }
+  }
+  function getLocation() {
+    if (navigator.geolocation) {
+      navigator.geolocation.getCurrentPosition(showPosition);
+    } else {
+      alert('Please give acess to track your location');
+    }
+  }
+  const traceLocation = ()=>{
+    getLocation();
+    setTimeout(() => {
+      traceLocation();
+    }, 300000);
+  }
+
+  useEffect(()=>{
+    traceLocation();
+  },[])
+
+  
   return (
     <>
       <UserData.Provider value={[userData, setUserData]}>
@@ -141,7 +177,7 @@ function App() {
                   />
                 </>
               ) : null}
-              <Route exact path="*" element={<NotFoundPage />} />
+              <Route exact path="*" element={<Navigate to="http://localhost:3000/" />} />
             </Routes>
           </Router>
           <Footer />

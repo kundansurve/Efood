@@ -15,21 +15,22 @@ class OrderTrack extends Component{
             deliveryExecutive:{}
         }
     }
+    
     componentDidMount(){
         fetch("http://localhost:4000/api/user/me/orders/"+window.location.pathname.split('/')[2])
         .then(response=>response.json())
         .then(data=>{
             this.setState({orderDetails:data['OrderDetail']});
-            
-            if(data['OrderDetail']==="Food is Being Processed"){
+            console.log('OrderDetails: '+JSON.stringify(data['OrderDetail']));
+            //if(data['OrderDetail']==="Food is Being Processed"){
                 const map = new mapboxgl.Map({
                     container: 'map', // container ID
                     style: 'mapbox://styles/mapbox/streets-v11', // style URL
                     center: [74.7749, 20.9042], // starting position [lng, lat]
-                    zoom: 9 // starting zoom
+                    zoom: 12 // starting zoom
                     
                 });
-            }
+            //}
             fetch("http://localhost:4000/api/hotels/hotel/" + data['OrderDetail'].placedInHotelId)
                 .then((response) => response.json())
                 .then((data) => {
@@ -56,16 +57,16 @@ class OrderTrack extends Component{
     }
     render(){
         return (
-            <div style={{width:"100%",marginBottom:"2em",display:"flex",flexDirection:"column",justifyContent:"center",alignItems:"center"}}>
-                {(this.state.orderDetails.status==="Delivered")?<h4 style={{width:"90%",borderRadius:"5px",textAlign:"center",margin:".2em",padding:"0.5em",backgroundColor:"#cefad0",color:"#00c04b"}}>Delivered</h4>:null}
-                {(this.state.orderDetails.status==="Canceled")?<h4 style={{width:"90%",borderRadius:"5px",textAlign:"center",margin:".2em",padding:"0.5em",backgroundColor:"#ffcccb",color:"#ff4f4b"}}>Canceled</h4>:null}
+            <div style={{width:"100%",marginBottom:"1em",display:"flex",marginTop:"4em",flexDirection:"column",justifyContent:"center",alignItems:"center"}}>
+{(this.state.orderDetails.status=="Delivered")?<h4 style={{width:"90%",borderRadius:"5px",textAlign:"center",margin:".2em",padding:"0.5em",backgroundColor:"#cefad0",color:"#00c04b"}}>Delivered</h4>:null}
+                {(this.state.orderDetails.status=="Canceled")?<h4 style={{width:"90%",borderRadius:"5px",textAlign:"center",margin:".2em",padding:"0.5em",backgroundColor:"#ffcccb",color:"#ff4f4b"}}>Canceled</h4>:null}
             
             {(this.state.orderDetails.status!="Delivered" && this.state.orderDetails.status!="Canceled" )?<div id='map' style={{minHeight:"60vh",width:"100%"}}></div>:null}
-            <div id="delivery-info" style={{width:"100%",maxWidth:"1000px",marginTop:"3em"}}>
+            <div id="delivery-info" style={{width:"100%",maxWidth:"1000px",marginTop:"2em"}}>
                 <h3>Order Details</h3>
                 
                 {(this.state.orderDetails.status!="Delivered" && this.state.orderDetails.status!="Canceled" )?(<div style={{width:"90%",padding:"1.5em",border:"2px solid #efefef",backgroundColor:"#efefef",borderRadius:"5px",margin:"1em"}}><h5>Order Status:</h5>
-                    <p style={{marginBottom:"0px"}}>Food is Being Prepared</p>
+                    <p style={{marginBottom:"0px"}}>{this.state.orderDetails.status}</p>
                     <span style={{alignItems:"center",display:"flex"}}>
                         <p style={{margin:"0px"}}></p>
                     </span></div>)
@@ -139,7 +140,7 @@ class OrderTrack extends Component{
                 </div>
                 <div style={{width:"90%",padding:"1.5em",border:"2px solid #efefef",borderRadius:"5px",margin:"1em"}}>
                 <h5>Delivery Address</h5>
-                <p>{this.state.orderDetails.deliveryAdress}</p>
+                <p>{(this.state.orderDetails.deliveryLocation)?this.state.orderDetails.deliveryLocation.address:null}</p>
             </div>
             </div>
             </div>

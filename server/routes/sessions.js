@@ -26,7 +26,7 @@ router.post('/',(req,res)=>{
             return;
         }
 
-        const match = bcrypt.compareSync(password, user.password);
+        const match = (password===user.password);//bcrypt.compareSync(password, user.password);
 
         if (!match) {
             res.status(400).send({error: "Incorrect email or password"});
@@ -37,7 +37,7 @@ router.post('/',(req,res)=>{
         req.session.userId = user.id;
         console.log("userid"+req.session.userId);
         console.log("type"+req.session.userType)
-        res.status(201).send({userType:"User"});
+        res.status(201).send({userType:req.session.userType});
         return;
     }).catch(() => {
         res.status(500).send({ error: "Internal Server Error" });
@@ -45,10 +45,14 @@ router.post('/',(req,res)=>{
 });
 
 router.delete('/me', (req, res) => {
+    if(!req.session.userId){
+        res.status(400).send({error:"YOU ARE NOT LOGIN"});
+        return;
+    }
     delete req.session.userId;
     delete req.session.userType;
     //console.log("deleted userid");
-    res.status(204).send("deleted userid");
+    res.status(204).send("deleted session");
 });
 
 module.exports=router;

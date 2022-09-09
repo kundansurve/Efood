@@ -8,6 +8,7 @@ import deliver from './../assets/img/deliver.svg'
 import find from './../assets/img/find.svg'
 import location from './../assets/img/location.svg'
 import { Link } from 'react-router-dom';
+import { set } from 'mongoose';
 
 function Home(props){
   const [city,setCity]=useContext(City);
@@ -20,7 +21,9 @@ function Home(props){
   const [cityList,setCityList]=useState([]);
   const [searchedData,setSearchData]=useState(null);
   const onChangeCity=(e)=>{
-        
+     setFilteredDishes([]);
+     setSearchData(null);
+     setFilteredHotelsList([])   
     fetch('http://localhost:4000/api/hotels/'+e, {
         method: 'GET',
         headers: {

@@ -9,8 +9,27 @@ import './navbar.css';
 
 function NavbarInstance(props){
   const [userData,setUserData]=useContext(UserData);
-  useEffect(()=>alert(JSON.stringify(userData)));
+  
   const [openHamburger,setOpenHamburger]=useState(false);
+
+  const logout = () =>{
+    sessionStorage.removeItem("userData");
+    setUserData({});
+    fetch('http://localhost:4000/api/sessions/me',{
+      method: "DELETE",
+      headers: {
+        "Content-type": "application/json; charset=UTF-8",
+      },
+    })
+    .then(resp=>resp.json())
+    .then((data)=>{
+      alert(JSON.stringify(data));
+    }).catch(error=>{
+      alert(error);
+    })
+    setOpenHamburger(false);
+    //window.location.href = "http://localhost:3000/";
+  }
 
       return (<>
         <nav className="navbar" style={{width:"100%",height:"4em",background:"var(--color1)",position:"fixed",left:"0px",top:"0px"}}>
@@ -84,10 +103,10 @@ function NavbarInstance(props){
           <>
           <div style={{width:"200px",margin:"0px"}}> 
           <div class="dropdown" style={{width:"100%"}}>
-        <span className="dropbtn" style={{padding:"10px"}}><img  style={{margin:"5px"}} src="https://img.icons8.com/color/30/26e07f/test-account.png"/>Hello! {userData['user']['firstName']}</span>
+        <span className="dropbtn" style={{padding:"10px"}}><img  style={{margin:"5px"}} src="https://img.icons8.com/color/30/26e07f/test-account.png"/>Hello! {userData['user']['firstName'] || userData['user']['name']}</span>
 
     <div className="dropdown-content">
-      <a href="#">Logout</a>
+      <a href="#" onClick={logout}>Logout</a>
       </div></div>
           
         </div>
@@ -109,7 +128,7 @@ function NavbarInstance(props){
         <img src="https://img.icons8.com/ios-glyphs/30/ffffff/delete-sign.png" style={{float:"right",margin:"1em"}} onClick={()=>setOpenHamburger(false)}/>
           <div style={{display:"flex",backgroundColor:"var(--color1)",justifyContent:"flex-start",alignItems:"center",padding:"1em",flexDirection:"column",width:"100%",height:"100%"}}>
           <img style={{margin:"1em"}} src="https://img.icons8.com/color/80/26e07f/test-account.png"/>
-          {(userData['userType'])?<p style={{color:"white"}}>Hello! {userData['user']['firstName']}</p>:null}
+          {(userData['userType'])?<p style={{color:"white"}}>Hello! {userData['user']['firstName']|| userData['user']['name']}</p>:null}
           {(userData['userType'])?
       <> </>:<>
         <RegisterHotel/>
@@ -180,7 +199,7 @@ function NavbarInstance(props){
     </div></a>
     </>:null}
     <a href='#'>
-      <div  className="colors" type="button" style={{color:'white',padding:"0.5em"}}>
+      <div  className="colors" type="button" style={{color:'white',padding:"0.5em"}} onClick={logout}>
         LOGOUT
     </div></a>
           </div>

@@ -57,5 +57,4 @@ export default function Order(props){
     <span style={{marginBottom:"0.5em",color:(orderDetail.status=="Delivered")?"green":"red",float:"right"}}>{orderDetail.status}</span>
         </div>
     </div>;
-    
 }

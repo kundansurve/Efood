@@ -68,8 +68,11 @@ router.get('/ordersincity', (req, res) => {
 
 router.put('/tracking', (req, res) => {
     const _id = req.session.userId;
+    if(!_id){
+        return res.status(400).send("Not Login");;
+    }
     const location = req.body;
-    deliveryBoy.updateOne({ _id }, { $set: { location } })
+    deliveryBoy.updateOne({ _id }, { $set: { location:location.coords } })
         .then(res.status(200).send("Location Updated"))
         .catch(error => {
             if (error) {
@@ -78,6 +81,7 @@ router.put('/tracking', (req, res) => {
                 res.status(400).send("Server Error");
             }
         })
+        //res.status(400).send({ error:"Tracking unavailable" });
 });
 
 router.put('/order/recieved-from-hotel', (req, res) => {
