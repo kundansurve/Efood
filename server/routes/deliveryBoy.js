@@ -9,8 +9,7 @@ const review = require('../models/review');
 const order = require('../models/order');
 
 router.get('/pastorders', (req, res) => {
-    const id = "6289e9f212d882493b40aa7c";
-    //const id= req.session.userId;
+    const id= req.session.userId;
     order.find({ assignedToDeliveryBoyId: id })
         .then((Orders) => {
             if (Orders) {
@@ -28,8 +27,7 @@ router.get('/pastorders', (req, res) => {
 });
 
 router.get('/order/:orderId', (req, res) => {
-    const id = "6289e9f212d882493b40aa7c";
-    //const id= req.session.userId;
+    const id= req.session.userId;
     const orderId = req.params.orderId;
     order.findOne({ assignedToDeliveryBoyId: id, _id: orderId })
         .then((Order) => {
@@ -45,8 +43,7 @@ router.get('/order/:orderId', (req, res) => {
 
 
 router.get('/ordersincity', (req, res) => {
-    const _id = "6289e9f212d882493b40aa7c";
-    //const _id= req.session.userId;
+    const _id= req.session.userId;
 
     deliveryBoy.findOne({ _id })
         .then((DB) => {
@@ -85,8 +82,7 @@ router.put('/tracking', (req, res) => {
 });
 
 router.put('/order/recieved-from-hotel', (req, res) => {
-    const _id = "6289e9f212d882493b40aa7c";
-    //const _id= req.session.userId;
+    const _id= req.session.userId;
     console.log(req.body);
     deliveryBoy.findOne({ _id })
         .then((DB) => {
@@ -107,8 +103,8 @@ router.put('/order/recieved-from-hotel', (req, res) => {
 });
 
 router.put('/order/delivered', (req, res) => {
-    const _id = "6289e9f212d882493b40aa7c";
-    //const _id= req.session.userId;
+    
+    const _id= req.session.userId;
     deliveryBoy.findOne({ _id })
         .then((DB) => {
             if (!DB) {
@@ -130,8 +126,7 @@ router.put('/order/delivered', (req, res) => {
 });
 
 router.put('/accept/order/:orderId', (req, res) => {
-    const _id = "6289e9f212d882493b40aa7c";
-    //const _id= req.session.userId;
+    const _id= req.session.userId;
     const orderId = req.params.orderId;
     order.findOne({ _id: orderId })
         .then((orderData) => {

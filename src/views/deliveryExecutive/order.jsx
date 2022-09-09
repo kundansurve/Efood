@@ -3,6 +3,7 @@ import { render } from '@testing-library/react';
 import '../JS files/delivery';
 import mapboxgl from 'mapbox-gl';
 import { Navigate } from "react-router-dom";
+import TrackMap from './../../components/TrackMap';
 
 mapboxgl.accessToken = 'pk.eyJ1IjoiZm9vZGllMjM2IiwiYSI6ImNreTgzMTFkOTE2eWgydnMxMHJ1ZzVqZ3MifQ.KHB9VYX_nKPKaN5RkSnoeQ';
 
@@ -13,8 +14,9 @@ function Order(props) {
     const [orderFromHotel, setOrderFromHotel] = React.useState({});
     const [dishes, setDishes] = React.useState([]);
     const [orderLocation, setOrderLocation] = useState([]);
-    const [map, setMap] = useState(undefined);
-
+    const [currLocation,setCurrLocation] = useState([]);
+    const [cityDetails,setCityDetails] = React.useState({});
+    
     const apiCall = () => {
         fetch(`http://localhost:4000/api/delivery-executive/me/order/${orderId}`)
             .then(resp => resp.json())
@@ -30,6 +32,13 @@ function Order(props) {
                     .then((hotelData) => {
                         setOrderFromHotel(hotelData.hotel);
                     }).catch(error => console.log(error))
+                    fetch(`http://localhost:4000/api/cities/city/${data.order.cityId}`)
+                    .then(resp => resp.json())
+                    .then((CityDetails) => {
+                        setCityDetails(CityDetails['city']);
+                        
+                    }).catch(error => console.log(error))
+                    
                 fetch(`http://localhost:4000/api/hotel/dishes/${data.order.placedInHotelId}`)
                     .then(resp => resp.json())
                     .then((dishes) => {
@@ -43,98 +52,7 @@ function Order(props) {
         apiCall();
         
     }, [])
-    useEffect(() => {
-        if( orderDetails.status != "Delivery Executive Out for Order" && orderDetails.status != "Food is Being Processed")setMap(undefined)
-        else if(!map) setMap(new mapboxgl.Map({
-            container: 'map', // container ID
-            style: 'mapbox://styles/mapbox/streets-v11', // style URL
-            center: [74.7749, 20.9042],
-            zoom: 12
-        }))
-        if (!map) return;
-        if (!orderDetails.deliveryLocation || !orderFromHotel.location) return;
-        if (window.navigator.geolocation && orderDetails.deliveryLocation) {
-            window.navigator.geolocation.getCurrentPosition(position => {
-                const { latitude, longitude } = position.coords;
-                if (orderLocation == [longitude, latitude]) return;
-                setOrderLocation([longitude, latitude]);
-                getRoute([longitude, latitude], map)
-            })
-        }
 
-
-        function getRoute(start, map) {
-            let route = `${start[0]},${start[1]};${orderFromHotel.location.coordinates[1]},${orderFromHotel.location.coordinates[0]};${orderDetails.deliveryLocation.coordinates[1]},${orderDetails.deliveryLocation.coordinates[0]}`;
-            if(orderDetails.status == "Delivery Executive Out for Order")route = `${start[0]},${start[1]};${orderDetails.deliveryLocation.coordinates[1]},${orderDetails.deliveryLocation.coordinates[0]}`
-            fetch(
-                `https://api.mapbox.com/directions/v5/mapbox/driving/${route}?steps=true&geometries=geojson&access_token=${mapboxgl.accessToken}`,
-                { method: 'GET' }
-            ).then(resp => resp.json())
-                .then((jsonData) => {
-                    const data = jsonData.routes[0];
-                    const route = data.geometry.coordinates;
-                    const geojson = {
-                        type: 'Feature',
-                        properties: {},
-                        geometry: {
-                            type: 'LineString',
-                            coordinates: route
-                        }
-                    };
-
-                    if (map.getSource('route')) {
-                        map.getSource('route').setData(geojson);
-                    }
-                    // otherwise, we'll make a new request
-                    else {
-                        map.addLayer({
-                            id: 'route',
-                            type: 'line',
-                            source: {
-                                type: 'geojson',
-                                data: geojson
-                            },
-                            layout: {
-                                'line-join': 'round',
-                                'line-cap': 'round'
-                            },
-                            paint: {
-                                'line-color': '#3887be',
-                                'line-width': 4,
-                                'line-opacity': 0.75
-                            }
-                        });
-                        map.addLayer({
-                            id: 'point',
-                            type: 'circle',
-                            source: {
-                                type: 'geojson',
-                                data: {
-                                    type: 'FeatureCollection',
-                                    features: [
-                                        {
-                                            type: 'Feature',
-                                            properties: {},
-                                            geometry: {
-                                                type: 'Point',
-                                                coordinates: start
-                                            }
-                                        }
-                                    ]
-                                }
-                            },
-                            paint: {
-                                'circle-radius': 10,
-                                'circle-color': '#3887be'
-                            }
-                        });
-                    }
-                }).catch(error => console.log(error))
-
-        }
-
-
-    })
     const recievedFromHotel = () => {
         fetch("http://localhost:4000/api/delivery-executive/me/order/recieved-from-hotel", {
             method: "PUT",
@@ -158,9 +76,31 @@ function Order(props) {
                 apiCall();
             }).catch(error => console.log(error));
     }
+    function showPosition(position) {
+        if(position){
+            setCurrLocation([position.coords.longitude,position.coords.latitude]);
+          
+            }
+      }
+    function getLocation() {
+        if (navigator.geolocation) {
+          navigator.geolocation.getCurrentPosition(showPosition);
+        } else {
+          alert('Please give acess to track your location');
+        }
+      }
+      const traceLocation = ()=>{
+        getLocation();
+        setTimeout(() => {
+          traceLocation();
+        }, 300000);
+      }
+    useEffect(()=>{
+        traceLocation();
+    })
     return (
         <div style={{ width: "100%", marginBottom: "2em", display: "flex", flexDirection: "column", justifyContent: "center", alignItems: "center" }}>
-            <div id='map' style={{ minHeight: "60vh", width: "100%",display:(orderDetails.status != "Delivery Executive Out for Order" && orderDetails.status != "Food is Being Processed")?"none":""}}></div>
+            {(currLocation && orderFromHotel.location && orderDetails.deliveryLocation && cityDetails.location && orderDetails.status!="Delivered" && orderDetails.status!="Canceled" )?<TrackMap start={currLocation} pickUpPoint={orderFromHotel.location} center={cityDetails.location.coordinates} dropPoint={orderDetails.deliveryLocation.lnglat.coordinates} outForDelivery={(orderDetails.status!="Food is Being Processed")}/>:null}
             <div id="delivery-info" style={{ padding: "1em", width: "100%", maxWidth: "1000px", marginTop: "3em" }}>
                 <h3>Order Details</h3>
                 <div style={{ width: "90%", padding: "1em", border: "2px solid #efefef", backgroundColor: "#efefef", borderRadius: "5px", margin: "1em" }}>
@@ -197,12 +137,13 @@ function Order(props) {
                     </span>
                     <h6>Order:</h6>
                     <span style={{ paddingLeft: "0.5em", textAlign: "center", display: "grid", gridTemplateColumns: "auto auto auto auto", width: "100%" }}>
-                        {dishes.map((dish) => {
-                            if (!orderDetails.order[dish._id]) return <></>;
-                            return <><p style={{ fontWeight: "bold" }} >Food</p>
+                    <p style={{ fontWeight: "bold" }} >Food</p>
                                 <p style={{ fontWeight: "bold" }}>Price</p>
                                 <p style={{ fontWeight: "bold" }}>Quantity</p>
                                 <p style={{ fontWeight: "bold" }}>Total</p>
+                        {dishes.map((dish) => {
+                            if (!orderDetails.order[dish._id]) return <></>;
+                            return <>
                                 <p >{dish.name}</p>
                                 <p >{dish.price}</p>
                                 <p >{orderDetails.order[dish._id]}</p>

@@ -135,7 +135,7 @@ router.get('/deliveryBoy/:deliveryBoyId',(req,res)=>{
     DeliveryBoy.findOne({_id:req.params.deliveryBoyId})
         .then((DB)=>{
             console.log(DB);
-            res.status(200).send({"deliveryBoy":{"name":DB.name , "phoneNumber":DB.phoneNumber,"ratings":DB.ratings}});
+            res.status(200).send({"deliveryBoy":{"name":DB.name , "phoneNumber":DB.phoneNumber,"ratings":DB.ratings,"location":DB.location}});
             return;
         })
         .catch(
