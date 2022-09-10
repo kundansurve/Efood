@@ -7,6 +7,7 @@ const bcrypt = require('bcryptjs');
 const user = require('../models/user');
 const dish = require('../models/dish');
 const city =require('../models/city');
+const review = require('../models/review');
 
 router.post('/signUp',(req,res)=>{
     
@@ -36,7 +37,7 @@ router.post('/signUp',(req,res)=>{
             User.save().then(()=>{
                 req.session.userType = 'User';
                 req.session.userId = LoginCredential._id;
-                console.log({_id: LoginCredential._id ,email,firstName:firstName ,lastName:lastName,phoneNumber});
+                
                 res.status(201).send({_id: LoginCredential._id ,email,firstName:firstName ,lastName:lastName,phoneNumber});
             });
         });
@@ -56,7 +57,6 @@ router.put('/addtocart',(req,res)=>{
         if(Dish){
             user.findOne({_id})
             .then((USER)=>{
-                console.log(USER);
                 if(Dish['hotelId']!=USER['cart']['hotelId']){
                     const newCart = {...USER.cart,"hotelId":Dish["hotelId"],"items":{},"price":Dish["price"]};
                     newCart['items'][dishId]=1;
@@ -108,7 +108,6 @@ router.put('/changeaddress', (req, res) => {
             newCart['address'] = address;
             user.updateOne({ _id }, { $set: { cart: newCart } })
                 .then((user) => {
-                    console.log(user.cart);
                     res.status(200).send(user.cart);
                     return;
                 })
@@ -141,7 +140,7 @@ router.put('/removefromcart',(req,res)=>{
                         }else{
                             const newCart = USER['cart'];
                             delete newCart['items'][dishId];
-                            console.log(newCart);
+                            
                             newCart['price']=newCart['price'] - Dish['price'];
                             if(Object.keys(newCart['items']).length==0){
                                 newCart['hotelId']=null;
@@ -163,7 +162,10 @@ router.put('/removefromcart',(req,res)=>{
         }else{
             res.status(404).send("No such Dish is present");
         }        
-    }).catch(err=>console.log(err))
+    }).catch(err=>{
+        console.log(err)
+        res.status(400).send({err});
+    })
 
 });
 
@@ -178,11 +180,9 @@ router.put('/pastsearches',(req,res)=>{
     const {searchData} = req.body;
     user.findOne({_id})
     .then((USER)=>{
-        console.log(USER);
         if(USER){
             let pastSearches = USER["pastSearches"];
             pastSearches.push(searchData);
-            console.log(pastSearches);
             user.updateOne({_id},{$set:{"pastSearches":pastSearches}})
             .then((user)=>{res.status(200).send("Search history updated");return})
             .catch(error=>{res.status(400).send(err)})
@@ -280,188 +280,123 @@ router.delete('/delete/order/orderId',(req,res)=>{
     })
 });
 
-router.post('/hotel/review',(req,res)=>{
-    //const _id=req.session.userId;
-    const _id="622ee28c71f99c3c14dcfa91";
-    const reviewType = 'Hotel';
-    const {reviewForId,review,rating} =  req.body;
-    review.findOne({reviewdById:_id,reviewForId})
-    .then((REVIEW)=>{
-        if(REVIEW){
-            res.status(400).send("You have already reviewd this")
-        }else{
-            hotel.findOne({_id:reviewForId})
-            .then((HOTEL)=>{
-                const newRating = (Integer.parseInt(HOTEL.ratings)*Integer.parseInt(HOTEL.numberofRatings)+ rating)/(Integer.parseInt(HOTEL.numberofRatings)+1);
-                const Review = new review({reviewdById:_id,reviewType,reviewForId,review,rating});
-                Review.save()
-                .then(()=>{
-                    hotel.updateOne({_id,reviewdForId},{$set:{ratings:newRating},$inc:{numberofRatings:1}})
-                    .then(()=>res.status(200).send("Successfull"))
-                    .catch(err=>res.status(400).send({err}))
-                }).catch(err=>res.status(400).send({err}))
-            }).catch(err=>res.status(400).send({err}))
+router.post('/createreview/order',(req,res)=>{
+    const {hotelReview,hotelRating,deliveryExecutiveRating,deliveryExecutiveReview,reviewedByName,orderId} = req.body;
+    if(!reviewedByName || !orderId || !hotelReview || !hotelRating ||   !deliveryExecutiveReview || !deliveryExecutiveRating){
+        res.status(400).send({error:"Incomplete api call"});
+        return;
+    }
+    review.findOne({orderId:orderId})
+    .then((data)=>{
+        if(data){
+            return res.status(400).send("This order is already reviewed")
         }
-    }).catch(err=>res.status(400).send({err}))
-});
-
-router.delete('/hotel/review/delete/:reviewId',(req,res)=>{
-    //const _id=req.session.userId;
-    const _id="622ee28c71f99c3c14dcfa91";
-    const reviewType = 'Hotel';
-    const reviewId = req.params.reviewId;
-    review.findOne({_id})
-    .then((REVIEW)=>{
-        if(!REVIEW){
-            res.status(400).send("No such type of review")
-        }else{
-            if(_id!=REVIEW.reviewdById){
-                res.status(400).send("You are not allowed to delete this review");
-                return;
+        order.findOne({_id:orderId})
+        .then((orderData)=>{
+            if(!orderData){
+                return res.status(400).send("Wrong orderId no such order is present");
             }
-            hotel.findOne({_id:reviewForId})
-            .then((HOTEL)=>{
-                let newRating=0;
-                if(HOTEL.numberofRatings==0){
-                    res.status(400).send("No one review this hotel yet");
-                    return;
-                }
-                if(HOTEL.numberofRatings>1){
-                    newRating = (Integer.parseInt(HOTEL.ratings)*Integer.parseInt(HOTEL.numberofRatings)+ REVIEW.rating)/(Integer.parseInt(HOTEL.numberofRatings)-1);
-                }
-                review.deleteOne({_id:reviewId})
-                .then(()=>{
-                    hotel.updateOne({_id,reviewdForId},{$set:{ratings:newRating},$dec:{numberofRatings:1}})
-                    .then(()=>res.status(200).send("Successfull"))
-                    .catch(err=>res.status(400).send({err}))
-                }).catch(err=>res.status(400).send({err}))
-            }).catch(err=>res.status(400).send({err}))
-        }
-    }).catch(err=>res.status(400).send({err}))
-});
-
-
-
-router.post('/dish/review',(req,res)=>{
-    //const _id=req.session.userId;
-    const _id="622ee28c71f99c3c14dcfa91";
-    const reviewType = 'Dish';
-    const {reviewForId,review,rating} =  req.body;
-    review.findOne({reviewdById:_id,reviewForId})
-    .then((REVIEW)=>{
-        if(REVIEW){
-            res.status(400).send("You have already reviewd this")
-        }else{
-            dish.findOne({_id:reviewForId})
-            .then((DISH)=>{
-                const newRating = (Integer.parseInt(DISH.ratings)*Integer.parseInt(DISH.numberofRatings)+ rating)/(Integer.parseInt(DISH.numberofRatings)+1);
-                const Review = new review({reviewdById:_id,reviewType,reviewForId,review,rating});
-                Review.save()
-                .then(()=>{
-                    dish.updateOne({_id,reviewdForId},{$set:{ratings:newRating},$inc:{numberofRatings:1}})
-                    .then(()=>res.status(200).send("Successfull"))
-                    .catch(err=>res.status(400).send({err}))
-                }).catch(err=>res.status(400).send({err}))
-            }).catch(err=>res.status(400).send({err}))
-        }
-    }).catch(err=>res.status(400).send({err}))
-});
-
-router.delete('/dish/review/delete/:reviewId',(req,res)=>{
-    //const _id=req.session.userId;
-    const _id="622ee28c71f99c3c14dcfa91";
-    const reviewType = 'Dish';
-    const reviewId = req.params.reviewId;
-    review.findOne({_id})
-    .then((REVIEW)=>{
-        if(!REVIEW){
-            res.status(400).send("No such type of review")
-        }else{
-            if(_id!=REVIEW.reviewdById){
-                res.status(400).send("You are not allowed to delete this review");
-                return;
+            if(orderData.placedByUserId!="622ee28c71f99c3c14dcfa91"){
+                return res.status(400).send("You cannot review this Order");
             }
-            dish.findOne({_id:reviewForId})
-            .then((DISH)=>{
-                let newRating=0;
-                if(dish.numberofRatings==0){
-                    res.status(400).send("No one review this dish yet");
-                    return;
-                }
-                if(DISH.numberofRatings>1){
-                    newRating = (Integer.parseInt(DISH.ratings)*Integer.parseInt(DISH.numberofRatings)+ REVIEW.rating)/(Integer.parseInt(DISH.numberofRatings)-1);
-                }
-                review.deleteOne({_id:reviewId})
-                .then(()=>{
-                    dish.updateOne({_id,reviewdForId},{$set:{ratings:newRating},$dec:{numberofRatings:1}})
-                    .then(()=>res.status(200).send("Successfull"))
-                    .catch(err=>res.status(400).send({err}))
-                }).catch(err=>res.status(400).send({err}))
-            }).catch(err=>res.status(400).send({err}))
-        }
-    }).catch(err=>res.status(400).send({err}))
-});
-
-
-router.post('/deliveryboy/review',(req,res)=>{
-    //const _id=req.session.userId;
-    const _id="622ee28c71f99c3c14dcfa91";
-    const reviewType = 'DeliveryBoy';
-    const {reviewForId,review,rating} =  req.body;
-    review.findOne({reviewdById:_id,reviewForId})
-    .then((REVIEW)=>{
-        if(REVIEW){
-            res.status(400).send("You have already reviewd this")
-        }else{
-            deliveryBoy.findOne({_id:reviewForId})
-            .then((DB)=>{
-                const newRating = (Integer.parseInt(DB.ratings)*Integer.parseInt(DB.numberofRatings)+ rating)/(Integer.parseInt(DB.numberofRatings)+1);
-                const Review = new review({reviewdById:_id,reviewType,reviewForId,review,rating});
-                Review.save()
-                .then(()=>{
-                    deliveryBoy.updateOne({_id,reviewdForId},{$set:{ratings:newRating},$inc:{numberofRatings:1}})
-                    .then(()=>res.status(200).send("Successfull"))
-                    .catch(err=>res.status(400).send({err}))
-                }).catch(err=>res.status(400).send({err}))
-            }).catch(err=>res.status(400).send({err}))
-        }
-    }).catch(err=>res.status(400).send({err}))
-});
-
-router.delete('/deliveryboy/review/delete/:reviewId',(req,res)=>{
-    //const _id=req.session.userId;
-    const _id="622ee28c71f99c3c14dcfa91";
-    const reviewType = 'DeliveryBoy';
-    const reviewId = req.params.reviewId;
-    review.findOne({_id})
-    .then((REVIEW)=>{
-        if(!REVIEW){
-            res.status(400).send("No such type of review")
-        }else{
-            if(_id!=REVIEW.reviewdById){
-                res.status(400).send("You are not allowed to delete this review");
-                return;
+            if(orderData.status!="Delivered"){
+                return res.status(200).send("Order is not yet Delivered");
             }
-            deliveryboy.findOne({_id:reviewForId})
-            .then((DB)=>{
-                let newRating=0;
-                if(DB.numberofRatings==0){
-                    res.status(400).send("No one review this deliveryBoy yet");
-                    return;
-                }
-                if(DB.numberofRatings>1){
-                    newRating = (Integer.parseInt(DB.ratings)*Integer.parseInt(DB.numberofRatings)+ REVIEW.rating)/(Integer.parseInt(DB.numberofRatings)-1);
-                }
-                review.deleteOne({_id:reviewId})
-                .then(()=>{
-                    dish.updateOne({_id,reviewdForId},{$set:{ratings:newRating},$dec:{numberofRatings:1}})
-                    .then(()=>res.status(200).send("Successfull"))
-                    .catch(err=>res.status(400).send({err}))
-                }).catch(err=>res.status(400).send({err}))
-            }).catch(err=>res.status(400).send({err}))
+            const Review = new review({hotel:{hotelId:orderData.placedInHotelId,dishId:Object.keys(orderData.order),review:hotelReview,rating:hotelRating},cityId:orderData.cityId,reviewedByName,reviewedById:orderData.placedByUserId,orderId:orderData._id,deliveryExecutive:{deliveryExecutiveId:orderData.assignedToDeliveryBoyId,review:deliveryExecutiveReview,rating:deliveryExecutiveRating}});
+            Review.save()
+            .then(()=>{
+                
+                res.status(200).send({hotel:{hotelId:orderData.placedInHotelId,dishId:Object.keys(orderData.order),review:hotelReview,rating:hotelRating},cityId:orderData.cityId,reviewedByName,reviewedById:orderData.placedByUserId,orderId:orderId,deliveryExecutive:{deliveryExecutiveId:orderData.assignedToDeliveryBoyId,review:deliveryExecutiveReview,rating:deliveryExecutiveRating}});
+                return;
+            })
+            .catch(error=>{
+                res.status(400).send({error});
+                return;
+            })
+        })
+        .catch(error=>{
+            
+            res.status(400).send({error});
+        })
+    })
+    .catch(error=>{
+        
+        res.status(400).send({error});
+    })
+})
+
+router.put('/editreview/order',(req,res)=>{
+    const {hotelReview,hotelRating,deliveryExecutiveRating,deliveryExecutiveReview,reviewedByName,orderId} = req.body;
+    if(!reviewedByName || !orderId || !hotelReview || !hotelRating ||   !deliveryExecutiveReview || !deliveryExecutiveRating){
+        res.status(400).send("Incomplete api call");
+        return;
+    }
+    review.findOne({orderId:orderId})
+    .then((data)=>{
+        if(!data){
+            return res.status(400).send("This order is not reviewed yet")
         }
-    }).catch(err=>res.status(400).send({err}))
-});
+        order.findOne({_id:orderId,placedByUserId:req.session.userId})
+        .then((orderData)=>{
+            if(!orderData){
+                return res.status(400).send("Wrong orderId no such order is present");
+            }
+            if(orderData.status!="Delivered"){
+                return res.status(200).send("Order is not yet Delivered");
+            }
+            review.updateOne({orderId:orderId},{$set:{hotel:{hotelId:orderData.placedInHotelId,dishId:Object.keys(orderData.order),review:hotelReview,rating:hotelRating},reviewedByName,reviewedById:orderData.placedByUserId,orderId:orderData._id,deliveryExecutive:{deliveryExecutiveId:orderData.assignedToDeliveryBoyId,review:deliveryExecutiveReview,rating:deliveryExecutiveRating}}})
+            .then(()=>{
+                res.status(200).send({hotel:{hotelId:orderData.placedInHotelId,dishId:Object.keys(orderData.order),review:hotelReview,rating:hotelRating},reviewedByName,reviewedById:orderData.placedByUserId,orderId:orderData._id,deliveryExecutive:{deliveryExecutiveId:orderData.assignedToDeliveryBoyId,review:deliveryExecutiveReview,rating:deliveryExecutiveRating}});
+            })
+            .catch(error=>{
+                res.status(400).send({error});
+            })
+        })
+        .catch(error=>{
+            res.status(400).send({error});
+        })
+    })
+    .catch(error=>{
+        res.status(400).send({error});
+    })
+})
+
+router.delete('/deletereview/order',(req,res)=>{
+    const {_id} = req.body;
+    if(!_id){
+        res.status(400).send("Incomplete api call");
+        return;
+    }
+    review.findOne({_id})
+    .then((data)=>{
+        if(!data){
+            return res.status(400).send("This order is not reviewed yet")
+        }
+        order.findOne({_id:orderId,placedByUserId:req.session.userId})
+        .then((orderData)=>{
+            if(!orderData){
+                return res.status(400).send("Wrong orderId no such order is present");
+            }
+            if(orderData.status!="Delivered"){
+                return res.status(200).send("Order is not yet Delivered");
+            }
+            review.deleteOne({_id})
+            .then(()=>{
+                res.status(200).send("Review Deleted");
+            })
+            .catch(error=>{
+                res.status(400).send({error});
+            })
+        })
+        .catch(error=>{
+            res.status(400).send({error});
+        })
+    })
+    .catch(error=>{
+        res.status(400).send({error});
+    })
+})
+
 
 
 module.exports=router;

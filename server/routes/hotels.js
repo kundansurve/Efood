@@ -42,7 +42,6 @@ router.post("/newdish", (req, res) => {
         hotel
           .findOne({ _id: hotelId })
           .then((Hotel) => {
-            console.log(JSON.stringify(Hotel));
             const newDish = new dish({
               name,
               isVeg,

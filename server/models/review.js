@@ -6,25 +6,48 @@ const reviewSchema = new Schema({
         type:String,
         rquired:true
     },
-    reviewType:{
-        type:String,
-        rquired:true
-    },
-    reviewForId:{
-        type:String,
-        required:true
-    },
     reviewedById:{
         type:String,
         required:true
     },
-    review: {
+    orderId:{
         type:String,
         required:true
     },
-    rating: {
-        type:Number,
+    hotel:{
+        hotelId:{
+            type:String,
+            required:true
+        },
+        dishId:{
+            type:Array,
+            required:true
+        },review: {
+            type:String,
+            required:true
+        },
+        rating: {
+            type:Number,
+            required:true
+        },
+    },
+    cityId:{
+        type:String,
         required:true
+    },
+    deliveryExecutive:{
+        deliveryExecutiveId:{
+            type:String,
+            required:true
+        },
+        review: {
+            type:String,
+            required:true
+        },
+        rating: {
+            type:Number,
+            required:true
+        },
     },
     reviewedAt: {
         type: Date,

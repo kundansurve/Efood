@@ -17,6 +17,10 @@ function OrderTrack(){
         fetch(`http://localhost:4000/api/user/me/orders/${orderId}`)
             .then(resp => resp.json())
             .then(data => {
+                if(!data['OrderDetail']){
+                    alert("No such Order id present");
+                    window.location="http://localhost:3000";
+                }
                 setOrderDetails(data['OrderDetail']);
                 
                 fetch("http://localhost:4000/api/deliveryBoy/"+data['OrderDetail'].assignedToDeliveryBoyId)
@@ -56,7 +60,7 @@ function OrderTrack(){
     },[])
     return (
         <div style={{ width: "100%", marginBottom: "2em", display: "flex", flexDirection: "column", justifyContent: "center", alignItems: "center" }}>
-            {(deliveryExecutive.location && orderFromHotel.location && orderDetails.deliveryLocation&& cityDetails.location && orderDetails.status!="Delivered" && orderDetails.status!="Canceled" )?<TrackMap start={deliveryExecutive.location} pickUpPoint={orderFromHotel.location} center={cityDetails.location.coordinates} dropPoint={orderDetails.deliveryLocation.lnglat.coordinates} outForDelivery={(orderDetails.status!="Food is Being Processed")}/>:null}
+            {(orderDetails.status && deliveryExecutive.location && orderFromHotel.location && orderDetails.deliveryLocation&& cityDetails.location && orderDetails.status!="Delivered" && orderDetails.status!="Canceled" )?<TrackMap start={deliveryExecutive.location} pickUpPoint={orderFromHotel.location} center={cityDetails.location.coordinates} dropPoint={orderDetails.deliveryLocation.lnglat.coordinates} outForDelivery={(orderDetails.status!="Food is Being Processed")}/>:null}
             <div id="delivery-info" style={{ padding: "1em", width: "100%", maxWidth: "1000px", marginTop: "3em" }}>
                 <h3>Order Details</h3>
                 <div style={{ width: "90%", padding: "1em", border: "2px solid #efefef", backgroundColor: "#efefef", borderRadius: "5px", margin: "1em" }}>

@@ -19,7 +19,7 @@ function ReviewSection(props){
     return (<section id="testimonials">
             <div class="testimonial-box-container">
                 {reviewsData.map((data)=>{
-                    return <Review ratings={data.rating} review={data.review} name={data.reviewedByName}/>
+                    return <Review ratings={data.hotel.rating} review={data.hotel.review} name={data.reviewedByName}/>
                 })
                 }
             </div>

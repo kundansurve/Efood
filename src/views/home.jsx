@@ -5,10 +5,11 @@ import InputBar from '../components/inputBar';
 import HotelCard from '../components/hotelCard';
 import './home.css';
 import deliver from './../assets/img/deliver.svg'
-import find from './../assets/img/find.svg'
-import location from './../assets/img/location.svg'
+import find from './../assets/img/find.svg';
+import location from './../assets/img/location.svg';
 import { Link } from 'react-router-dom';
 import { set } from 'mongoose';
+import TopDish from '../components/topDish';
 
 function Home(props){
   const [city,setCity]=useContext(City);
@@ -43,6 +44,7 @@ function Home(props){
       }).then(response => response.json())
       .then((data)=>{
         //alert(data);
+        //alert(JSON.stringify(data));
           setTopHotels(data.hotels);
       }).catch(error=>alert("hotelerror: "+error));
   
@@ -99,7 +101,7 @@ function Home(props){
       }
     }
     for(let dish of dishes){
-      console.log("Name:"+dish.name+" keyword:"+keyword);
+      
       if(dish.name.toLowerCase().startsWith(keyword.toLowerCase())){
         newDishes.push(dish);
       }
@@ -179,14 +181,7 @@ function Home(props){
                     
                     <ul className="scroll" style={{padding:"0.2em",display:"flex",justifyContent:"flex-start",flexWrap:"wrap",alignItems:"flex-start",msOverflowStyle:"none",scrollbarWidth: "none"}}>
                         {searchedData.dishes.map(( dish)=>{
-                          return (<>
-                          <Link to={`/hotel/${dish.hotelId}`}>                         <div style={{color:"black",margin:"0.5em",padding:"1em",display:"flex",width:"210px",justifyContent:"center",alignItems:"center",flexDirection:"column"}}>
-                            <div style={{height:"150px",width:"170px",borderRadius:"10px",backgroundImage:`url(${dish.img})`,backgroundRepeat: "no-repeat",backgroundSize: "170px 150px"}} ></div>
-                            <h6 style={{textAlign:"center",marginBottom:"0px"}}>{dish.name}</h6>
-                            <span style={{color:"rgb(255,213,5)"}}> {[...Array(5)].map((e, i) =>{if(i<dish.ratings)return<>&#9733;</>; return<>&#9734;</>; }) }</span>
-                          </div>
-                          </Link>
-                          </>)
+                          return (<TopDish hotelId={dish.hotelId} name={dish.name} img={dish.img} _id={dish._id}/>);
                         })
                         }
                     </ul>
@@ -217,27 +212,28 @@ function Home(props){
                     </ul>
                     </div>
                 <span className='title'>HOT RATED CUISINE NEAR YOU</span>
-                    <div style={{display:"flex",alignItems:"center",justifyContent:"center",marginTop:"0.7em",marginBottom:"1.5em",width:"100%"}}>
+                    <div style={{display:"flex",alignItems:"center",justifyContent:"flex-start",marginTop:"0.7em",marginBottom:"1.5em",width:"100%"}}>
                     
                     <ul className="scroll" style={{padding:"0.2em",display:"flex",justifyContent:"flex-start",alignItems:"flex-start",overflowX:"scroll",msOverflowStyle:"none",scrollbarWidth: "none"}}>
+                    {(topDishes && topDishes.length<4)?<>
+                      {dishes.map(( dish)=>{
+                          return (<TopDish hotelId={dish.hotelId} name={dish.name} img={dish.img} _id={dish._id}/>)
+                        })
+                        }
+                    </>:null}
                         {topDishes.map(( dish)=>{
-                          <HotelCard name={dish.name} id={dish._id} ratings={dish.ratings} img={dish.img}/>
-                          return (<>
-                          <Link to={`/hotel/${dish.hotelId}`}>                         <div style={{color:"black",margin:"0.5em",padding:"1em",display:"flex",width:"210px",justifyContent:"center",alignItems:"center",flexDirection:"column"}}>
-                            <div style={{height:"150px",width:"170px",borderRadius:"10px",backgroundImage:`url(${dish.img})`,backgroundRepeat: "no-repeat",backgroundSize: "170px 150px"}} ></div>
-                            <h6 style={{textAlign:"center",marginBottom:"0px"}}>{dish.name}</h6>
-                            <span style={{color:"rgb(255,213,5)"}}> {[...Array(5)].map((e, i) =>{if(i<dish.ratings)return<>&#9733;</>; return<>&#9734;</>; }) }</span>
-                          </div>
-                          </Link>
-                          </>)
+                          return (<TopDish hotelId={dish.hotelId} name={dish.name} img={dish.img} _id={dish._id}/>)
                         })
                         }
                     </ul>
                     </div>
                     <span className='title'>TOP RATED HOTELS NEAR YOU</span>
-                    <div style={{display:"flex",alignItems:"center",justifyContent:"center",marginTop:"0.7em",marginBottom:"1.5em",width:"100%"}}>
+                    <div style={{display:"flex",alignItems:"center",justifyContent:"flex-start",marginTop:"0.7em",marginBottom:"1.5em",width:"100%"}}>
                     
                     <ul className="scroll" style={{padding:"0.2em",display:"flex",justifyContent:"flex-start",alignItems:"flex-start",overflowX:"scroll",msOverflowStyle:"none",scrollbarWidth: "none"}}>
+                        {(topHotels && topHotels.length<4)?<>{hotelsList.map(( hotel)=>{
+                          return <HotelCard name={hotel.name} id={hotel._id} ratings={hotel.ratings} img={hotel.img}/>
+                        })}</>:null}
                         {topHotels.map(( hotel)=>{
                           return <HotelCard name={hotel.name} id={hotel._id} ratings={hotel.ratings} img={hotel.img}/>
                         })

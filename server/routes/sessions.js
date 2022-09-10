@@ -35,8 +35,6 @@ router.post('/',(req,res)=>{
         
         req.session.userType = user.userType;
         req.session.userId = user.id;
-        console.log("userid"+req.session.userId);
-        console.log("type"+req.session.userType)
         res.status(201).send({userType:req.session.userType});
         return;
     }).catch(() => {

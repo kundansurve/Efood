@@ -12,7 +12,6 @@ const review = require('../models/review');
 router.get('/me',(req,res)=>{
     const _id=req.session.userId;
     const userType=req.session.userType;
-    console.log(req.session.userId+" "+req.session.userType);
     if(!_id){
         res.status(400).send({error:"You are not Login"});
         return;

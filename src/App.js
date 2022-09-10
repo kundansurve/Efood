@@ -17,6 +17,7 @@ import CityAdmin from "./views/cityAdmin";
 import { UserData, City, fetchUserInfo} from "./context";
 import { Link,Navigate } from "react-router-dom";
 //import {data} from './store';
+import ReviewPage from './views/user/reviewPage';
 
 function App() {
   const [userData, setUserData] = useState({
@@ -155,6 +156,7 @@ function App() {
                     path="/orders/:orderid"
                     element={<OrderTrack />}
                   />
+                  <Route exact path="/review/:orderid" element={<ReviewPage/>} />
                 </>
               ) : null}
               {userData && userData.userType === "DeliveryExecutive" ? (

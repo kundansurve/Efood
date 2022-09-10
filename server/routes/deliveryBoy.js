@@ -178,7 +178,7 @@ router.put('/accept/order/:orderId', (req, res) => {
 });
 
 router.put('/personalInfo', (req, res) => {
-
+    res.status(200).send("Service unavailable");
 });
 
 module.exports = router;
