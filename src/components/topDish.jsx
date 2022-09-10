@@ -8,7 +8,9 @@ function TopDish(props){
         .then(resp=>resp.json())
         .then((data)=>{
             setRating(data.rating);
-        })
+        }).catch(error=>{
+            console.log(error)
+          })
     },[]);
     return(<><Link to={`/hotel/${props.hotelId}`}>                         <div style={{color:"black",margin:"0.5em",padding:"1em",display:"flex",width:"210px",justifyContent:"center",alignItems:"center",flexDirection:"column"}}>
     <div style={{height:"150px",width:"170px",borderRadius:"10px",backgroundImage:`url(${props.img})`,backgroundRepeat: "no-repeat",backgroundSize: "170px 150px"}} ></div>

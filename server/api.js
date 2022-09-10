@@ -223,7 +223,7 @@ router.get('/hotels/hotel/:hotelId',(req,res)=>{
             }
             Review.aggregate([{$match:{"hotel.hotelId":req.params.hotelId}},{$group:{"_id":"$hotel.hotelId","rating":{$avg:"$hotel.rating"}}}])
             .then((HotelRatingData)=>{
-                res.status(200).send({"hotel":{_id:Hotel._id,"name":HOTEL.name ,"ratings":HotelRatingData[0].rating, "phoneNumber":HOTEL.phoneNumber, "location": HOTEL.location,"cityId": HOTEL.cityId}});
+                res.status(200).send({"hotel":{_id:req.params.hotelId,"name":HOTEL.name ,"ratings":(HotelRatingData[0])?HotelRatingData[0].rating:HOTEL.ratings, "phoneNumber":HOTEL.phoneNumber, "location": HOTEL.location,"cityId": HOTEL.cityId}});
                 return;
             }).catch(error=>{
                 
@@ -367,13 +367,16 @@ router.get('/cities/city/:id',(req,res)=>{
 })
 
 router.get('/isReviewedOrder/:orderId',(req,res)=>{
-    Review.findOne({_id:req.params.orderId})
+    Review.findOne({orderId:req.params.orderId})
     .then((data)=>{
         if(data){
             res.status(200).send({reviewed:true});
             return;
         }
-        res.status(200).send({reviewed:false});
+        else {
+            res.status(200).send({reviewed:false});
+            return;
+        }
     }).catch(error=>{
         res.status(400).send({error});
     })

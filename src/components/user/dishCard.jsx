@@ -13,6 +13,17 @@ class Dish extends Component {
     this.decreaseValue = this.decreaseValue.bind(this);
     console.log("Constructor count "+props.count);
   }
+  componentDidMount(){
+    
+        fetch(`http://localhost:4000/api/ratings-of/dish/${this.state.id}`)
+        .then(resp=>resp.json())
+        .then((data)=>{
+            this.setState({ratings:data.rating});
+        }).catch(error=>{
+          console.log(error)
+        })
+    
+  }
   increaseValue() {
     if(this.state.userType!=='User'){
       alert("Please login");
@@ -66,7 +77,6 @@ class Dish extends Component {
 
 <p style={{margin:"0em"}}>
   Ratings: <span style={{ color: "rgb(255,213,5)" }}> {[...Array(5)].map((e, i) => { if (i < this.state.ratings) return <>&#9733;</>; return <>&#9734;</>; })}</span>
-  {this.state.noOfRatings} Votes
   <br />
   Type: {this.state.type}
   <br />

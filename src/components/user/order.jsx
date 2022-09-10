@@ -1,20 +1,19 @@
 import React,{Component} from 'react';
-import { Navbar,
-    Nav,
-    Container,
-    } from 'react-bootstrap';
 
 import LoginPage from '../login';
 import '../CSS files/footer.css';
 import { useEffect } from 'react';
 import { Link } from 'react-router-dom';
+import { set } from 'mongoose';
 
 export default function Order(props){
     const [orderDetail,setOrderDetail]=React.useState(props.orderDetail);
     const [hotelData,setHotelData]=React.useState(null);
     const [dishesData,setDishesData]=React.useState([]);
+    const [reviewed,setReviewed]=React.useState(true);
     useEffect(()=>{
         if(orderDetail && orderDetail.placedInHotelId){
+            
             fetch("http://localhost:4000/api/hotels/hotel/" + orderDetail.placedInHotelId)
                 .then((response) => response.json())
                 .then((data) => {
@@ -25,7 +24,16 @@ export default function Order(props){
                     .then(response=>response.json())
                     .then((data)=>{
                     setDishesData(data["dishes"]);
-                }).catch(error=>console.log(error));       
+                }).catch(error=>console.log(error));
+                fetch(`http://localhost:4000/api/isReviewedOrder/${orderDetail._id}`)
+            .then(resp=>resp.json())
+            .then(data=>{
+                
+                if(data.reviewed)setReviewed(true);
+                else setReviewed(false);
+            }).catch(error=>{
+                console.log(error);
+            })     
         }
     },[])
 
@@ -54,6 +62,9 @@ export default function Order(props){
     <Link to={`/orders/${orderDetail._id}`}>
     <span type="button" style={{marginBottom:"0.5em",color:"blue",textAlign:"center"}}>View More</span>
     </Link>
+    {(!reviewed)?<Link to={`/review/${orderDetail._id}`}>
+    <span type="button" style={{marginBottom:"0.5em",color:"blue",textAlign:"center"}}>Please rate and review this order</span>
+    </Link>:null}
     <span style={{marginBottom:"0.5em",color:(orderDetail.status=="Delivered")?"green":"red",float:"right"}}>{orderDetail.status}</span>
         </div>
     </div>;

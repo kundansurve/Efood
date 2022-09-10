@@ -163,7 +163,6 @@ router.put('/removefromcart',(req,res)=>{
             res.status(404).send("No such Dish is present");
         }        
     }).catch(err=>{
-        console.log(err)
         res.status(400).send({err});
     })
 
@@ -296,7 +295,7 @@ router.post('/createreview/order',(req,res)=>{
             if(!orderData){
                 return res.status(400).send("Wrong orderId no such order is present");
             }
-            if(orderData.placedByUserId!="622ee28c71f99c3c14dcfa91"){
+            if(orderData.placedByUserId!=req.session.userId){
                 return res.status(400).send("You cannot review this Order");
             }
             if(orderData.status!="Delivered"){

@@ -81,7 +81,7 @@ function Hotel(props) {
               })}
             </span>
           </span>
-          <h6>Location: {city}</h6>
+          <h6>Location: {hotelData.location.address}</h6>
         </div>
       </div>
       <div>
