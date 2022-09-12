@@ -58,14 +58,17 @@ export default function Order(props){
         }
         )}
     </span>
-    <div style={{width:"100%",margin:"0.2em",padding:"0em",justifyContent:"space-between",display:"flex",alignItems:"center"}}>
+    <div style={{width:"100%",margin:"0.2em",padding:"0em",justifyContent:"space-between",display:"flex",alignItems:"center",flexDirection:(window.innerWidth>500)?"row":"column"}}>
+    <span style={{marginBottom:"0.5em",color:(orderDetail.status=="Delivered")?"green":"red",float:"right"}}>{orderDetail.status}</span>
+    
+    
+    {(!reviewed && orderDetail.status=="Delivered")?<Link to={`/review/${orderDetail._id}`}>
+    <span type="button" style={{marginBottom:"0.5em",color:"blue",textAlign:"center"}}>Please rate and review this order</span>
+    </Link>
+    :null}
     <Link to={`/orders/${orderDetail._id}`}>
     <span type="button" style={{marginBottom:"0.5em",color:"blue",textAlign:"center"}}>View More</span>
     </Link>
-    {(!reviewed)?<Link to={`/review/${orderDetail._id}`}>
-    <span type="button" style={{marginBottom:"0.5em",color:"blue",textAlign:"center"}}>Please rate and review this order</span>
-    </Link>:null}
-    <span style={{marginBottom:"0.5em",color:(orderDetail.status=="Delivered")?"green":"red",float:"right"}}>{orderDetail.status}</span>
         </div>
     </div>;
 }

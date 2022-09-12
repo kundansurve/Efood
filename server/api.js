@@ -243,6 +243,10 @@ router.get('/hotels/hotel/:hotelId',(req,res)=>{
 
 
 router.get('/deliveryBoy/:deliveryBoyId',(req,res)=>{
+    if(!req.params.deliveryBoyId){
+        res.status(400).send({"error":"Deliveru executive id invalid"});
+        return;
+    }
     DeliveryBoy.findOne({_id:req.params.deliveryBoyId})
         .then((DB)=>{
             Review.aggregate([{"$match":{"deliveryExecutive.deliveryExecutiveId":req.params.deliveryBoyId}},{"$group":{"_id":"$deliveryExecutive.deliveryExecutiveId","rating":{$avg:"$deliveryExecutive.rating"}}}])

@@ -4,6 +4,7 @@ import '../CSS files/cart.css';
 import Dish from '../../components/user/dishCard';
 import SetAddress from '../../components/map';
 import { UserData } from '../../context';
+import axios from 'axios';
 
 function Cart(props) {
     //super(props);
@@ -82,14 +83,45 @@ function Cart(props) {
             }).catch(err => alert(err));
     }, []);
 
+    const handlePayment = async() =>{
+        try{
+            const orderUrl = "http://localhost:4000/api/user/me/placeorder";
+            const {data} = await axios.post(orderUrl,{});
+            console.log(data);
+            initPayment(data); 
+        }catch(error){
+            console.log(error);
+        }
+    }
+    const initPayment = (data) =>{
+        alert(JSON.stringify(data));
+        const options={
+            key:"rzp_test_5dQvC1DPSehFnU",
+            amount:data.data.amount,
+            currency:"INR",
+            name:"Foodie",
+            order_id:data.data.id,
+            handler:async(response) =>{
+
+                try{
+                    const verifyUrl = "http://localhost:4000/api/user/me/payment/verify";
+                    const {data} =await axios.post(verifyUrl,response);
+                    window.location="http://localhost:3000/orders/"
+                }catch(error){
+                    console.log(error);
+                }
+            }
+        }
+        const rzp1 = new window.Razorpay(options);
+        rzp1.open();
+    }
     return (
         (state.openModal) ? <>
             <SetAddress close={() => { }} onclick={(address) => { setState({ ...state, openModal: false, address: address }); changeAddress(address) }} bounds={[[city.location.coordinates[1]-0.04462452399, city.location.coordinates[0]-0.04736856406600], [city.location.coordinates[1]+0.04462452399, city.location.coordinates[0]+0.04736856406356]]} center={[city.location.coordinates[1], city.location.coordinates[0] ]} /></>
-            : <div style={{ paddingBottom: "4em" }}>
-                <h2 style={{ margin: "1em" }}>Checkout</h2>
+            : <div style={{ paddingBottom: "4em",marginTop:"3em" }}>
+                <h2 style={{ margin: "1em",marginTop:"3em",marginBottom:"0em",paddingBottom:"0em"}}>Checkout</h2>
                 <div style={{ display: "flex", flexWrap: "wrap", width: "100%", justifyContent: "center" }}>
-
-                    <div style={{ width: "50%", minWidth: "360px", alignItems: "center", padding: "1em", margin: "1em" }}>
+                    <div style={{ width: "50%", minWidth: "340px", alignItems: "center", padding: "1em", margin: "1em" }}>
                         <div style={{ padding: "1em", margin: "1em", backgroundColor: "#efefef", borderRadius: "5px", width: "90%" }}>
                             <h5>Order From</h5>
                             {(!hotel || !city) ? <>None</> : <><p style={{ padding: "2px", marginBottom: "0px" }}>{hotelData.name}</p>
@@ -98,7 +130,7 @@ function Cart(props) {
                         <div style={{ width: "90%" }}>
                             <h5 style={{ width: "100%", padding: "0.5em", marginTop: "0.5em" }}>Order Summary</h5>
                         </div>
-                        <div style={{ width: "100%", display: "flex", justifyContent: "flex-start", alignItems: "center", flexDirection: "column", height: "400px", overflowY: "scroll", paddingTop: "1em", paddingBottom: "1em" }}>
+                        <div style={{ width: "100%", display: "flex", justifyContent: "flex-start", alignItems: "center", flexDirection: "column", height: "550px", overflowY: "scroll", paddingTop: "1em", paddingBottom: "1em" }}>
                             {(!hotel) ? <div style={{ display: "flex", justifyContent: "center", alignItems: "center", width: "100%", height: "100%" }}><h5>Cart is Empty</h5></div> : null}
                             {
                                 dishesData.map((data) => {
@@ -108,14 +140,9 @@ function Cart(props) {
                                 }
                                 )}
                         </div>
-                        <div style={{ marginTop: "2em", padding: "1em", border: "2px solid #efefef", borderRadius: "5px", width: "100%" }}>
-                            <img style={{ float: "right" }} src="https://img.icons8.com/ios-glyphs/30/000000/chevron-right.png" />
-                            <h5>Select Payment Method </h5>
-                            <p>Credit Card</p>
-
-                        </div>
+                        
                     </div>
-                    <div style={{ width: "35%", padding: "1em", minWidth: "360px" }}>
+                    <div style={{ width: "35%", padding: "1em", minWidth: "340px" }}>
                         <div style={{ width: "90%", padding: "1em", border: "2px solid #efefef", borderRadius: "5px", margin: "1em" }}>
                             <h5>{userData.user.firstName + " " + userData.user.lastName}</h5>
                             <p>You are securely logged in</p>
@@ -160,7 +187,7 @@ function Cart(props) {
                             <span style={{ alignItems: "center", display: "flex" }}><p style={{ margin: "0px" }}>8623046619</p>
                             </span>
                         </div>
-                        <button disabled style={{ textAlign: "center", border: "none", background: "var(--color1)", color: "white", width: "100%", paddingTop: "1em", paddingBottom: "1em", borderRadius: "5px" }}>Place Order</button>
+                        <button onClick={handlePayment} style={{ textAlign: "center", border: "none", background: "var(--color1)", color: "white", width: "100%", paddingTop: "1em", paddingBottom: "1em", borderRadius: "5px" }}>Proceed for payment</button>
                     </div >
 
                 </div>

@@ -8,6 +8,9 @@ const user = require('../models/user');
 const dish = require('../models/dish');
 const city =require('../models/city');
 const review = require('../models/review');
+const Razorpay = require('razorpay');
+const crypto = require('crypto');
+
 
 router.post('/signUp',(req,res)=>{
     
@@ -232,6 +235,7 @@ router.get('/orders/:orderId',(req,res)=>{
 });
 
 //place order
+/*
 router.post('/placeorder',(req,res)=>{
     //const placedByUserId=req.session.userId;
     const placedByUserId="622ee28c71f99c3c14dcfa91";
@@ -266,7 +270,7 @@ router.post('/placeorder',(req,res)=>{
     }).catch(err=>{
         res.status(400).send({err});
     })
-});
+});*/
 
 // delete order
 router.delete('/delete/order/orderId',(req,res)=>{
@@ -396,6 +400,113 @@ router.delete('/deletereview/order',(req,res)=>{
     })
 })
 
+router.post('/placeorder',async(req,res)=>{
+    try{
+        //const _id=req.session.userId;
+        const _id= "622ee28c71f99c3c14dcfa91";
+        user.findOne({_id:_id}).then(USER=>{
+            if(!USER){
+                res.status(400).send({message:"Error User Not Found"});
+                return;
+            }console.log("RS 1");
+            if(USER.cart.price<=0 || USER.cart.hotelId===null){
+                res.status(400).send({message:"Cart is Empty"});
+                return;
+            }console.log("RS 2");
+            console.log(process.env.KEY_ID);
+            console.log(process.env.KEY_SECRET);
+            const instance = new Razorpay({
+                key_id: process.env.KEY_ID,
+                key_secret:process.env.KEY_SECRET
+            })
+            console.log("RS 3"+USER.cart.price);
+            const options = {
+                amount:USER.cart.price*100,
+                currency:"INR",
+                receipt:crypto.randomBytes(10).toString("hex")
+            }
+            console.log("RS 4");
+            instance.orders.create(options,(error,order)=>{
+                if(error){
+                    console.log(error);
+                    return res.status(500).send({message:"Something Went Wrong!"});
+                }
+                res.status(200).send({data:order});
+            })
+        }).catch(error=>{
+            console.log(error);
+            res.status(400).send({errorMessage:"Something Went Wrong!"});
+            return;
+        })
+        
+    }catch(error){
+        console.log(error);
+        res.status(400).send({message:"Server Error"});
+    }
+})
 
+router.post('/payment/verify',async (req, res)=>{
+    try{
+        const {
+            razorpay_order_id,
+            razorpay_payment_id,
+            razorpay_signature
+        } = req.body;
+        console.log(req.body);
+        const sign = razorpay_order_id + '|' + razorpay_payment_id;
+        const expectedSign = crypto
+        .createHmac("sha256",process.env.KEY_SECRET)
+        .update(sign.toString())
+        .digest("hex");
+        console.log(expectedSign);
+        console.log(razorpay_signature);
+        if(razorpay_signature == expectedSign){
+            const placedByUserId="622ee28c71f99c3c14dcfa91";
+    
+    user.findOne({_id:placedByUserId})
+    .then(USER=>{
+        if(USER.cart.hotelId==null){
+            res.status(400).send("Cart is Empty");
+            return;
+        }
+        hotel.findOne({_id:USER.cart["hotelId"]})
+        .then(HOTEL=>{
+            if(!HOTEL){
+                res.status(404).send("No such Hotel present in this city.");
+                return;
+            }
+            const userInfo = {name:USER.name,phoneNumber:USER.phoneNumber};
+            //console.log({_id:razorpay_order_id,placedByUserId:"622ee28c71f99c3c14dcfa91",placedInHotelId:USER.cart["hotelId"],cityId:HOTEL.cityId,deliveryLocation:USER.cart["deliveryLocation"],userInfo,isPaid:true,deliverCharges:25,totalPrice:USER.cart['price']});
+            const ORDER = new order({paymentId:razorpay_order_id,orderPickup:HOTEL.location,placedByUserId:"622ee28c71f99c3c14dcfa91",placedInHotelId:USER.cart["hotelId"],cityId:HOTEL.cityId,deliveryLocation:USER.cart["deliveryLocation"],userInfo,isPaid:true,deliveryCharges:25,totalPrice:USER.cart['price'],order:USER.cart.items});
+            ORDER.save()
+            .then(()=>{
+                user.updateOne({_id:"622ee28c71f99c3c14dcfa91"},{$set:{"cart.hotelId":null,"cart.items":{},"cart.offer":null,"price":0,"cart.isPaid":false,"orderingFor":{}}})
+                .then(()=>{
+                    res.status(200).send("Order Placed Succesfully!");
+                    return;
+                }).catch(error=>{
+                    console.log(error);
+                    res.status(400).send({errorMessage:"Something Went Wrong!"});
+                    return;
+                })
+            }).catch(error=>{
+                console.log(error);
+                res.status(400).send({errorMessage:"Something Went Wrong!"});
+                return;
+            })
+        }).catch(err=>{
+            res.status(400).send({err});
+        })
+    }).catch(err=>{
+        res.status(400).send({err});
+    })
+        }else{
+            return res.status(500).send({paymentVerification:false,"message":"Invalid Signature send"});
+        }
+    }catch(error){
+        console.log(error);
+        res.status(500).send({errorMessage:"Internal Server Error"});
+    }
+})
 
 module.exports=router;

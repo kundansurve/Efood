@@ -41,7 +41,7 @@ function Hotel(props) {
     <div>
       <div
         style={{
-          backgroundImage: `url(${homeImage})`,
+          backgroundImage: (hotelData.img)?`url(${hotelData.img})`:`url(${homeImage})`,
           position: "absolute",
           top: "0px",
           left: "0px",

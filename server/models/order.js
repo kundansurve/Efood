@@ -2,6 +2,10 @@ const mongoose = require("mongoose");
 const { Schema } = mongoose;
 
 const orderSchema = new Schema({
+    paymentId:{
+        type:String,
+        required:true
+    },
     placedByUserId: {
         type: String,
         required: true
@@ -50,8 +54,7 @@ const orderSchema = new Schema({
     orderPickup:{
         type: {
             type: String,
-            enum: ['Point'],
-            required: true
+            enum: ['Point']
           },
           coordinates: {
             type: [Number],

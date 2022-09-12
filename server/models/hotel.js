@@ -7,6 +7,9 @@ const hotelSchema = new Schema({
         required: true,
         unique: true
     },
+    img:{
+        type:String
+    },
     name:{
         type: String,               //email of that Hotel
         required: true,
