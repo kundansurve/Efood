@@ -13,21 +13,22 @@ const Hotel =require('./models/hotel');
 const Review =require('./models/review');
 const userDb = require('./models/user');
 const registerHotel=require('./routes/registerHotel');
+const {userAuth,cityAdminAuth,deliveryBoyAuth,hotelAuth } =require( './middlewares/auth');
 
 
 router.use(express.json());
 router.use(express.urlencoded({ extended: true })); 
 
 
-router.use('/user/me', user);
+router.use('/user/me',userAuth, user);
 
-router.use('/hotel/me',hotel);
+router.use('/hotel/me',hotelAuth,hotel);
 
-router.use('/delivery-executive/me',deliveryBoy);
+router.use('/delivery-executive/me',deliveryBoyAuth,deliveryBoy);
 
 router.use('/authenticate',authenticate);
 
-router.use('/city/me',city);
+router.use('/city/me',cityAdminAuth,city);
 
 router.use('/sessions', sessions);
 

@@ -10,8 +10,7 @@ const dish = require("../models/dish");
 const order = require("../models/order");
 
 router.get("/orders", (req, res) => {
-  let id = "6225e37a02b267ae9583f1d3";
-  // let id=req.session.userId;
+  let id=req.session.userId;
   if (req.session.userType === "admin") {
     id = req.body.id;
   }
@@ -32,7 +31,7 @@ router.get("/orders", (req, res) => {
 
 router.post("/newdish", (req, res) => {
   const { name, isVeg, type, price } = req.body;
-  const hotelId = "6225e37a02b267ae9583f1d3";
+  const hotelId = req.session.userId;
   dish
     .find({ name, hotelId })
     .then((oldDish) => {

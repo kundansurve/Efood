@@ -53,8 +53,7 @@ router.post('/signUp',(req,res)=>{
 
 // update cart
 router.put('/addtocart',(req,res)=>{
-    //const _id=req.session.userId;
-    const _id="622ee28c71f99c3c14dcfa91";
+    const _id=req.session.userId;
     const {dishId}=req.body;
     dish.findOne({_id:dishId})
     .then((Dish)=>{
@@ -95,8 +94,7 @@ router.put('/addtocart',(req,res)=>{
 });
 
 router.put('/changeaddress', (req, res) => {
-    //const _id=req.session.userId;
-    const _id = "622ee28c71f99c3c14dcfa91";
+    const _id=req.session.userId;
     const address = req.body;
     user.findOne({ _id })
         .then((USER) => {
@@ -124,8 +122,7 @@ router.put('/changeaddress', (req, res) => {
 // Remove from Cart
 
 router.put('/removefromcart',(req,res)=>{
-    //const _id=req.session.userId;
-    const _id="622ee28c71f99c3c14dcfa91";
+    const _id=req.session.userId;
     const {dishId}=req.body;
     dish.findOne({_id:dishId})
     .then((Dish)=>{
@@ -178,9 +175,8 @@ router.put('/removefromcart',(req,res)=>{
 
 //get past searches 
 router.put('/pastsearches',(req,res)=>{
-     //const _id=req.session.userId;
-     const _id="622ee28c71f99c3c14dcfa91";
-    const {searchData} = req.body;
+     const _id=req.session.userId;
+     const {searchData} = req.body;
     user.findOne({_id})
     .then((USER)=>{
         if(USER){
@@ -200,9 +196,8 @@ router.put('/pastsearches',(req,res)=>{
 
 // update user info
 router.put('/update',(req,res)=>{
-     //const _id=req.session.userId;
-     const _id="622ee28c71f99c3c14dcfa91";
-    const update = req.body;
+     const _id=req.session.userId;
+     const update = req.body;
     user.UpdateOne({_id:_id},{$set:update})
     .then((USER)=>{
         res.status(200).send(USER);
@@ -213,9 +208,8 @@ router.put('/update',(req,res)=>{
 
 // get order by id
 router.get('/orders',(req,res)=>{
-     //const _id=req.session.userId;
-     const _id="622ee28c71f99c3c14dcfa91";
-    order.find({placedByUserId:_id})
+     const _id=req.session.userId;
+     order.find({placedByUserId:_id})
     .then((orders)=>{
         res.status(200).send({orders});
     }).catch(err=>{
@@ -224,9 +218,8 @@ router.get('/orders',(req,res)=>{
 });
 
 router.get('/orders/:orderId',(req,res)=>{
-    //const _id=req.session.userId;
+    const _id=req.session.userId;
     const orderId=req.params.orderId;
-    const _id="622ee28c71f99c3c14dcfa91";
     order.findOne({placedByUserId:_id,_id:orderId})
     .then((OrderDetail)=>{
         res.status(200).send({OrderDetail});
@@ -300,7 +293,7 @@ router.post('/createreview/order',(req,res)=>{
             if(!orderData){
                 return res.status(400).send("Wrong orderId no such order is present");
             }
-            if(orderData.placedByUserId!="622ee28c71f99c3c14dcfa91"){
+            if(orderData.placedByUserId!=req.session.userId){
                 return res.status(400).send("You cannot review this Order");
             }
             if(orderData.status!="Delivered"){
@@ -423,8 +416,7 @@ router.delete('/deletereview/order',(req,res)=>{
 
 router.post('/placeorder',async(req,res)=>{
     try{
-        //const _id=req.session.userId;
-        const _id= "622ee28c71f99c3c14dcfa91";
+        const _id=req.session.userId;
         user.findOne({_id:_id}).then(USER=>{
             if(!USER){
                 res.status(400).send({message:"Login Error"});
@@ -511,7 +503,7 @@ router.post('/payment/verify',async (req, res)=>{
         console.log(expectedSign);
         console.log(razorpay_signature);
         if(razorpay_signature == expectedSign){
-            const placedByUserId="622ee28c71f99c3c14dcfa91";
+            const placedByUserId=req.session.userId;
     
     user.findOne({_id:placedByUserId})
     .then(USER=>{
@@ -527,10 +519,10 @@ router.post('/payment/verify',async (req, res)=>{
             }
             const userInfo = {name:USER.name,phoneNumber:USER.phoneNumber};
             //console.log({_id:razorpay_order_id,placedByUserId:"622ee28c71f99c3c14dcfa91",placedInHotelId:USER.cart["hotelId"],cityId:HOTEL.cityId,deliveryLocation:USER.cart["deliveryLocation"],userInfo,isPaid:true,deliverCharges:25,totalPrice:USER.cart['price']});
-            const ORDER = new order({paymentId:razorpay_order_id,orderPickup:HOTEL.location,placedByUserId:"622ee28c71f99c3c14dcfa91",placedInHotelId:USER.cart["hotelId"],cityId:HOTEL.cityId,deliveryLocation:USER.cart["deliveryLocation"],userInfo,isPaid:true,deliveryCharges:25,totalPrice:USER.cart['price'],order:USER.cart.items});
+            const ORDER = new order({paymentId:razorpay_order_id,orderPickup:HOTEL.location,placedByUserId:req.session.userId,placedInHotelId:USER.cart["hotelId"],cityId:HOTEL.cityId,deliveryLocation:USER.cart["deliveryLocation"],userInfo,isPaid:true,deliveryCharges:25,totalPrice:USER.cart['price'],order:USER.cart.items});
             ORDER.save()
             .then(()=>{
-                user.updateOne({_id:"622ee28c71f99c3c14dcfa91"},{$set:{"cart.hotelId":null,"cart.items":{},"cart.offer":null,"price":0,"cart.isPaid":false,"orderingFor":{}}})
+                user.updateOne({_id:req.session.userId},{$set:{"cart.hotelId":null,"cart.items":{},"cart.offer":null,"price":0,"cart.isPaid":false,"orderingFor":{}}})
                 .then(()=>{
                     res.status(200).send("Order Placed Succesfully!");
                     return;

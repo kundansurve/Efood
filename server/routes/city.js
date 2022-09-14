@@ -10,8 +10,7 @@ const review = require('../models/review');
 const order = require('../models/order');
 
 router.get('/orders',(req,res)=>{
-    //const cityId = req.session.userId;
-    const cityId ="6225d3ee02b267ae9583f1c3";
+    const cityId = req.session.userId;
     order.find({cityId:cityId})
     .then((orders)=>{
         res.status(200).send({orders})
@@ -21,8 +20,7 @@ router.get('/orders',(req,res)=>{
 });
 
 router.get('/hotels',(req,res)=>{
-    //const cityId = req.session.userId;
-    const cityId ="6225d3ee02b267ae9583f1c3";
+    const cityId = req.session.userId;
     hotel.find({cityId:cityId})
     .then((hotels)=>{
         res.status(200).send({hotels})
@@ -32,8 +30,7 @@ router.get('/hotels',(req,res)=>{
 });
 
 router.post('/new-delivery-executive',(req,res)=>{
-    const cityId ="6225d3ee02b267ae9583f1c3";
-    //const cityId= req.session.userId;
+    const cityId= req.session.userId;
     const {email,name,location,password,phoneNumber}=req.body;
     if(!email || !name || !cityId || !location || !password || !phoneNumber){
         res.status(400).send("Incomplete request");
@@ -53,8 +50,7 @@ router.post('/new-delivery-executive',(req,res)=>{
 });
 
 router.get('/delivery-executives',(req,res)=>{
-    //const cityId = req.session.userId;
-    const cityId ="6225d3ee02b267ae9583f1c3"; 
+    const cityId = req.session.userId;
     deliveryBoy.find({cityId})
     .then((DeliveryExecutives)=>{
         if(DeliveryExecutives){
