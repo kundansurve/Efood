@@ -10,11 +10,12 @@ import location from './../assets/img/location.svg';
 import { Link } from 'react-router-dom';
 import { set } from 'mongoose';
 import TopDish from '../components/topDish';
+import Loading from './../components/loading';
 
 function Home(props){
   const [city,setCity]=useContext(City);
-  const [hotelsList,setHotelsList]=useState([]);
-  const [dishes,setDishes]=useState([]);
+  const [hotelsList,setHotelsList]=useState(null);
+  const [dishes,setDishes]=useState(null);
   const [filteredhotelsList,setFilteredHotelsList]=useState([]);
   const [filtereddishes,setFilteredDishes]=useState([]);
   const [topHotels,setTopHotels]=useState([]);
@@ -24,7 +25,11 @@ function Home(props){
   const onChangeCity=(e)=>{
      setFilteredDishes([]);
      setSearchData(null);
-     setFilteredHotelsList([])   
+     setFilteredHotelsList([]);
+     setDishes(null);
+     setTopDishes(null);
+     setTopHotels(null);  
+     setHotelsList(null);
     fetch('http://localhost:4000/api/hotels/'+e, {
         method: 'GET',
         headers: {
@@ -33,10 +38,13 @@ function Home(props){
       }).then(response => response.json())
       .then((data)=>{
         //alert(data);
-          setHotelsList(data.hotels);
+        data.hotels.sort(function(a, b){return (b.ratings/((b.numberofRatings-1)?b.numberofRatings-1:1))-(a.ratings/((a.numberofRatings-1>0)?a.numberofRatings-1:1))});
+          setTopHotels(data.hotels.slice(0,10));  
+        setHotelsList(data.hotels);
+          
       }).catch(error=>alert("hotelerror: "+error));
   
-  fetch('http://localhost:4000/api/hotels/top-rated/'+e, {
+  /*fetch('http://localhost:4000/api/hotels/top-rated/'+e, {
         method: 'GET',
         headers: {
           'Content-type': 'application/json; charset=UTF-8'
@@ -55,10 +63,9 @@ function Home(props){
         }
       }).then(response => response.json())
       .then((data)=>{
-        //alert(data);
           setTopDishes(data.dishes);
       }).catch(error=>alert("hotelerror: "+error));
-
+*/
       fetch('http://localhost:4000/api/city/dishes/'+e, {
         method: 'GET',
         headers: {
@@ -67,7 +74,9 @@ function Home(props){
       }).then(response => response.json())
       .then((data)=>{
         //alert(data);
-          setDishes(data.dishes);
+        data.dishes.sort(function(a, b){return (b.ratings/((b.numberofRatings-1>0)?b.numberofRatings-1:1))-(a.ratings/((a.numberofRatings-1>0)?a.numberofRatings-1:1))});
+        setTopDishes(data.dishes.slice(0,10));  
+        setDishes(data.dishes);
       }).catch(error=>alert("hotelerror: "+error));
     };
   
@@ -113,9 +122,8 @@ function Home(props){
   }
 
   const onClickOption = (keyword) => {
-    alert(keyword);
+    
     document.querySelector(`#searchBar`).value=keyword;
-    alert(document.querySelector(`#searchBar`).value);
     setFilteredDishes([]);
     setFilteredHotelsList([]);
     const newHotels=[];
@@ -181,7 +189,7 @@ function Home(props){
                     
                     <ul className="scroll" style={{padding:"0.2em",display:"flex",justifyContent:"flex-start",flexWrap:"wrap",alignItems:"flex-start",msOverflowStyle:"none",scrollbarWidth: "none"}}>
                         {searchedData.dishes.map(( dish)=>{
-                          return (<TopDish hotelId={dish.hotelId} name={dish.name} img={dish.img} _id={dish._id}/>);
+                          return (<TopDish hotelId={dish.hotelId} name={dish.name} img={dish.img} ratings={dish.ratings/((dish.numberofRatings-1)?dish.numberofRatings-1:1)} _id={dish._id}/>);
                         })
                         }
                     </ul>
@@ -191,7 +199,7 @@ function Home(props){
                     
                     <ul className="scroll" style={{padding:"0.2em",display:"flex",justifyContent:"flex-start",flexWrap:"wrap",alignItems:"flex-start",msOverflowStyle:"none",scrollbarWidth: "none"}}>
                         {searchedData.hotels.map(( hotel)=>{
-                          return <HotelCard name={hotel.name} id={hotel._id} ratings={hotel.ratings} img={hotel.img}/>
+                          return <HotelCard name={hotel.name} id={hotel._id} ratings={hotel.ratings/((hotel.numberofRatings-1)?hotel.numberofRatings-1:1)} img={hotel.img}/>
                         })
                         }
                     </ul>
@@ -214,30 +222,28 @@ function Home(props){
                 <span className='title'>HOT RATED CUISINE NEAR YOU</span>
                     <div style={{display:"flex",alignItems:"center",justifyContent:"flex-start",marginTop:"0.7em",marginBottom:"1.5em",width:"100%"}}>
                     
-                    <ul className="scroll" style={{padding:"0.2em",display:"flex",justifyContent:"flex-start",alignItems:"flex-start",overflowX:"scroll",msOverflowStyle:"none",scrollbarWidth: "none"}}>
-                    {(topDishes && topDishes.length<4)?<>
+                    <ul className="scroll" style={{width:"100%",padding:"0.2em",display:"flex",justifyContent:"flex-start",alignItems:"center",overflowX:"scroll",msOverflowStyle:"none",scrollbarWidth: "none"}}>
+                    {(!topDishes || topDishes.length==0)?(dishes)?<>
                       {dishes.map(( dish)=>{
-                          return (<TopDish hotelId={dish.hotelId} name={dish.name} img={dish.img} _id={dish._id}/>)
+                          return (<TopDish hotelId={dish.hotelId} name={dish.name} img={dish.img} ratings={dish.ratings/((dish.numberofRatings-1)?dish.numberofRatings-1:1)} _id={dish._id}/>)
                         })
                         }
-                    </>:null}
-                        {topDishes.map(( dish)=>{
-                          return (<TopDish hotelId={dish.hotelId} name={dish.name} img={dish.img} _id={dish._id}/>)
-                        })
-                        }
+                    </>:<Loading/>:(topDishes)?topDishes.map(( dish)=>{
+                          return (<TopDish hotelId={dish.hotelId} name={dish.name} img={dish.img} _id={dish._id} ratings={dish.ratings/((dish.numberofRatings-1)?dish.numberofRatings-1:1)}/>)
+                        }):<Loading/>}
+                        
                     </ul>
                     </div>
                     <span className='title'>TOP RATED HOTELS NEAR YOU</span>
                     <div style={{display:"flex",alignItems:"center",justifyContent:"flex-start",marginTop:"0.7em",marginBottom:"1.5em",width:"100%"}}>
                     
-                    <ul className="scroll" style={{padding:"0.2em",display:"flex",justifyContent:"flex-start",alignItems:"flex-start",overflowX:"scroll",msOverflowStyle:"none",scrollbarWidth: "none"}}>
-                        {(topHotels && topHotels.length<4)?<>{hotelsList.map(( hotel)=>{
-                          return <HotelCard name={hotel.name} id={hotel._id} ratings={hotel.ratings} img={hotel.img}/>
-                        })}</>:null}
-                        {topHotels.map(( hotel)=>{
-                          return <HotelCard name={hotel.name} id={hotel._id} ratings={hotel.ratings} img={hotel.img}/>
-                        })
-                        }
+                    <ul className="scroll" style={{width:"100%",padding:"0.2em",display:"flex",justifyContent:"flex-start",alignItems:"center",overflowX:"scroll",msOverflowStyle:"none",scrollbarWidth: "none"}}>
+                        {(!topHotels || topHotels.length==0)?(hotelsList)?<>{hotelsList.map(( hotel)=>{
+                          return <HotelCard name={hotel.name} id={hotel._id} ratings={hotel.ratings/((hotel.numberofRatings-1)?hotel.numberofRatings-1:1)} img={hotel.img}/>
+                        })}</>:<Loading/>:topHotels.map(( hotel)=>{
+                          return <HotelCard name={hotel.name} id={hotel._id} ratings={hotel.ratings/((hotel.numberofRatings-1)?hotel.numberofRatings-1:1)} img={hotel.img}/>
+                        })}
+                    
                     </ul>
                     </div></>
                     }

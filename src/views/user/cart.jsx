@@ -14,9 +14,9 @@ function Cart(props) {
     const [state, setState] = useState({
         openModal: false,
         address: {
-            coordinates: [],
-            address: '',
-            detailAddress: '',
+            coordinates: userData.user.cart.deliveryLocation.lnglat.coordinates,
+            address: userData.user.cart.deliveryLocation.address,
+            detailAddress: userData.user.cart.deliveryLocation.detailAddress
         }
     });
     const changeUserData = () => {
@@ -29,6 +29,8 @@ function Cart(props) {
                 }
                 sessionStorage.setItem("userData", JSON.stringify(data));
                 setUserData(data);
+                alert(JSON.stringify(data));
+                setState({...state,address:{coordinates:data.user.cart.deliveryLocation.lnglat.coordinates,address:data.user.cart.deliveryLocation.address,detailAddress:data.user.cart.deliveryLocation.detailAddress}})
             })
             .catch((error) => console.log(error));
         sessionStorage.setItem("City", city);
@@ -85,18 +87,27 @@ function Cart(props) {
 
     const handlePayment = async() =>{
         try{
+            alert(JSON.stringify(state));
+            if(!state.address.coordinates){
+                alert("Please set address");
+                return;
+            }
+            if(state.address.coordinates[0]>state.address.coordinates[0]+0.1 || state.address.coordinates[1]<state.address.coordinates[1]>0.1 || state.address.coordinates[0]<state.address.coordinates[0]-0.1 || state.address.coordinates[1]<state.address.coordinates[1]-0.1){
+                alert("Sorry this hotel orders cannot be placed at selected address");
+                return;
+            }
             const orderUrl = "http://localhost:4000/api/user/me/placeorder";
             const {data} = await axios.post(orderUrl,{});
             console.log(data);
             initPayment(data); 
         }catch(error){
-            console.log(error);
+            alert(error);
         }
     }
     const initPayment = (data) =>{
-        alert(JSON.stringify(data));
+        alert(process.env.KEY_ID);
         const options={
-            key:"rzp_test_5dQvC1DPSehFnU",
+            key:process.env.KEY_ID,
             amount:data.data.amount,
             currency:"INR",
             name:"Foodie",
@@ -117,7 +128,7 @@ function Cart(props) {
     }
     return (
         (state.openModal) ? <>
-            <SetAddress close={() => { }} onclick={(address) => { setState({ ...state, openModal: false, address: address }); changeAddress(address) }} bounds={[[city.location.coordinates[1]-0.04462452399, city.location.coordinates[0]-0.04736856406600], [city.location.coordinates[1]+0.04462452399, city.location.coordinates[0]+0.04736856406356]]} center={[city.location.coordinates[1], city.location.coordinates[0] ]} /></>
+            <SetAddress onClose={() => {setState({ ...state, openModal: false})}} onclick={(address) => { setState({ ...state, openModal: false, address: address }); changeAddress(address) }} bounds={[[city.location.coordinates[1]-0.1, city.location.coordinates[0]-0.1], [city.location.coordinates[1]+0.1, city.location.coordinates[0]+0.1]]} center={[city.location.coordinates[1], city.location.coordinates[0] ]} /></>
             : <div style={{ paddingBottom: "4em",marginTop:"3em" }}>
                 <h2 style={{ margin: "1em",marginTop:"3em",marginBottom:"0em",paddingBottom:"0em"}}>Checkout</h2>
                 <div style={{ display: "flex", flexWrap: "wrap", width: "100%", justifyContent: "center" }}>

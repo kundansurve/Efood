@@ -23,7 +23,6 @@ function NavbarInstance(props){
     })
     .then(resp=>resp.json())
     .then((data)=>{
-      alert(JSON.stringify(data));
     }).catch(error=>{
       alert(error);
     })

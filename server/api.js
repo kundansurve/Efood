@@ -50,105 +50,25 @@ router.get('/hotel/dishes/:hotelId',(req,res)=>{
 })
 
 router.get('/hotels/top-rated/:cityId',(req,res)=>{
-    function compare( a, b ) {
-        if ( a.rating > b.rating ){
-          return -1;
-        }
-        if ( a.rating < b.rating ){
-          return 1;
-        }
-        return 0;
-      }
-      function compare2( a, b ) {
-        if ( a.ratings > b.ratings ){
-          return -1;
-        }
-        if ( a.ratings < b.ratings ){
-          return 1;
-        }
-        return 0;
-      }
-    Review.aggregate([{$match:{cityId:req.params.cityId}},{$group:{"_id":"$hotel.hotelId","rating":{"$avg":"$hotel.rating"}}}])
-    .then((topHotels)=>{
-       topHotels.sort(compare);
-       const arr = [];
-        for(let a of topHotels){
-            arr.push(a._id);
-        }
-        if(arr.length==0){
-            res.status(200).send({hotels:[],ratings:[]});
-            return;
-        }
-       Hotel.find({cityId:req.params.cityId,"_id":arr.slice(0,10)})
-       .then((data)=>{
-        for(let a of data){
-            for(let b of topHotels){
-                if(a._id==b._id){
-                    a.ratings=b.rating;
-                    break;
-                }
-            }
-        }
-        data.sort(compare2);
-        res.status(200).send({hotels:data,ratings:topHotels.slice(0,10)});
+    const cityId = req.params.cityId;
+    Hotel.aggregate([{$match:{cityId:cityId}},{$group:{"_id":"$_id","email":{"$first":"$email"},"img":{"$first":"$img"},"name":{"$first":"$name"},"phoneNumber":{"$first":"$phoneNumber"},"cityId":{"$first":"$cityId"},"location":{"$first":"$location"},"ratings":{"$first":"$ratings"},"numberofRatings":{"$first":"$numberofRatings"},"createdAt":{"$first":"$createdAt"},"avgRating":{"$avg":{"$divide":["$ratings","$numberofRatings"]}},"updatedAt":{"$first":"$updatedAt"}}}]).sort({"avgRating":1})
+    .then((data)=>{
+        res.status(200).send({hotels:data});
     }).catch(error=>{
-        res.status(400).send({error:error});
-    })    
-    }).catch(error=>{
-        res.status(400).send({error:error});
+        console.log(error);
+        res.status(400).send(error);
     })
-    
 })
 
 router.get('/dishes/top-rated/:cityId',(req,res)=>{
-    function compare( a, b ) {
-        if ( a.rating > b.rating ){
-          return -1;
-        }
-        if ( a.rating < b.rating ){
-          return 1;
-        }
-        return 0;
-      }
-      function compare2( a, b ) {
-        if ( a.ratings > b.ratings ){
-          return -1;
-        }
-        if ( a.ratings < b.ratings ){
-          return 1;
-        }
-        return 0;
-      }
-      Review.aggregate([{$match:{cityId:req.params.cityId}},{$unwind: "$hotel.dishId" },{$group:{"_id":"$hotel.dishId","rating":{"$avg":"$hotel.rating"}}}])
-      .then((dishRating)=>{
-        dishRating.sort(compare);
-        const arr = [];
-        for(let a of dishRating){
-            arr.push(a._id);
-        }
-        if(arr.length==0){
-            res.status(200).send({dishes:[],ratings:[]});
-            return;
-        }
-        Dish.find({cityId:req.params.cityId,_id:arr.slice(0,10)})
-        .then(data=>{
-            for(let a of data){
-                for(let b of dishRating){
-                    if(a._id==b._id){
-                        a.ratings=b.rating;
-                        break;
-                    }
-                }
-            }
-            data.sort(compare2);
-            res.status(200).send({dishes:data,ratings:dishRating});
-        }).catch(error=>{
-            res.status(400).send({error});
-        })
-      }).catch(error=>{
-        res.status(400).send({error});
-    }) 
-    
+    const cityId = req.params.cityId;
+    Dish.aggregate([{$match:{cityId:cityId}},{$group:{"_id":"$_id","img":{"$first":"$img"},"name":{"$first":"$name"},"cityId":{"$first":"$cityId"},"ratings":{"$first":"$ratings"},"isVeg":{"$first":"$isVeg"},"type":{"$first":"$type"},"price":{"$first":"$price"},"hotelId":{"$first":"$hotelId"},"numberofRatings":{"$first":"$numberofRatings"},"createdAt":{"$first":"$createdAt"},"avgRating":{"$avg":{"$divide":["$ratings","$numberofRatings"]}},"updatedAt":{"$first":"$updatedAt"}}}]).sort({"avgRating":1})
+    .then((data)=>{
+        res.status(200).send({hotels:data});
+    }).catch(error=>{
+        console.log(error);
+        res.status(400).send(error);
+    })
 })
 
 router.get('/city/dishes/:cityId',(req,res)=>{
@@ -239,8 +159,6 @@ router.get('/hotels/hotel/:hotelId',(req,res)=>{
             }
         );
 });
-
-
 
 router.get('/deliveryBoy/:deliveryBoyId',(req,res)=>{
     if(!req.params.deliveryBoyId){

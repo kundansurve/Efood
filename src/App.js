@@ -20,41 +20,7 @@ import { Link,Navigate } from "react-router-dom";
 import ReviewPage from './views/user/reviewPage';
 
 function App() {
-  const [userData, setUserData] = useState({
-    userType: "User",
-    user:{
-      "_id":"622ee28c71f99c3c14dcfa91",
-      "email": "kundansurve01@gmail.com",
-      "firstName": "Kundan",
-      "lastName": "Surve",
-      "location": {
-        "coordinates": []
-      },
-      "phoneNumber": "8623046619",
-      "orders": [],
-      "pastSearches": [],
-      "cart": {
-        "orderingFor": {},    "hotelId": "6225e37a02b267ae9583f1d3",    "items": {      "62261a02d3140ef33b6f438d": 2,      "622619f6d3140ef33b6f438c": 2    },
-        "offer": null,
-        "price": 1040,
-        "isPaid": false,
-        "deliveryLocation": {
-          "address": "DHULE PRABHAT NAGAR",
-          "detailAddress": null,
-          "lnglat": {
-            "type": null,
-            "coordinates": null
-          }
-        }
-      },
-      "createdAt": "null",
-      "updatedAt": "null",
-      "__v": 0
-    },
-    location: { coordinates: [20.933614859088873, 74.77857721534356] },
-    isFree: true,
-    currentOrder: "",
-  });
+  const [userData, setUserData] = useState({});
 
   const [city, setCity] = useState("6225d3ee02b267ae9583f1c3");
   const fetchUserInfoFunc=()=>{

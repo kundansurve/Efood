@@ -47,7 +47,7 @@ function RegisterHotel(props) {
       .then((data) => {
         setCityList(data.cities);
         setSignUpDetails({ ...signUpDetails, city: data.cities[0] })
-        alert(JSON.stringify(data.cities))
+        
       }).catch(error => alert("cityError: " + error))
   }
     , []);
@@ -158,7 +158,7 @@ function RegisterHotel(props) {
                       ...signUpDetails,
                       city: cityList[e.target.value]
                     })
-                    alert(JSON.stringify(cityList[e.target.value]));
+                    
                   }}
                 >
                   {(cityList.map((data, index) => {

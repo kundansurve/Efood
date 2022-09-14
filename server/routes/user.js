@@ -10,6 +10,7 @@ const city =require('../models/city');
 const review = require('../models/review');
 const Razorpay = require('razorpay');
 const crypto = require('crypto');
+const deliveryBoy = require('../models/deliveryBoy');
 
 
 router.post('/signUp',(req,res)=>{
@@ -61,7 +62,7 @@ router.put('/addtocart',(req,res)=>{
             user.findOne({_id})
             .then((USER)=>{
                 if(Dish['hotelId']!=USER['cart']['hotelId']){
-                    const newCart = {...USER.cart,"hotelId":Dish["hotelId"],"items":{},"price":Dish["price"]};
+                    const newCart = {...USER.cart,"hotelId":Dish["hotelId"],"items":{},"price":Dish["price"],"ciyId":Dish["cityId"]};
                     newCart['items'][dishId]=1;
                     user.updateOne({_id},{$set:{cart:newCart}})
                     .then((user)=>res.status(200).send(user.cart))
@@ -90,7 +91,7 @@ router.put('/addtocart',(req,res)=>{
         }else{
             res.status(404).send("No such Dish present");
         }        
-    })
+    }).catch(err => res.status(400).send(err));
 });
 
 router.put('/changeaddress', (req, res) => {
@@ -299,7 +300,7 @@ router.post('/createreview/order',(req,res)=>{
             if(!orderData){
                 return res.status(400).send("Wrong orderId no such order is present");
             }
-            if(orderData.placedByUserId!=req.session.userId){
+            if(orderData.placedByUserId!="622ee28c71f99c3c14dcfa91"){
                 return res.status(400).send("You cannot review this Order");
             }
             if(orderData.status!="Delivered"){
@@ -308,9 +309,31 @@ router.post('/createreview/order',(req,res)=>{
             const Review = new review({hotel:{hotelId:orderData.placedInHotelId,dishId:Object.keys(orderData.order),review:hotelReview,rating:hotelRating},cityId:orderData.cityId,reviewedByName,reviewedById:orderData.placedByUserId,orderId:orderData._id,deliveryExecutive:{deliveryExecutiveId:orderData.assignedToDeliveryBoyId,review:deliveryExecutiveReview,rating:deliveryExecutiveRating}});
             Review.save()
             .then(()=>{
-                
-                res.status(200).send({hotel:{hotelId:orderData.placedInHotelId,dishId:Object.keys(orderData.order),review:hotelReview,rating:hotelRating},cityId:orderData.cityId,reviewedByName,reviewedById:orderData.placedByUserId,orderId:orderId,deliveryExecutive:{deliveryExecutiveId:orderData.assignedToDeliveryBoyId,review:deliveryExecutiveReview,rating:deliveryExecutiveRating}});
-                return;
+                deliveryBoy.updateOne({_id:orderData.assignedToDeliveryBoyId},{$inc:{ratings:deliveryExecutiveRating,numberofRatings:1}})
+                .then(()=>{
+                hotel.updateOne({_id:orderData.placedInHotelId},{$inc:{ratings:hotelRating,numberofRatings:1}})
+                .then(()=>{
+                    const keys = Object.keys(orderData.order);
+                    var i=0;
+                    function callRec(){
+                        if(i>=keys.length) return res.status(200).send({hotel:{hotelId:orderData.placedInHotelId,dishId:Object.keys(orderData.order),review:hotelReview,rating:hotelRating},cityId:orderData.cityId,reviewedByName,reviewedById:orderData.placedByUserId,orderId:orderId,deliveryExecutive:{deliveryExecutiveId:orderData.assignedToDeliveryBoyId,review:deliveryExecutiveReview,rating:deliveryExecutiveRating}});
+                        dish.updateOne({_id:keys[i]},{$inc:{ratings:hotelRating,numberofRatings:1}})
+                        .then(()=>{
+                            i++;
+                            return callRec();
+                        }).catch((error)=>{
+                            console.log(error);
+                            if(i==0) res.status(400).send({error});
+                            return false;
+                        })
+                }
+                callRec();
+                }).catch(error=>{
+                    res.status(400).send({error});
+                })
+            }).catch(error=>{
+                res.status(400).send({error});
+            })
             })
             .catch(error=>{
                 res.status(400).send({error});
@@ -318,12 +341,10 @@ router.post('/createreview/order',(req,res)=>{
             })
         })
         .catch(error=>{
-            
             res.status(400).send({error});
         })
     })
     .catch(error=>{
-        
         res.status(400).send({error});
     })
 })
@@ -406,33 +427,62 @@ router.post('/placeorder',async(req,res)=>{
         const _id= "622ee28c71f99c3c14dcfa91";
         user.findOne({_id:_id}).then(USER=>{
             if(!USER){
-                res.status(400).send({message:"Error User Not Found"});
+                res.status(400).send({message:"Login Error"});
                 return;
-            }console.log("RS 1");
-            if(USER.cart.price<=0 || USER.cart.hotelId===null){
-                res.status(400).send({message:"Cart is Empty"});
-                return;
-            }console.log("RS 2");
-            console.log(process.env.KEY_ID);
-            console.log(process.env.KEY_SECRET);
-            const instance = new Razorpay({
-                key_id: process.env.KEY_ID,
-                key_secret:process.env.KEY_SECRET
-            })
-            console.log("RS 3"+USER.cart.price);
-            const options = {
-                amount:USER.cart.price*100,
-                currency:"INR",
-                receipt:crypto.randomBytes(10).toString("hex")
             }
-            console.log("RS 4");
-            instance.orders.create(options,(error,order)=>{
-                if(error){
-                    console.log(error);
-                    return res.status(500).send({message:"Something Went Wrong!"});
+            console.log(USER.cart);
+            hotel.findOne({_id:USER.cart.hotelId})
+            .then((HOTEL)=>{
+                if(!HOTEL){
+                    res.status(400).send({message:"No such Hotel Present"});
+                    return;
                 }
-                res.status(200).send({data:order});
+                city.findOne({_id:HOTEL.cityId}).then((CITY)=>{
+                    if(!CITY){
+                        res.status(400).send({message:"Hotel Error"});
+                        return;
+                    }
+                    console.log(USER.cart.deliveryLocation);
+                    console.log(CITY);
+                    const userLat=USER.cart.deliveryLocation.lnglat.coordinates[0];
+                    const userLng=USER.cart.deliveryLocation.lnglat.coordinates[1];
+                    const cityLat = CITY.location.coordinates[0];
+                    const cityLng = CITY.location.coordinates[1];
+                    if(userLat<cityLat-0.1 || userLat>cityLat+0.1 || userLng<cityLng-0.1 || userLng>cityLng+0.1){
+                        res.status(400).send({message:"This hotel Order cannot be placed at this location!"});
+                        return;
+                    }
+                    if(USER.cart.price<=0 || USER.cart.hotelId===null){
+                        res.status(400).send({message:"Cart is Empty"});
+                        return;
+                    }
+                    const instance = new Razorpay({
+                        key_id: process.env.KEY_ID,
+                        key_secret:process.env.KEY_SECRET
+                    })
+                    
+                    const options = {
+                        amount:USER.cart.price*100,
+                        currency:"INR",
+                        receipt:crypto.randomBytes(10).toString("hex")
+                    }
+                    
+                    instance.orders.create(options,(error,order)=>{
+                        if(error){
+                            console.log(error);
+                            return res.status(500).send({message:"Something Went Wrong!"});
+                        }
+                        res.status(200).send({data:order});
+                    })
+                }).catch(error=>{
+                    console.log(error);
+                    return res.status(500).send({message:"Something Went Wrong!",error});
+                })
+            }).catch(error=>{
+                console.log(error);
+                return res.status(500).send({message:"Something Went Wrong!",error});
             })
+            
         }).catch(error=>{
             console.log(error);
             res.status(400).send({errorMessage:"Something Went Wrong!"});

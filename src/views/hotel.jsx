@@ -7,6 +7,7 @@ import "./CSS files/hotel.css";
 import DishSection from "../section/dishSection";
 import ReviewSection from "../section/reviews";
 import { City, UserType,UserData } from "../context";
+import LoadingSpinner from './../components/loading';
 
 function Hotel(props) {
   const [city, setCity] = useContext(City);
@@ -35,7 +36,7 @@ function Hotel(props) {
         width: "100%",
       }}
     >
-      <h2>No Such Hotel is present in this City</h2>
+      <LoadingSpinner/>
     </div>
   ) : (
     <div>
@@ -81,7 +82,7 @@ function Hotel(props) {
               })}
             </span>
           </span>
-          <h6>Location: {hotelData.location.address}</h6>
+          
         </div>
       </div>
       <div>
