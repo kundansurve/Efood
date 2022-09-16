@@ -31,7 +31,7 @@ class Dish extends Component {
     }
     const value = this.state.quantity;
     this.setState({ quantity: value + 1 });
-    fetch('http://localhost:4000/api/user/me/addtocart', {
+    fetch('/api/user/me/addtocart', {
       method: 'PUT',
       headers: {
         'Content-Type': 'application/json',
