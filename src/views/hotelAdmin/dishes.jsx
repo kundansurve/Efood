@@ -5,6 +5,7 @@ import InsertDish from "../../components/Hotel/insertDish";
 // import "../JS files/delivery";
 // import mapboxgl from "mapbox-gl";
 import DishInfo from "../../components/Hotel/dishInfo";
+import LoadingSpinner from "../../components/loading";
 
 function Dishes(props) {
   const [dishDetails, setDishDetails] = useState({
@@ -44,6 +45,18 @@ function Dishes(props) {
         alignItems: "center",
       }}
     >
+      {(!dishDetails.dishes || dishDetails.dishes.length==0) ? (
+    <div
+      style={{
+        display: "flex",
+        justifyContent: "center",
+        alignItems: "center",
+        height: "60vh",
+        width: "100%",
+      }}
+    >
+      <LoadingSpinner/>
+    </div>):null}
       {dishDetails.dishes.map((dishes, index) => {
         return (
           <DishInfo

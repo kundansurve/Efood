@@ -3,7 +3,7 @@ const userAuth = (req, res, next) => {
         res.status(401).send('Not Logged In');
         return;
     }
-    if(req.session.userType!='user'){
+    if(req.session.userType!='User'){
         res.status(401).send('Only user has access to this');
         return;
     }
@@ -15,7 +15,7 @@ const cityAdminAuth = (req, res, next) => {
         res.status(401).send('Not Logged In');
         return;
     }
-    if(req.session.userType!='cityAdmin'){
+    if(req.session.userType!='City'){
         res.status(401).send('Only Admin of respective city has access to this');
         return;
     }
@@ -27,7 +27,7 @@ const deliveryBoyAuth = (req, res, next) => {
         res.status(401).send('Not Logged In');
         return;
     }
-    if(req.session.userType!='deliveryBoy'){
+    if(req.session.userType!='DeliveryExecutive'){
         res.status(401).send('Only deliveryBoy has access.');
         return;
     }
@@ -39,7 +39,7 @@ const hotelAuth = (req, res, next) => {
         res.status(401).send('Not Logged In');
         return;
     }
-    if(req.session.userType!='hotel'){
+    if(req.session.userType!='Hotel'){
         res.status(401).send('Only Hotels has access.');
         return;
     }

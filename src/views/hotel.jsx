@@ -26,7 +26,7 @@ function Hotel(props) {
       .catch((error) => console.log(error));
   }, []);
 
-  return hotelData.cityId != city ? (
+  return !hotelData.cityId ? (
     <div
       style={{
         display: "flex",

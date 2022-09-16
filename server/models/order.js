@@ -39,7 +39,7 @@ const orderSchema = new Schema({
             type:String,
             default:null
         },
-        lngLat: {
+        lnglat: {
             type: {
                 type: String,
                 enum: ['Point'],

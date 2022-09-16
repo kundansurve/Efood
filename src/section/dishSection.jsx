@@ -4,9 +4,10 @@ import 'bootstrap/dist/css/bootstrap.min.css';
 import homeImage from '../assets/img/HomeImg.jpg'; 
 import Dish from '../components/user/dishCard';
 import { City, UserType,UserData } from "../context";
+import LoadingSpinner from '../components/loading';
 
 function DishSection(props){
-    const [dishesData,setDishesData] = useState([]);
+    const [dishesData,setDishesData] = useState(null);
     const [userData,setUserData] = useContext(UserData);
     console.log("userData: "+JSON.stringify(userData));
     useEffect(()=>{
@@ -17,12 +18,23 @@ function DishSection(props){
     }).catch(error=>console.log(error));
     },[])
         return (<div className="dishes" style={{display:"flex",height:"fit-content",flexDirection:"column",marginLeft:"0px",alignItems:"center"}}>
-        {
+        {(dishesData)?
             dishesData.map((data)=>{
                 //console.log(userData.user.cart.items + " "+ userData.user.cart.items[data._id]+" "+data._id)
-                return <Dish login={userData.userType} name={data.name} ratings={data.ratings} noOfRatings={data.numberofRatings} type={data.type} id={data._id} price={data.price} isVeg={data.isVeg} img={data.img} count={(userData.user!=undefined && userData.user.cart.items[data._id]!=undefined)?userData.user.cart.items[data._id]:0}/>
+                return <Dish login={userData.userType} name={data.name} ratings={data.ratings} noOfRatings={data.numberofRatings} type={data.type} id={data._id} price={data.price} isVeg={data.isVeg} img={data.img} count={(userData.user!=undefined && userData.user.cart.items &&userData.user.cart.items[data._id]!=undefined)?userData.user.cart.items[data._id]:0}/>
             })
-        }
+        :
+            <div
+              style={{
+                display: "flex",
+                justifyContent: "center",
+                alignItems: "center",
+                height: "60vh",
+                width: "100%",
+              }}
+            >
+              <LoadingSpinner/>
+            </div>}
         
     </div>);
     
