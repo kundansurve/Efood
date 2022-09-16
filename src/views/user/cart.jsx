@@ -38,7 +38,7 @@ function Cart(props) {
                 sessionStorage.setItem("userData", JSON.stringify(data));
                 setUserData(data);
                 setHotel((data.user.cart["hotelId"]) ? data.user.cart["hotelId"] : "")
-                setState({ ...state, address: { coordinates: data.user.cart.deliveryLocation.lnglat.coordinates, address: data.user.cart.deliveryLocation.address, detailAddress: data.user.cart.deliveryLocation.detailAddress } })
+                setState({ openModal:false, address: { coordinates: data.user.cart.deliveryLocation.lnglat.coordinates, address: data.user.cart.deliveryLocation.address, detailAddress: data.user.cart.deliveryLocation.detailAddress } })
                 if (!data.user.cart["hotelId"]) {
                     return;
                 }
@@ -83,7 +83,8 @@ function Cart(props) {
                 "Content-type": "application/json; charset=UTF-8",
             },
         }).then(data => {
-            changeUserData()
+            setState({ address:state.address,detailAddress:state.detailAddress,lnglat:state.lnglat, openModal: false })
+            changeUserData();
             console.log(data)
         })
             .catch(error => console.log(error));
@@ -123,7 +124,7 @@ function Cart(props) {
                 try {
                     const verifyUrl = "http://localhost:4000/api/user/me/payment/verify";
                     const { data } = await axios.post(verifyUrl, response);
-                    window.location = "http://localhost:3000/orders/"
+                    window.location = "http://localhost:4000/orders/"
                 } catch (error) {
                     console.log(error);
                 }
@@ -134,7 +135,7 @@ function Cart(props) {
     }
     return (
         (state.openModal) ? <>
-            <SetAddress onClose={() => { setState({ ...state, openModal: false }) }} onclick={(address) => { setState({ ...state, openModal: false, address: address }); changeAddress(address) }} bounds={[[city.location.coordinates[1] - 0.1, city.location.coordinates[0] - 0.1], [city.location.coordinates[1] + 0.1, city.location.coordinates[0] + 0.1]]} center={[city.location.coordinates[1], city.location.coordinates[0]]} /></>
+            <SetAddress onClose={() => { setState({ address:state.address,detailAddress:state.detailAddress,lnglat:state.lnglat, openModal: false }) }} onclick={(address) => { setState({ ...state, openModal: false, address: address }); changeAddress(address) }} bounds={[[city.location.coordinates[1] - 0.1, city.location.coordinates[0] - 0.1], [city.location.coordinates[1] + 0.1, city.location.coordinates[0] + 0.1]]} center={[city.location.coordinates[1], city.location.coordinates[0]]} /></>
             : <div style={{ paddingBottom: "4em", marginTop: "3em" }}>
                 <h2 style={{ margin: "1em", marginTop: "3em", marginBottom: "0em", paddingBottom: "0em" }}>Checkout</h2>
                 <div style={{ display: "flex", flexWrap: "wrap", width: "100%", justifyContent: "center" }}>

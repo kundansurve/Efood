@@ -64,9 +64,6 @@ function OrderTrack(){
         apiCall();
         
     }, [])
-    React.useEffect(() => {
-        
-    },[])
     return (
         <div style={{ width: "100%", marginBottom: "2em", display: "flex", flexDirection: "column", justifyContent: "center", alignItems: "center" }}>
             {(orderDetails.status && deliveryExecutive && deliveryExecutive.location && orderFromHotel.location && orderDetails.deliveryLocation&& cityDetails.location && orderDetails.status!="Delivered" && orderDetails.status!="Canceled" )?<TrackMap start={deliveryExecutive.location} pickUpPoint={orderFromHotel.location} center={cityDetails.location.coordinates} dropPoint={orderDetails.deliveryLocation.lnglat.coordinates} outForDelivery={(orderDetails.status!="Food is Being Processed")}/>:null}
@@ -120,7 +117,7 @@ function OrderTrack(){
                 <h5>Billing</h5>
                 <div style={{padding:"0.2em",textAlign:"center",display:"grid",gridTemplateColumns:"auto auto"}}>
                     <h6 style={{textAlign:"left"}}>Subtotal</h6>
-                    <p style={{textAlign:"right"}}>Rs.{orderDetails.totalPrice-75}</p>
+                    <p style={{textAlign:"right"}}>Rs.{orderDetails.totalPrice}</p>
                 </div>
                 <div style={{padding:"0.2em",textAlign:"center",display:"grid",gridTemplateColumns:"auto auto"}}>
                     <h6 style={{textAlign:"left"}} >taxes</h6>
@@ -133,7 +130,7 @@ function OrderTrack(){
                 <hr />
                 <div style={{padding:"0.2em",textAlign:"center",display:"grid",gridTemplateColumns:"auto auto"}}>
                     <h6 style={{textAlign:"left"}}>Grand Total</h6>
-                    <p style={{textAlign:"right"}}>RS.{orderDetails.totalPrice}</p>
+                    <p style={{textAlign:"right"}}>RS.{(orderDetails.totalPrice+75)}</p>
                 </div>
                 
             </div>

@@ -42,7 +42,7 @@ function SetAddress(props){
 
         return( 
         <div id='addressMap' style={{zIndex:'998',position:'fixed',top:'0px',left:'0px',width:'100%',height:'100%'}}>
-            <button onClick={()=>{props.onclick(state);props.close()}} style={{zIndex:'1000',backgroundColor:'var(--color1)',color:'white',padding:'1em',position:'absolute',bottom:'1em',margin:'auto 45%',borderRadius:'5px'}}>Set Adress</button>
+            <button onClick={()=>{props.onclick(state);}} style={{zIndex:'1000',backgroundColor:'var(--color1)',color:'white',padding:'1em',position:'absolute',bottom:'1em',margin:'auto 45%',borderRadius:'5px'}}>Set Adress</button>
         </div>);
 }
 

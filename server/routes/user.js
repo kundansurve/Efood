@@ -70,10 +70,10 @@ router.put('/changeaddress', (req, res) => {
                 return;
             }
             const newCart = USER["cart"];
-            newCart['address'] = address;
-            user.updateOne({ _id }, { $set: { cart: newCart } })
-                .then((user) => {
-                    res.status(200).send(user.cart);
+            newCart['deliveryLocation'] = address;
+            user.updateOne({ _id }, { $set: { "cart": newCart } })
+                .then(() => {
+                    res.status(200).send(address);
                     return;
                 })
                 .catch(err => res.status(400).send(err));
@@ -417,7 +417,7 @@ router.post('/placeorder',async(req,res)=>{
                     })
                     
                     const options = {
-                        amount:USER.cart.price*100,
+                        amount:(USER.cart.price+75)*100,
                         currency:"INR",
                         receipt:crypto.randomBytes(10).toString("hex")
                     }
