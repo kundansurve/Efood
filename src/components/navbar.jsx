@@ -198,10 +198,10 @@ function NavbarInstance(props){
         Previous Orders
     </div></a>
     </>:null}
-    <a href='#'>
+    {(userData['userType'])?<a href='#'>
       <div  className="colors" type="button" style={{color:'white',padding:"0.5em"}} onClick={logout}>
         LOGOUT
-    </div></a>
+    </div></a>:null}
           </div>
         </div>
       </div>
