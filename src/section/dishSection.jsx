@@ -11,7 +11,7 @@ function DishSection(props){
     const [userData,setUserData] = useContext(UserData);
     console.log("userData: "+JSON.stringify(userData));
     useEffect(()=>{
-        fetch("http://localhost:4000/api/hotel/dishes/"+window.location.pathname.split('/').pop())
+        fetch("/api/hotel/dishes/"+window.location.pathname.split('/').pop())
         .then(response=>response.json())
         .then((data)=>{
         setDishesData(data["dishes"]);

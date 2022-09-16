@@ -9,7 +9,7 @@ function ReviewSection(props){
      const [reviewsData,setReviewsData]=useState(null)
 
     useEffect(()=>{
-        fetch("http://localhost:4000/api/reviews/hotel/"+window.location.pathname.split('/').pop())
+        fetch("/api/reviews/hotel/"+window.location.pathname.split('/').pop())
         .then(response=>response.json())
         .then((data)=>{
             //alert(data["reviews"]);
