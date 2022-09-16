@@ -8,10 +8,15 @@ import Hotels from "./cityAdmin/hotels";
 import DeliveryExecutive from "./cityAdmin/deliveryExcecutive";
 // import Orders from "../views/hotelAdmin/orders";
 import { UserData } from "../context";
+import fetchUserInfoFunc from "./fetch";
+import { useEffect } from "react";
 
 function CityAdmin(props){
     const [key,setKey] = React.useState("Hotel");
-    const [hotelUser,setHotelUser]=React.useContext(UserData);
+    const [userData,setUserData]=React.useContext(UserData);
+    useEffect(()=>{
+      fetchUserInfoFunc(setUserData);
+    },[])
     return (
       <div>
         <div
@@ -141,7 +146,7 @@ function CityAdmin(props){
                   width: "95%",
                 }}
               >
-                <DeliveryExecutive hotelUser={hotelUser}/>
+                <DeliveryExecutive hotelUser={userData}/>
               </div>
             </div>
           </div>

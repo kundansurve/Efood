@@ -1,9 +1,7 @@
 const express = require('express');
 const router = express.Router();
-const loginCredential = require('../models/loginCredentials');
 const hotel=require('../models/hotel');
 const order = require('../models/order');
-const bcrypt = require('bcryptjs');
 const user = require('../models/user');
 const dish = require('../models/dish');
 const city =require('../models/city');
@@ -11,44 +9,9 @@ const review = require('../models/review');
 const Razorpay = require('razorpay');
 const crypto = require('crypto');
 const deliveryBoy = require('../models/deliveryBoy');
+const bcrypt = require('bcryptjs');
+const loginCredential = require('../models/loginCredentials');
 
-
-router.post('/signUp',(req,res)=>{
-    
-    const {email,password,firstName,lastName,phoneNumber} = req.body;
-    if(!email){
-        res.status(400).send({error:"Email not provided"});
-        return;
-    }
-    if(!password){
-        res.status(400).send({error:"Password not provided"});
-        return;
-    }
-    if(!phoneNumber){
-        res.status(400).send({error:"Password not provided"});
-        return;
-    }
-    loginCredential.findOne({email}).then(USER=>{
-        if(USER){
-            res.status(400).send({error:"User already Signed up"});
-            return;
-        }
-        const hash=bcrypt.hashSync(password);
-        const LoginCredential=new loginCredential({ email, password: hash,userType:"User"});
-
-        LoginCredential.save().then(()=>{
-            const User =new user({_id:LoginCredential._id, email,firstName,lastName,phoneNumber});
-            User.save().then(()=>{
-                req.session.userType = 'User';
-                req.session.userId = LoginCredential._id;
-                
-                res.status(201).send({_id: LoginCredential._id ,email,firstName:firstName ,lastName:lastName,phoneNumber});
-            });
-        });
-    }).catch(() => {
-        res.status(500).send({ error: "Internal Server Error" });
-    });
-});
 
 
 // update cart

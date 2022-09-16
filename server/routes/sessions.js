@@ -2,6 +2,10 @@ const express = require('express');
 const router = express.Router();
 const loginCredential = require('../models/loginCredentials');
 const bcrypt = require('bcryptjs');
+const USERDB = require('./../models/user');
+const deliveryBoy = require('../models/deliveryBoy');
+const city = require('../models/city');
+const hotel = require('../models/hotel');
 
 router.post('/',(req,res)=>{
     if (!req.body) {
@@ -26,7 +30,7 @@ router.post('/',(req,res)=>{
             return;
         }
 
-        const match = (password===user.password);//bcrypt.compareSync(password, user.password);
+        const match = bcrypt.compareSync(password, user.password);
 
         if (!match) {
             res.status(400).send({error: "Incorrect email or password"});
@@ -35,7 +39,55 @@ router.post('/',(req,res)=>{
         
         req.session.userType = user.userType;
         req.session.userId = user.id;
-        res.status(201).send({userType:req.session.userType});
+        if(user.userType=="User"){
+            USERDB.findOne({_id:user.id})
+            .then((USERDATA)=>{
+                if(!USERDATA){
+                    res.status(400).send({message:"Something Wrong with userData"});
+                    return;
+                }
+                res.status(201).send({userType:req.session.userType,user:USERDATA});
+            }).catch(error=>{
+                console.log(error);
+                res.status(400).send({message:"Something Wrong with userData fetching"});
+            })
+        }else if(user.userType=="DeliveryExecuitve"){
+            deliveryBoy.findOne({_id:user.id})
+            .then((DATA)=>{
+                if(!DATA){
+                    res.status(400).send({message:"Something Wrong with Delivery Executive"});
+                    return;
+                }
+                res.status(201).send({userType:req.session.userType,user:DATA});
+            }).catch(error=>{
+                console.log(error);
+                res.status(400).send({message:"Something Wrong with Delivery Executive fetching"});
+            })
+        }else if(user.userType=="City"){
+            city.findOne({_id:user.id})
+            .then((DATA)=>{
+                if(!DATA){
+                    res.status(400).send({message:"Something Wrong with city userData"});
+                    return;
+                }
+                res.status(201).send({userType:req.session.userType,user:DATA});
+            }).catch(error=>{
+                console.log(error);
+                res.status(400).send({message:"Something Wrong with city userData fetching"});
+            })
+        }else{
+            hotel.findOne({_id:user.id})
+            .then((DATA)=>{
+                if(!DATA){
+                    res.status(400).send({message:"Something Wrong with Hotel admin Data"});
+                    return;
+                }
+                res.status(201).send({userType:req.session.userType,user:DATA});
+            }).catch(error=>{
+                console.log(error);
+                res.status(400).send({message:"Something Wrong with Hotel admin fetching"});
+            })
+        }
         return;
     }).catch(() => {
         res.status(500).send({ error: "Internal Server Error" });

@@ -1,6 +1,6 @@
 import React from "react";
 import './../CSS files/ReviewPage.css';
-import {UserData,City} from './../../context';
+import {UserData,City, fetchUserInfo} from './../../context';
 
 function ReviewPage(){
     const [userData, setUserData] = React.useContext(UserData);
@@ -12,6 +12,7 @@ function ReviewPage(){
     const [deliveryExecutiveReview,setdeliveryExecutiveReview] = React.useState("");
 
     React.useEffect(()=>{
+        fetchUserInfo(setUserData);
         fetch(`http://localhost:4000/api/user/me/orders/${orderId}`)
             .then(resp => resp.json())
             .then(data => {

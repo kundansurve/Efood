@@ -13,6 +13,8 @@ const Hotel =require('./models/hotel');
 const Review =require('./models/review');
 const userDb = require('./models/user');
 const registerHotel=require('./routes/registerHotel');
+const bcrypt = require('bcryptjs');
+const loginCredential = require('./models/loginCredentials');
 const {userAuth,cityAdminAuth,deliveryBoyAuth,hotelAuth } =require( './middlewares/auth');
 
 
@@ -49,6 +51,47 @@ router.get('/hotel/dishes/:hotelId',(req,res)=>{
             }
         );
 })
+
+
+
+router.post('/signUp',(req,res)=>{
+    
+    const {email,password,firstName,lastName,phoneNumber} = req.body;
+    if(!email){
+        res.status(400).send({error:"Email not provided"});
+        return;
+    }
+    if(!password){
+        res.status(400).send({error:"Password not provided"});
+        return;
+    }
+    if(!phoneNumber){
+        res.status(400).send({error:"Password not provided"});
+        return;
+    }
+    loginCredential.findOne({email}).then(USER=>{
+        if(USER){
+            res.status(400).send({error:"User already Signed up"});
+            return;
+        }
+        const hash=bcrypt.hashSync(password);
+        const LoginCredential=new loginCredential({ email, password: hash,userType:"User"});
+
+        LoginCredential.save().then(()=>{
+            const User =new userDb({_id:LoginCredential._id, email,firstName,lastName,phoneNumber});
+            User.save().then(()=>{
+                req.session.userType = 'User';
+                req.session.userId = LoginCredential._id;
+                
+                res.status(201).send({user:{_id: LoginCredential._id ,email,firstName:firstName ,lastName:lastName,phoneNumber},userType:"User"});
+            });
+        });
+    }).catch(() => {
+        res.status(500).send({ error: "Internal Server Error" });
+    });
+});
+
+
 
 router.get('/hotels/top-rated/:cityId',(req,res)=>{
     const cityId = req.params.cityId;

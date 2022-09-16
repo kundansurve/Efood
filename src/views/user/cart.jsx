@@ -5,20 +5,25 @@ import Dish from '../../components/user/dishCard';
 import SetAddress from '../../components/map';
 import { UserData } from '../../context';
 import axios from 'axios';
+import fetchUserInfoFunc from '../fetch';
 
 function Cart(props) {
     //super(props);
     const [userData, setUserData] = useContext(UserData);
-    const [hotel, setHotel] = useState((userData.user.cart["hotelId"]) ? userData.user.cart["hotelId"] : "");
+    const [hotel, setHotel] = useState("");
     const [hotelData, setHotelData] = useState({});
+    const [city, setCity] = useState();
     const [state, setState] = useState({
         openModal: false,
         address: {
-            coordinates: userData.user.cart.deliveryLocation.lnglat.coordinates,
-            address: userData.user.cart.deliveryLocation.address,
-            detailAddress: userData.user.cart.deliveryLocation.detailAddress
+            coordinates: [],
+            address: null,
+            detailAddress: null
         }
     });
+    useEffect(()=>{
+        changeUserData();
+    },[])
     const changeUserData = () => {
         fetch("http://localhost:4000/api/authenticate/me")
             .then((response) => response.json())
@@ -29,13 +34,34 @@ function Cart(props) {
                 }
                 sessionStorage.setItem("userData", JSON.stringify(data));
                 setUserData(data);
+                setHotel((data.user.cart["hotelId"]) ? data.user.cart["hotelId"] : "")
                 alert(JSON.stringify(data));
                 setState({...state,address:{coordinates:data.user.cart.deliveryLocation.lnglat.coordinates,address:data.user.cart.deliveryLocation.address,detailAddress:data.user.cart.deliveryLocation.detailAddress}})
+                if (!data.user.cart["hotelId"]) {
+                    return;
+                }
+                fetch(
+                    "http://localhost:4000/api/hotels/hotel/" + data.user.cart["hotelId"]
+                )
+                    .then((response) => response.json())
+                    .then((HOTELDATA) => {
+                        setHotelData(HOTELDATA["hotel"]);
+                        fetch("http://localhost:4000/api/hotel/dishes/" + data.user.cart["hotelId"])
+                            .then(response => response.json())
+                            .then((DISHDATA) => {
+                                setDishesData(DISHDATA["dishes"]);
+                            }).catch(err => alert(err))
+                        fetch("http://localhost:4000/api/cities/city/" + HOTELDATA["hotel"].cityId)
+                            .then(response => response.json())
+                            .then((CITYDATA) => {
+                                setCity(CITYDATA['city']);
+                            }).catch(err => alert(err));
+                    }).catch(err => alert(err));
             })
             .catch((error) => console.log(error));
         sessionStorage.setItem("City", city);
     }
-    const [city, setCity] = useState();
+    
 
     const [dishesData, setDishesData] = useState([]);
     const changeAddress = (data) => {
@@ -62,28 +88,7 @@ function Cart(props) {
             .catch(error => console.log(error));
         }
 
-    useEffect(() => {
-        if (!hotel) {
-            return;
-        }
-        fetch(
-            "http://localhost:4000/api/hotels/hotel/" + hotel
-        )
-            .then((response) => response.json())
-            .then((data) => {
-                setHotelData(data["hotel"]);
-                fetch("http://localhost:4000/api/hotel/dishes/" + hotel)
-                    .then(response => response.json())
-                    .then((data) => {
-                        setDishesData(data["dishes"]);
-                    }).catch(err => alert(err))
-                fetch("http://localhost:4000/api/cities/city/" + data["hotel"].cityId)
-                    .then(response => response.json())
-                    .then((data) => {
-                        setCity(data['city']);
-                    }).catch(err => alert(err));
-            }).catch(err => alert(err));
-    }, []);
+    
 
     const handlePayment = async() =>{
         try{
@@ -145,7 +150,7 @@ function Cart(props) {
                             {(!hotel) ? <div style={{ display: "flex", justifyContent: "center", alignItems: "center", width: "100%", height: "100%" }}><h5>Cart is Empty</h5></div> : null}
                             {
                                 dishesData.map((data) => {
-                                    if (userData.user.cart.items[data._id]) {
+                                    if (userData.user && userData.user.cart.items[data._id]) {
                                         return <Dish login={userData.userType} name={data.name} ratings={data.ratings} noOfRatings={data.numberofRatings} type={data.type} id={data._id} price={data.price} isVeg={data.isVeg} img={data.img} count={userData.user.cart.items[data._id]} />
                                     } else return null;
                                 }
@@ -155,7 +160,7 @@ function Cart(props) {
                     </div>
                     <div style={{ width: "35%", padding: "1em", minWidth: "340px" }}>
                         <div style={{ width: "90%", padding: "1em", border: "2px solid #efefef", borderRadius: "5px", margin: "1em" }}>
-                            <h5>{userData.user.firstName + " " + userData.user.lastName}</h5>
+                            <h5>{(userData.user)?userData.user.firstName + " " + userData.user.lastName:null}</h5>
                             <p>You are securely logged in</p>
                         </div>
                         {/*<div style={{width:"90%",padding:"1em",border:"2px solid #efefef",borderRadius:"5px",margin:"1em"}}>
@@ -168,34 +173,34 @@ function Cart(props) {
             </div>*/}
                         <div style={{ width: "90%", padding: "1em", border: "2px solid #efefef", borderRadius: "5px", margin: "1em" }}>
                             <h5>Delivery Address</h5>
-                            <p>{userData.user.cart.deliveryLocation.address}</p>
+                            <p>{(userData.user)?userData.user.cart.deliveryLocation.address:null}</p>
                             <button style={{ margin: "auto auto", background: "transparent", border: "none", textDecoration: "underline", textAlign: "center" }} onClick={() => { if (!hotel || hotel == "") { return; } setState({ ...state, openModal: true }) }}>Change Address</button>
                         </div>
                         <div style={{ display: "flex", flexDirection: "column", width: "90%", padding: "1em", border: "2px solid #efefef", borderRadius: "5px", margin: "1em" }}>
                             <h5>Billing</h5>
                             <div style={{ padding: "0.2em" }}>
                                 <h6 style={{ float: "left", textAlign: "left" }}>Subtotal</h6>
-                                <p style={{ float: "right", textAlign: "right" }}>Rs. {userData.user.cart.price}</p>
+                                <p style={{ float: "right", textAlign: "right" }}>Rs. {(userData.user)?userData.user.cart.price:null}</p>
                             </div>
                             <div style={{ padding: "0.2em" }}>
                                 <h6 style={{ float: "left", textAlign: "left" }}>taxes</h6>
-                                <p style={{ float: "right", textAlign: "right" }}>Rs. {(userData.user.cart.price === 0) ? "0" : "50"}</p>
+                                <p style={{ float: "right", textAlign: "right" }}>Rs. {(!userData.user || userData.user.cart.price === 0) ? "0" : "50"}</p>
                             </div>
                             <div style={{ padding: "0.2em" }}>
                                 <h6 style={{ float: "left", textAlign: "left" }}>Delivery charges:</h6>
-                                <p style={{ float: "right", textAlign: "right" }}>Rs. {(userData.user.cart.price === 0) ? "0" : "25"}</p>
+                                <p style={{ float: "right", textAlign: "right" }}>Rs. {(!userData.user || userData.user.cart.price === 0) ? "0" : "25"}</p>
                             </div>
                             <hr />
                             <div style={{ padding: "0.2em" }}>
                                 <h6 style={{ float: "left", textAlign: "left" }}>Grand Total</h6>
-                                <p style={{ float: "right", textAlign: "right" }}>RS. {(userData.user.cart.price === 0) ? "0" : (userData.user.cart.price + 75)}</p>
+                                <p style={{ float: "right", textAlign: "right" }}>RS. {(!userData.user || userData.user.cart.price === 0) ? "0" : (userData.user.cart.price + 75)}</p>
                             </div>
 
                         </div>
                         <div style={{ width: "90%", padding: "1em", border: "2px solid #efefef", borderRadius: "5px", margin: "1em" }}>
                             <h5>Ordering For</h5>
-                            <p style={{ marginBottom: "0px" }}>{userData.user.firstName + " " + userData.user.lastName}</p>
-                            <span style={{ alignItems: "center", display: "flex" }}><p style={{ margin: "0px" }}>8623046619</p>
+                            <p style={{ marginBottom: "0px" }}>{(userData.user)?userData.user.firstName + " " + userData.user.lastName:null}</p>
+                            <span style={{ alignItems: "center", display: "flex" }}><p style={{ margin: "0px" }}>{(userData.user)?userData.user.phoneNumber:null}</p>
                             </span>
                         </div>
                         <button onClick={handlePayment} style={{ textAlign: "center", border: "none", background: "var(--color1)", color: "white", width: "100%", paddingTop: "1em", paddingBottom: "1em", borderRadius: "5px" }}>Proceed for payment</button>

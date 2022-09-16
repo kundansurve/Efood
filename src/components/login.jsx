@@ -4,6 +4,7 @@ import axios from "axios";
 import { City, UserType,UserData,fetchUserInfo } from "../context";
 
 function LoginPage(props) {
+  const [userData,setUserData]=useContext(UserData);
   const [show, setShow] = useState(false);
   const mainFunc = { title: props.title };
   const [action, setAction] = useState({ title: props.title });
@@ -44,7 +45,17 @@ function LoginPage(props) {
         .then((res) => {
           setAction(mainFunc);
           setShow(false);
-          fetchUserInfoFunc();
+          fetch("http://localhost:4000/api/authenticate/me")
+      .then((response) => response.json())
+      .then((data) => {
+        if (data["error"]) {
+          console.log(data["error"]);
+          return;
+        }
+        sessionStorage.setItem("userData", JSON.stringify(data));
+        setUserData(data);
+      })
+      .catch((error) => console.log(error));
         })
         .catch((error) => alert(error));
     } catch (err) {
@@ -53,7 +64,7 @@ function LoginPage(props) {
   };
   const signUp = () => {
     try {
-      fetch("http://localhost:4000/api/user/me/signUp", {
+      fetch("http://localhost:4000/api/signUp", {
         method: "POST",
         headers: {
           "Content-Type": "application/json",
@@ -64,6 +75,7 @@ function LoginPage(props) {
         .then((data) => {
           sessionStorage.setItem("userData", JSON.stringify(data));
           setAction(mainFunc);
+          setUserData(data);
           setShow(false);
         });
     } catch (err) {

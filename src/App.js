@@ -23,7 +23,7 @@ function App() {
   const [userData, setUserData] = useState({});
 
   const [city, setCity] = useState("6225d3ee02b267ae9583f1c3");
-  const fetchUserInfoFunc=()=>{
+  const fetchUserInfoFunc=(setUserData)=>{
     fetch("http://localhost:4000/api/authenticate/me")
       .then((response) => response.json())
       .then((data) => {
@@ -75,7 +75,7 @@ function App() {
     if (navigator.geolocation) {
       navigator.geolocation.getCurrentPosition(showPosition);
     } else {
-      alert('Please give acess to track your location');
+      alert('Please give access to track your location');
     }
   }
   const traceLocation = ()=>{
@@ -100,21 +100,12 @@ function App() {
             <Routes>
               <Route exact path="/" element={<Home />} />
               <Route exact path="/hotel/:hotelName" element={<Hotel />} />
-              {userData && userData.userType === "City" ? (
-                <>
-                  {/* City Admin Proctected Paths*/}
-                  <Route exact path="/cityAdmin/" element={<CityAdmin />} />
-                </>
-              ) : null}
-              {userData && userData.userType === "Hotel" ? (
-                <>
+              {/* City Admin Proctected Paths*/}
+                  <Route exact path="/cityAdmin" element={<CityAdmin />} />
+               
+              
                   {/* Hotel Admin Proctected Paths*/}
-                  <Route exact path="/hotelAdmin/" element={<HotelAdmin />} />
-                </>
-              ) : null}
-              {userData && userData.userType === "User" ? (
-                <>
-                  {/* User Proctected Paths*/}
+                  <Route exact path="/hotelAdmin" element={<HotelAdmin />} />
                   <Route exact path="/mycart" element={<Cart />} />
                   <Route exact path="/orders" element={<Orders />} />
                   <Route
@@ -123,10 +114,7 @@ function App() {
                     element={<OrderTrack />}
                   />
                   <Route exact path="/review/:orderid" element={<ReviewPage/>} />
-                </>
-              ) : null}
-              {userData && userData.userType === "DeliveryExecutive" ? (
-                <>
+                
                   {/* User Proctected Paths*/}
                   <Route
                     exact
@@ -143,9 +131,8 @@ function App() {
                     path="/delivery-executive/orders/order/:orderid"
                     element={<OrdersForDeliveryExecutive />}
                   />
-                </>
-              ) : null}
-              <Route exact path="*" element={<Navigate to="http://localhost:3000/" />} />
+                
+              <Route exact path="*" element={<Navigate to="/" />} />
             </Routes>
           </Router>
           <Footer />

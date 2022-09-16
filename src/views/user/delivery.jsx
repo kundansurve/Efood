@@ -2,9 +2,14 @@ import React, {Component} from 'react';
 import { render } from '@testing-library/react';
 import '../JS files/delivery';
 import TrackMap from './../../components/TrackMap';
+import { useEffect } from 'react';
+import { UserData } from '../../context';
+import { useContext } from 'react';
+import fetchUserInfoFunc from '../fetch';
 
 
 function OrderTrack(){
+    const [userData,setUserData]=useContext(UserData);
     const [orderDetails, setOrderDetails] = React.useState({ order: [] });
     const [orderId, setOrderId] = React.useState(window.location.pathname.split("/")[window.location.pathname.split("/").length - 1]);
     const [deliveryExecutive, setDeliveryExecutive] = React.useState(null);
@@ -12,6 +17,10 @@ function OrderTrack(){
     const [dishes, setDishes] = React.useState([]);
     const [orderLocation, setOrderLocation] = React.useState([27.0000,73.1111111]);
     const [cityDetails,setCityDetails] = React.useState({});
+
+    useEffect(()=>{
+        fetchUserInfoFunc(setUserData);
+    },[])
 
     const apiCall = () => {
         fetch(`http://localhost:4000/api/user/me/orders/${orderId}`)

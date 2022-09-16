@@ -23,8 +23,9 @@ function NavbarInstance(props){
     })
     .then(resp=>resp.json())
     .then((data)=>{
+      window.location="http://localhost:4000/";
     }).catch(error=>{
-      alert(error);
+      console.log(error);
     })
     setOpenHamburger(false);
     //window.location.href = "http://localhost:3000/";
@@ -40,7 +41,7 @@ function NavbarInstance(props){
           <div className="largeDevice" style={{float:"right",color:"white",marginRight:"1em",height:"100%",justifyContent:"center",alignItems:"center"}}>
           {(userData['userType'] && userData['userType']==='User')?
           <>
-          <a href='http://localhost:3000/'>
+          <a href='/'>
           <div  className="colors" type="button" style={{color:'white',padding:"0.5em"}}>
             Home
         </div></a>
@@ -57,7 +58,7 @@ function NavbarInstance(props){
 
         {(userData['userType'] && userData['userType']==='Hotel')?
           <>
-          <a href='http://localhost:3000/'>
+          <a href='/'>
           <div  className="colors" type="button" style={{color:'white',padding:"0.5em"}}>
             Home
         </div></a>
@@ -70,7 +71,7 @@ function NavbarInstance(props){
 
         {(userData['userType'] && userData['userType']==='City')?
           <>
-          <a href='http://localhost:3000/'>
+          <a href='/'>
           <div  className="colors" type="button" style={{color:'white',padding:"0.5em"}}>
             Home
         </div></a>
@@ -83,7 +84,7 @@ function NavbarInstance(props){
 
         {(userData['userType'] && userData['userType']==='DeliveryExecutive')?
           <>
-          <a href='http://localhost:3000/'>
+          <a href='/'>
           <div  className="colors" type="button" style={{color:'white',padding:"0.5em"}}>
             Home
         </div></a>
@@ -136,7 +137,7 @@ function NavbarInstance(props){
         }
         {(userData['userType'] && userData['userType']==='User')?
       <>
-      <a href='http://localhost:3000/'>
+      <a href='/'>
       <div  className="colors" type="button" style={{color:'white',padding:"0.5em"}}>
         Home
     </div></a>
@@ -153,7 +154,7 @@ function NavbarInstance(props){
 
     {(userData['userType'] && userData['userType']==='Hotel')?
       <>
-      <a href='http://localhost:3000/'>
+      <a href='/'>
       <div  className="colors" type="button" style={{color:'white',padding:"0.5em"}}>
         Home
     </div></a>
@@ -166,7 +167,7 @@ function NavbarInstance(props){
 
     {(userData['userType'] && userData['userType']==='City')?
       <>
-      <a href='http://localhost:3000/'>
+      <a href='/'>
       <div  className="colors" type="button" style={{color:'white',padding:"0.5em"}}>
         Home
     </div></a>
@@ -179,7 +180,7 @@ function NavbarInstance(props){
 
     {(userData['userType'] && userData['userType']==='DeliveryExecutive')?
       <>
-      <a href='http://localhost:3000/'>
+      <a href='/'>
       <div  className="colors" type="button" style={{color:'white',padding:"0.5em"}}>
         Home
     </div></a>
