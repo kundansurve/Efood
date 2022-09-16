@@ -14,18 +14,18 @@ export default function Order(props){
     useEffect(()=>{
         if(orderDetail && orderDetail.placedInHotelId){
             
-            fetch("http://localhost:4000/api/hotels/hotel/" + orderDetail.placedInHotelId)
+            fetch("/api/hotels/hotel/" + orderDetail.placedInHotelId)
                 .then((response) => response.json())
                 .then((data) => {
                   setHotelData(data["hotel"]);
                 })
                 .catch((error) => console.log(error));
-                fetch("http://localhost:4000/api/hotel/dishes/"+orderDetail.placedInHotelId)
+                fetch("/api/hotel/dishes/"+orderDetail.placedInHotelId)
                     .then(response=>response.json())
                     .then((data)=>{
                     setDishesData(data["dishes"]);
                 }).catch(error=>console.log(error));
-                fetch(`http://localhost:4000/api/isReviewedOrder/${orderDetail._id}`)
+                fetch(`/api/isReviewedOrder/${orderDetail._id}`)
             .then(resp=>resp.json())
             .then(data=>{
                 

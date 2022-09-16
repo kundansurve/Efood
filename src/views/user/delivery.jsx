@@ -23,16 +23,16 @@ function OrderTrack(){
     },[])
 
     const apiCall = () => {
-        fetch(`http://localhost:4000/api/user/me/orders/${orderId}`)
+        fetch(`/api/user/me/orders/${orderId}`)
             .then(resp => resp.json())
             .then(data => {
                 if(!data['OrderDetail']){
                     alert("No such Order id present");
-                    window.location="http://localhost:3000";
+                    window.location="/";
                 }
                 setOrderDetails(data['OrderDetail']);
                 
-            if(data['OrderDetail'].assignedToDeliveryBoyId){fetch("http://localhost:4000/api/deliveryBoy/"+data['OrderDetail'].assignedToDeliveryBoyId)
+            if(data['OrderDetail'].assignedToDeliveryBoyId){fetch("/api/deliveryBoy/"+data['OrderDetail'].assignedToDeliveryBoyId)
             .then((response) => response.json())
                 .then((deliveryExecutiveData) => {
                   setDeliveryExecutive(deliveryExecutiveData["deliveryBoy"]);
@@ -40,18 +40,18 @@ function OrderTrack(){
                     console.log(error);
                 })}
         
-                fetch(`http://localhost:4000/api/hotels/hotel/${data['OrderDetail'].placedInHotelId}`)
+                fetch(`/api/hotels/hotel/${data['OrderDetail'].placedInHotelId}`)
                     .then(resp => resp.json())
                     .then((hotelData) => {
                         setOrderFromHotel(hotelData.hotel);
                     }).catch(error => console.log(error))
-                    fetch(`http://localhost:4000/api/cities/city/${data['OrderDetail'].cityId}`)
+                    fetch(`/api/cities/city/${data['OrderDetail'].cityId}`)
                     .then(resp => resp.json())
                     .then((CityDetails) => {
                         setCityDetails(CityDetails['city']);
                         
                     }).catch(error => console.log(error))
-                    fetch(`http://localhost:4000/api/hotel/dishes/${data['OrderDetail'].placedInHotelId}`)
+                    fetch(`/api/hotel/dishes/${data['OrderDetail'].placedInHotelId}`)
                     .then(resp => resp.json())
                     .then((dishes) => {
                         setDishes(dishes.dishes);

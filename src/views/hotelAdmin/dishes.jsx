@@ -13,7 +13,7 @@ function Dishes(props) {
   });
 
   const resetDishes = () => {
-    fetch("http://localhost:4000/api/hotel/dishes/6225e37a02b267ae9583f1d3", {
+    fetch("/api/hotel/dishes/6225e37a02b267ae9583f1d3", {
       method: "GET",
       // body: JSON.stringify(dishDetails),
       headers: {

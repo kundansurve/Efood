@@ -13,7 +13,7 @@ class Orders extends React.Component {
     };
   }
   componentDidMount() {
-    fetch("http://localhost:4000/api/hotel/me/orders")
+    fetch("/api/hotel/me/orders")
       .then((resp) => resp.json())
       .then((data) => {
         this.setState({ orders: data.orders });
@@ -21,7 +21,7 @@ class Orders extends React.Component {
       .catch((error) => {
         console.log(error);
       });
-    fetch("http://localhost:4000/api/hotel/dishes/6225e37a02b267ae9583f1d3")
+    fetch("/api/hotel/dishes/6225e37a02b267ae9583f1d3")
       .then((resp) => resp.json())
       .then((data) => {
         this.setState({ dishes: data.dishes });

@@ -18,28 +18,28 @@ function Order(props) {
     const [cityDetails,setCityDetails] = React.useState({});
     
     const apiCall = () => {
-        fetch(`http://localhost:4000/api/delivery-executive/me/order/${orderId}`)
+        fetch(`/api/delivery-executive/me/order/${orderId}`)
             .then(resp => resp.json())
             .then(data => {
                 setOrderDetails(data.order);
-                fetch(`http://localhost:4000/api/users/user/${data.order.placedByUserId}`)
+                fetch(`/api/users/user/${data.order.placedByUserId}`)
                     .then(resp => resp.json())
                     .then((deliverTo) => {
                         setDeliverTo(deliverTo);
                     }).catch(error => console.log(error))
-                fetch(`http://localhost:4000/api/hotels/hotel/${data.order.placedInHotelId}`)
+                fetch(`/api/hotels/hotel/${data.order.placedInHotelId}`)
                     .then(resp => resp.json())
                     .then((hotelData) => {
                         setOrderFromHotel(hotelData.hotel);
                     }).catch(error => console.log(error))
-                    fetch(`http://localhost:4000/api/cities/city/${data.order.cityId}`)
+                    fetch(`/api/cities/city/${data.order.cityId}`)
                     .then(resp => resp.json())
                     .then((CityDetails) => {
                         setCityDetails(CityDetails['city']);
                         
                     }).catch(error => console.log(error))
                     
-                fetch(`http://localhost:4000/api/hotel/dishes/${data.order.placedInHotelId}`)
+                fetch(`/api/hotel/dishes/${data.order.placedInHotelId}`)
                     .then(resp => resp.json())
                     .then((dishes) => {
                         setDishes(dishes.dishes);
@@ -54,7 +54,7 @@ function Order(props) {
     }, [])
 
     const recievedFromHotel = () => {
-        fetch("http://localhost:4000/api/delivery-executive/me/order/recieved-from-hotel", {
+        fetch("/api/delivery-executive/me/order/recieved-from-hotel", {
             method: "PUT",
             body: JSON.stringify({ recieved: true }),
             headers: {
@@ -66,7 +66,7 @@ function Order(props) {
             }).catch(error => console.log(error));
     }
     const delivered = () => {
-        fetch("http://localhost:4000/api/delivery-executive/me/order/delivered", {
+        fetch("/api/delivery-executive/me/order/delivered", {
             method: "PUT",
             headers: {
                 "Content-type": "application/json; charset=UTF-8",

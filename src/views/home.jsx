@@ -30,7 +30,7 @@ function Home(props){
      setTopDishes(null);
      setTopHotels(null);  
      setHotelsList(null);
-    fetch('http://localhost:4000/api/hotels/'+e, {
+    fetch('/api/hotels/'+e, {
         method: 'GET',
         headers: {
           'Content-type': 'application/json; charset=UTF-8'
@@ -44,7 +44,7 @@ function Home(props){
           
       }).catch(error=>alert("hotelerror: "+error));
   
-  /*fetch('http://localhost:4000/api/hotels/top-rated/'+e, {
+  /*fetch('/api/hotels/top-rated/'+e, {
         method: 'GET',
         headers: {
           'Content-type': 'application/json; charset=UTF-8'
@@ -56,7 +56,7 @@ function Home(props){
           setTopHotels(data.hotels);
       }).catch(error=>alert("hotelerror: "+error));
   
-      fetch('http://localhost:4000/api/dishes/top-rated/'+e, {
+      fetch('/api/dishes/top-rated/'+e, {
         method: 'GET',
         headers: {
           'Content-type': 'application/json; charset=UTF-8'
@@ -66,7 +66,7 @@ function Home(props){
           setTopDishes(data.dishes);
       }).catch(error=>alert("hotelerror: "+error));
 */
-      fetch('http://localhost:4000/api/city/dishes/'+e, {
+      fetch('/api/city/dishes/'+e, {
         method: 'GET',
         headers: {
           'Content-type': 'application/json; charset=UTF-8'
@@ -82,7 +82,7 @@ function Home(props){
   
   useEffect(()=>
   {
-    fetch('http://localhost:4000/api/cities/', {
+    fetch('/api/cities/', {
           method: 'GET',
           headers: {
             'Content-type': 'application/json; charset=UTF-8'

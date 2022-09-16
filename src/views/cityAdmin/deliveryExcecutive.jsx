@@ -9,7 +9,7 @@ function DeliveryExecutive(props) {
   const hotelUser=props.hotelUser;
   const [deliveryExecutives,setdeliveryExecutives] = React.useState([]); 
   useEffect(()=>{
-    fetch("http://localhost:4000/api/city/me/delivery-executives")
+    fetch("/api/city/me/delivery-executives")
     .then((resp)=>resp.json())
     .then(data=>{
       setdeliveryExecutives(data.deliveryExecutives);
@@ -17,7 +17,7 @@ function DeliveryExecutive(props) {
   },[])
 
   const resetDeliveryExecutives=()=>{
-    fetch("http://localhost:4000/api/city/me/delivery-executives")
+    fetch("/api/city/me/delivery-executives")
     .then((resp)=>resp.json())
     .then(data=>{
       setdeliveryExecutives(data.deliveryExecutives);

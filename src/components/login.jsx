@@ -35,7 +35,7 @@ function LoginPage(props) {
 
   const login = () => {
     try {
-      fetch("http://localhost:4000/api/sessions/", {
+      fetch("/api/sessions/", {
         method: "POST",
         body: JSON.stringify(loginDetails),
         headers: {
@@ -45,7 +45,7 @@ function LoginPage(props) {
         .then((res) => {
           setAction(mainFunc);
           setShow(false);
-          fetch("http://localhost:4000/api/authenticate/me")
+          fetch("/api/authenticate/me")
       .then((response) => response.json())
       .then((data) => {
         if (data["error"]) {
@@ -64,7 +64,7 @@ function LoginPage(props) {
   };
   const signUp = () => {
     try {
-      fetch("http://localhost:4000/api/signUp", {
+      fetch("/api/signUp", {
         method: "POST",
         headers: {
           "Content-Type": "application/json",

@@ -28,7 +28,7 @@ function Cart(props) {
         changeUserData();
     }, [])
     const changeUserData = () => {
-        fetch("http://localhost:4000/api/authenticate/me")
+        fetch("/api/authenticate/me")
             .then((response) => response.json())
             .then((data) => {
                 if (data["error"]) {
@@ -43,17 +43,17 @@ function Cart(props) {
                     return;
                 }
                 fetch(
-                    "http://localhost:4000/api/hotels/hotel/" + data.user.cart["hotelId"]
+                    "/api/hotels/hotel/" + data.user.cart["hotelId"]
                 )
                     .then((response) => response.json())
                     .then((HOTELDATA) => {
                         setHotelData(HOTELDATA["hotel"]);
-                        fetch("http://localhost:4000/api/hotel/dishes/" + data.user.cart["hotelId"])
+                        fetch("/api/hotel/dishes/" + data.user.cart["hotelId"])
                             .then(response => response.json())
                             .then((DISHDATA) => {
                                 setDishesData(DISHDATA["dishes"]);
                             }).catch(err => alert(err))
-                        fetch("http://localhost:4000/api/cities/city/" + HOTELDATA["hotel"].cityId)
+                        fetch("/api/cities/city/" + HOTELDATA["hotel"].cityId)
                             .then(response => response.json())
                             .then((CITYDATA) => {
                                 setCity(CITYDATA['city']);
@@ -76,7 +76,7 @@ function Cart(props) {
                 coordinates: data.coordinates,
             }
         };
-        fetch("http://localhost:4000/api/user/me/changeaddress", {
+        fetch("/api/user/me/changeaddress", {
             method: "PUT",
             body: JSON.stringify(deliveryLocation),
             headers: {
@@ -103,7 +103,7 @@ function Cart(props) {
                 alert("Sorry this hotel orders cannot be placed at selected address");
                 return;
             }
-            const orderUrl = "http://localhost:4000/api/user/me/placeorder";
+            const orderUrl = "/api/user/me/placeorder";
             const { data } = await axios.post(orderUrl, {});
             console.log(data);
             initPayment(data);
@@ -122,9 +122,9 @@ function Cart(props) {
             handler: async (response) => {
 
                 try {
-                    const verifyUrl = "http://localhost:4000/api/user/me/payment/verify";
+                    const verifyUrl = "/api/user/me/payment/verify";
                     const { data } = await axios.post(verifyUrl, response);
-                    window.location = "http://localhost:4000/orders/"
+                    window.location = "/orders/"
                 } catch (error) {
                     console.log(error);
                 }

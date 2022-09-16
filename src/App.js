@@ -24,7 +24,7 @@ function App() {
 
   const [city, setCity] = useState("6225d3ee02b267ae9583f1c3");
   const fetchUserInfoFunc=(setUserData)=>{
-    fetch("http://localhost:4000/api/authenticate/me")
+    fetch("/api/authenticate/me")
       .then((response) => response.json())
       .then((data) => {
         if (data["error"]) {
@@ -39,7 +39,7 @@ function App() {
   }
   useEffect(() => {
     // fetching the data of user if user is login
-    fetch("http://localhost:4000/api/authenticate/me")
+    fetch("/api/authenticate/me")
       .then((response) => response.json())
       .then((data) => {
         if (data["error"]) {

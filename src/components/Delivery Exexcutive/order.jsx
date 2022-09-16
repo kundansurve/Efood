@@ -5,7 +5,7 @@ export default function Order(props){
     const [hotel,setHotel]=useState();
     const resetOrders = props.resetOrders;
     useEffect(()=>{
-        fetch(`http://localhost:4000/api/hotels/hotel/${props.order.placedInHotelId}`)
+        fetch(`/api/hotels/hotel/${props.order.placedInHotelId}`)
         .then(resp=>resp.json())
         .then(hotelData=>{
             setHotel(hotelData.hotel);
@@ -15,7 +15,7 @@ export default function Order(props){
 
     const onClickAccept=()=>{
         
-        fetch(`http://localhost:4000/api/delivery-executive/me/accept/order/${order._id}`, {
+        fetch(`/api/delivery-executive/me/accept/order/${order._id}`, {
         method: "PUT",
         headers: {
           "Content-type": "application/json; charset=UTF-8",

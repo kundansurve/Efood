@@ -14,7 +14,7 @@ class Hotels extends Component {
     }
   }
   componentDidMount() {
-    fetch("http://localhost:4000/api/city/me/hotels")
+    fetch("/api/city/me/hotels")
     .then((resp)=>resp.json())
     .then(data=>{
       this.setState({hotels:data.hotels});

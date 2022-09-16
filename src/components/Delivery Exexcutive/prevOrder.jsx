@@ -6,7 +6,7 @@ export default function Order(props){
     const [hotel,setHotel]=useState();
     const resetOrders = props.resetOrders;
     useEffect(()=>{
-        fetch(`http://localhost:4000/api/hotels/hotel/${props.order.placedInHotelId}`)
+        fetch(`/api/hotels/hotel/${props.order.placedInHotelId}`)
         .then(resp=>resp.json())
         .then(hotelData=>{
             setHotel(hotelData.hotel);

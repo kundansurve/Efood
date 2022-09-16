@@ -1,5 +1,5 @@
 const fetchUserInfoFunc=(setUserData)=>{
-    fetch("http://localhost:4000/api/authenticate/me")
+    fetch("/api/authenticate/me")
       .then((response) => response.json())
       .then((data) => {
         if (data["error"]) {

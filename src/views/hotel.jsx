@@ -16,7 +16,7 @@ function Hotel(props) {
   const [userData,setUserData]=useContext(UserData);
   useEffect(() => {
     fetch(
-      "http://localhost:4000/api/hotels/hotel/" +
+      "/api/hotels/hotel/" +
         window.location.pathname.split("/").pop()
     )
       .then((response) => response.json())

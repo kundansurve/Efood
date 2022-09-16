@@ -215,7 +215,7 @@ function InsertDish(props) {
                   name="submit"
                   value="Save"
                   onClick={() => {
-                    fetch("http://localhost:4000/api/hotel/me/newdish", {
+                    fetch("/api/hotel/me/newdish", {
                       method: "POST",
                       body: JSON.stringify(dishDetails),
                       headers: {

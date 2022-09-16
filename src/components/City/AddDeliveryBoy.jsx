@@ -23,7 +23,7 @@ function AddDeliveryBoy(props) {
     }
   };
   const onClickAdd=()=>{
-    fetch("http://localhost:4000/api/city/me/new-delivery-executive", {
+    fetch("/api/city/me/new-delivery-executive", {
         method: "POST",
         body: JSON.stringify({email,name,location,password,phoneNumber}),
         headers: {

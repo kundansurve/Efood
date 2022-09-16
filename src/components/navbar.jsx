@@ -15,7 +15,7 @@ function NavbarInstance(props){
   const logout = () =>{
     sessionStorage.removeItem("userData");
     setUserData({});
-    fetch('http://localhost:4000/api/sessions/me',{
+    fetch('/api/sessions/me',{
       method: "DELETE",
       headers: {
         "Content-type": "application/json; charset=UTF-8",
@@ -23,7 +23,7 @@ function NavbarInstance(props){
     })
     .then(resp=>resp.json())
     .then((data)=>{
-      window.location="http://localhost:4000/";
+      window.location="/";
     }).catch(error=>{
       console.log(error);
     })

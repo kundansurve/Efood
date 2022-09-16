@@ -13,16 +13,16 @@ function ReviewPage(){
 
     React.useEffect(()=>{
         fetchUserInfo(setUserData);
-        fetch(`http://localhost:4000/api/user/me/orders/${orderId}`)
+        fetch(`/api/user/me/orders/${orderId}`)
             .then(resp => resp.json())
             .then(data => {
                 setReviewedByName(userData.user.firstName+" "+userData.user.lastName);
-                fetch(`http://localhost:4000/api/isReviewedOrder/${orderId}`)
+                fetch(`/api/isReviewedOrder/${orderId}`)
             .then(resp=>resp.json())
             .then(data=>{
                 if(data.reviewed){
                     alert("This Order is already Reviewed"); 
-                    window.location="http://localhost:3000/";
+                    window.location="/";
                 }
             }).catch(error=>{
                 console.log(error);
@@ -38,7 +38,7 @@ function ReviewPage(){
             alert("Please Fill all the Details");
             return;
         }
-        fetch('http://localhost:4000/api/user/me/createreview/order',{
+        fetch('/api/user/me/createreview/order',{
             method: "POST",
             body: JSON.stringify({orderId,reviewedByName,hotelReview,deliveryExecutiveRating,hotelRating,deliveryExecutiveReview}),
             headers: {
@@ -49,7 +49,7 @@ function ReviewPage(){
           .then((data)=>{
             //if(data==='Order is not yet Delivered'){
                 alert(JSON.stringify(data))
-                window.location="http://localhost:3000/";
+                window.location="/";
             //}
           }).catch(error=>{
             alert(error);

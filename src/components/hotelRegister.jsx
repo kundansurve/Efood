@@ -20,7 +20,7 @@ function RegisterHotel(props) {
   const registerHotel = () => {
     const hotelData = { email: signUpDetails.email, name: signUpDetails.name, phoneNumber: signUpDetails.phoneNumber, cityId: signUpDetails.city._id, location: address, password: signUpDetails.password };
     try {
-      fetch("http://localhost:4000/api/hotel/register", {
+      fetch("/api/hotel/register", {
         method: "POST",
         body: JSON.stringify(hotelData),
         headers: {
@@ -38,7 +38,7 @@ function RegisterHotel(props) {
   }
 
   useEffect(() => {
-    fetch('http://localhost:4000/api/cities/', {
+    fetch('/api/cities/', {
       method: 'GET',
       headers: {
         'Content-type': 'application/json; charset=UTF-8'
