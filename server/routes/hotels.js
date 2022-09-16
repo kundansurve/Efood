@@ -14,12 +14,12 @@ router.get("/orders", (req, res) => {
   if (req.session.userType === "admin") {
     id = req.body.id;
   }
-  if (!req.session.userType === "hotel" && !req.session.userType === "admin") {
+  if (!req.session.userType === "Hotel" && !req.session.userType === "admin") {
     res.status(400).send("Only User has Access to view the orders");
     return;
   }
   order
-    .find({ placedInHotel: id })
+    .find({ placedInHotelId: id })
     .then((orders) => {
       res.status(200).send({ orders });
       return;

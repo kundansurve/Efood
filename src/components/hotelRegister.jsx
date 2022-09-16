@@ -9,6 +9,7 @@ function RegisterHotel(props) {
   const [cityList, setCityList] = useState([]);
   const [hotelCity, setHotelCity] = useState(null);
   const [openModal, setOpenModal] = useState(false);
+  const [cityIndex,setCityIndex] = useState(0);
   const [address, setAddress] = useState(
     {
       coordinates: [],
@@ -29,6 +30,7 @@ function RegisterHotel(props) {
       })
       .then((d)=>{
         setOpenModal(false);
+        setShow(false);
       }).catch((error)=>{
         alert(error);
       })
@@ -46,6 +48,7 @@ function RegisterHotel(props) {
     }).then(response => response.json())
       .then((data) => {
         setCityList(data.cities);
+        console.log("CITIES:"+JSON.stringify(data.cities));
         setSignUpDetails({ ...signUpDetails, city: data.cities[0] })
         
       }).catch(error => alert("cityError: " + error))
@@ -75,7 +78,7 @@ function RegisterHotel(props) {
 
   return (
     (openModal) ? <>
-      <SetAddress close={() => { setOpenModal(false) }} onclick={(address) => { setAddress(address) }} bounds={[[signUpDetails.city.location.coordinates[1], signUpDetails.city.location.coordinates[0]], [signUpDetails.city.location.coordinates[3], signUpDetails.city.location.coordinates[2]]]} center={[(signUpDetails.city.location.coordinates[1] + signUpDetails.city.location.coordinates[3]) / 2, (signUpDetails.city.location.coordinates[0] + signUpDetails.city.location.coordinates[2]) / 2]} /></> :
+      <SetAddress close={() => { setOpenModal(false) }} onclick={(address) => { setAddress(address);setOpenModal(false); }} bounds={[[signUpDetails.city.location.coordinates[1]-0.1, signUpDetails.city.location.coordinates[0]-0.1], [signUpDetails.city.location.coordinates[1]+0.1, signUpDetails.city.location.coordinates[0]+0.1]]} center={[signUpDetails.city.location.coordinates[1], signUpDetails.city.location.coordinates[0] ]} /></> :
       <>
         <div className="colors" type="button" style={{ color: "white", borderRadius: "5px", border: "1px solid white", padding: "0.3em", margin: '0.5em' }} onClick={handleShow}>
           Register Hotel
@@ -83,7 +86,7 @@ function RegisterHotel(props) {
         <div className="loginSection" style={{ display: (show) ? "flex" : "none", position: "fixed", top: "0px", zIndex: "999" }} >
           <div id="logincard" >
             <img type="button" className="close" src="https://img.icons8.com/ios/50/000000/delete-sign--v1.png" name="close" style={{ width: "20px", float: "right", margin: "1em" }} onClick={handleClose} />
-            <div id="logincard-content" style={{ height: "650px" }}>
+            <div id="logincard-content" style={{ height: "fit-content" }}>
 
               <div id="logincard-title">
                 <h2 >Register Hotel</h2>
@@ -152,8 +155,14 @@ function RegisterHotel(props) {
                   type="password"
                   name="password"
                   required
-                  value={signUpDetails.city}
+                  value={cityIndex[0]}
                   onChange={(e) => {
+                    setAddress({
+                      coordinates: [],
+                      address: '',
+                      detailAddress: '',
+                    });
+                    setCityIndex(e.target.value);
                     setSignUpDetails({
                       ...signUpDetails,
                       city: cityList[e.target.value]
@@ -169,7 +178,7 @@ function RegisterHotel(props) {
                 <label for="location" style={{ paddingTop: "22px" }}>
                   &nbsp;Location
                 </label>
-                <span
+                <span type="button"
                   id="location"
                   className="form-content"
                   name="address"
@@ -178,7 +187,7 @@ function RegisterHotel(props) {
                   onClick={(e) =>
                     setOpenModal(true)
                   }
-                >{address.address.substring(0, 33)}...</span>
+                >{(address.address && address.address.length>0)?address.address.substring(0, 30):"Add Your Hotel Location"}...</span>
 
                 <div className="form-border"></div>
 

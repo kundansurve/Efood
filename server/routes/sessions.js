@@ -9,31 +9,31 @@ const hotel = require('../models/hotel');
 
 router.post('/',(req,res)=>{
     if (!req.body) {
-        res.status(400).send({error: "Email and Password not present in request"});
+        res.status(404).send({error: "Email and Password not present in request"});
         return;
     }
 
     const { email, password } = req.body;
 
     if (!email) {
-        res.status(400).send({error: "Email must be provided"});
+        res.status(404).send({error: "Email must be provided"});
         return;
     }
 
     if (!password) {
-        res.status(400).send({error: "Without password cannot login"});
+        res.status(404).send({error: "Without password cannot login"});
         return;
     }
     loginCredential.findOne({ email }).then(user => {
         if (!user) {
-            res.status(400).send({error: "User not signed up"});
+            res.status(404).send({error: "User not signed up"});
             return;
         }
 
         const match = bcrypt.compareSync(password, user.password);
 
         if (!match) {
-            res.status(400).send({error: "Incorrect email or password"});
+            res.status(404).send({error: "Incorrect email or password"});
             return;
         }
         
@@ -49,7 +49,7 @@ router.post('/',(req,res)=>{
                 res.status(201).send({userType:req.session.userType,user:USERDATA});
             }).catch(error=>{
                 console.log(error);
-                res.status(400).send({message:"Something Wrong with userData fetching"});
+                res.status(404).send({message:"Something Wrong with userData fetching"});
             })
         }else if(user.userType=="DeliveryExecuitve"){
             deliveryBoy.findOne({_id:user.id})

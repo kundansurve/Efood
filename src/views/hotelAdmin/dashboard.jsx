@@ -10,6 +10,10 @@ class Dashboard extends Component {
     super(props);
     this.state = { quantity: 0 };
   }
+  componentDidMount(){
+
+  }
+  
   render() {
     return (
       <div>

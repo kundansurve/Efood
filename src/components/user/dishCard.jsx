@@ -15,7 +15,7 @@ class Dish extends Component {
   }
   componentDidMount(){
     
-        fetch(`http://localhost:4000/api/ratings-of/dish/${this.state.id}`)
+        fetch(`/api/ratings-of/dish/${this.state.id}`)
         .then(resp=>resp.json())
         .then((data)=>{
             this.setState({ratings:data.rating});
@@ -51,7 +51,7 @@ class Dish extends Component {
     const value = this.state.quantity;
     if (value > 0) {
       this.setState({ quantity: value - 1 });
-      fetch('http://localhost:4000/api/user/me/removefromcart', {
+      fetch('/api/user/me/removefromcart', {
         method: 'PUT',
         headers: {
           'Content-Type': 'application/json',

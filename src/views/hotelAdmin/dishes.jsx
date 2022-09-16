@@ -13,7 +13,7 @@ function Dishes(props) {
   });
 
   const resetDishes = () => {
-    fetch("/api/hotel/dishes/6225e37a02b267ae9583f1d3", {
+    fetch(`/api/hotel/dishes/${window.location.pathname.split("/").pop()}`, {
       method: "GET",
       // body: JSON.stringify(dishDetails),
       headers: {
@@ -45,7 +45,7 @@ function Dishes(props) {
         alignItems: "center",
       }}
     >
-      {(!dishDetails.dishes || dishDetails.dishes.length==0) ? (
+      {(!dishDetails.dishes) ? (
     <div
       style={{
         display: "flex",

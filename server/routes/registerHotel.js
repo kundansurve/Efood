@@ -15,12 +15,15 @@ router.post('/',(req,res)=>{
         res.status(404).send("Incomplete request");
         return;
     }
+    const img="https://encrypted-tbn0.gstatic.com/images?q=tbn:ANd9GcSpDrLzJ3tLjXZN_gm8Nb2BWJwbq2aUiBSKyA&usqp=CAU";
     const hash=bcrypt.hashSync(password);
-    const LoginCredential=new loginCredential({ email,phoneNumber, password: hash,userType:"Hotel"});
+    const LoginCredential=new loginCredential({ email,phoneNumber, password: hash,userType:"Hotel",img});
     LoginCredential.save().then(()=>{
-        const Hotel = new hotel({_id: LoginCredential._id,phoneNumber,email,name,cityId,location});
+        const Hotel = new hotel({_id: LoginCredential._id,phoneNumber,email,name,cityId,location,img});
         Hotel.save().then(()=>{
-            res.status(200).send({hotel:Hotel})
+            req.session.userType = 'Hotel';
+        req.session.userId = LoginCredential._id;
+            res.status(200).send({user:Hotel,userType:'Hotel'});
             return;
         }).catch(error=>{res.status(400).send(error)});
     }).catch(error=>{res.status(400).send(error)});

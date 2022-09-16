@@ -21,7 +21,7 @@ class Orders extends React.Component {
       .catch((error) => {
         console.log(error);
       });
-    fetch("/api/hotel/dishes/6225e37a02b267ae9583f1d3")
+    fetch(`/api/hotel/dishes/${window.location.pathname.split("/").pop()}`)
       .then((resp) => resp.json())
       .then((data) => {
         this.setState({ dishes: data.dishes });
@@ -41,7 +41,8 @@ class Orders extends React.Component {
             padding: "1em",
           }}
         >
-          <h3 style={{ padding: "0 1em 0" }}>All Orders</h3>
+          
+          {(this.state.orders.length==0)?<h3 style={{ padding: "0 1em 0" }}>No Orders</h3>:<h3 style={{ padding: "0 1em 0" }}>All Orders</h3>}
           {this.state.orders.map((order) => {
             return (
               <Order

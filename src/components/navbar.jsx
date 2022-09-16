@@ -28,12 +28,11 @@ function NavbarInstance(props){
       console.log(error);
     })
     setOpenHamburger(false);
-    //window.location.href = "http://localhost:3000/";
   }
 
       return (<>
         <nav className="navbar" style={{width:"100%",height:"4em",background:"var(--color1)",position:"fixed",left:"0px",top:"0px"}}>
-          <a href="http://localhost:3000/"><div style={{height:"100%",width:"5em",color:"white",fontSize:"25px",fontWeight:"500",display:"flex",justifyContent:"center",alignItems:"center",float:"left"}}>Foodie</div>
+          <a href="/"><div style={{height:"100%",width:"5em",color:"white",fontSize:"25px",fontWeight:"500",display:"flex",justifyContent:"center",alignItems:"center",float:"left"}}>Foodie</div>
           </a><div style={{float:"right",marginRight:"1em",padding:"0.5em",display:"none",height:"100%",justifyContent:"center",alignItems:"center"}}>
           <img src="https://img.icons8.com/ultraviolet/40/000000/test-account.png"/>
           <button style={{color:"wheat",zIndex:"4"}}>Register Hotel</button>
@@ -103,7 +102,7 @@ function NavbarInstance(props){
           <>
           <div style={{width:"200px",margin:"0px"}}> 
           <div class="dropdown" style={{width:"100%"}}>
-        <span className="dropbtn" style={{padding:"10px"}}><img  style={{margin:"5px"}} src="https://img.icons8.com/color/30/26e07f/test-account.png"/>Hello! {userData['user']['firstName'] || userData['user']['name']}</span>
+        <span className="dropbtn" style={{padding:"10px"}}><img  style={{margin:"5px"}} src="https://img.icons8.com/color/30/26e07f/test-account.png"/>Hello! {(userData['user']['firstName'])?userData['user']['firstName'].split(' ')[0].substring(0,14):null} {(userData['user']['name'])?userData['user']['name'].split(' ')[0].substring(0,14):null}</span>
 
     <div className="dropdown-content">
       <a href="#" onClick={logout}>Logout</a>

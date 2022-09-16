@@ -82,7 +82,7 @@ class Footer extends Component {
         <div className="copyright-area">
             <div className="container">
                 <div className="row" style={{color:"white",textAlign:"center",justifyContent:"center"}}>
-                    Made by KDSURVE
+                    Made by Kundan Surve and Dipam Patle
                 </div>
             </div>
         </div>

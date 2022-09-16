@@ -50,6 +50,7 @@ function LoginPage(props) {
       .then((data) => {
         if (data["error"]) {
           console.log(data["error"]);
+          alert(data.error || data.errormassege || data.message)
           return;
         }
         sessionStorage.setItem("userData", JSON.stringify(data));

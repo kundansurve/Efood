@@ -11,7 +11,7 @@ import Orders from "../views/hotelAdmin/orders";
 class HotelAdmin extends Component {
   constructor(props) {
     super(props);
-    this.state = { key: "Dashboard" };
+    this.state = { key: "Order" };
   }
 
   componentDidMount() {
@@ -80,28 +80,7 @@ class HotelAdmin extends Component {
                   padding: "1em",
                 }}
               >
-                <button
-                  id="dashboard-section"
-                  style={{
-                    backgroundColor: "transparent",
-                    borderRadius: "2px",
-                    padding: "1em",
-                    paddingBottom: "0em",
-                    border:
-                      this.state.key === "Dashboard"
-                        ? "2px solid #efefef"
-                        : "none",
-                    borderBottom:
-                      this.state.key === "Dashboard"
-                        ? "none"
-                        : "2px solid #efefef",
-                  }}
-                  onClick={() => {
-                    this.setState({ key: "Dashboard" });
-                  }}
-                >
-                  Dashboard
-                </button>
+                
                 <button
                   id="dish-section"
                   style={{
@@ -118,7 +97,7 @@ class HotelAdmin extends Component {
                     this.setState({ key: "Dish" });
                   }}
                 >
-                  Dish
+                  Cuisines
                 </button>
                 <button
                   id="order-section"
