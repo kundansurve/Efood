@@ -32,7 +32,6 @@ function Cart(props) {
             .then((response) => response.json())
             .then((data) => {
                 if (data["error"]) {
-                    alert(data["error"]);
                     return;
                 }
                 sessionStorage.setItem("userData", JSON.stringify(data));
@@ -94,7 +93,6 @@ function Cart(props) {
 
     const handlePayment = async () => {
         try {
-            alert(JSON.stringify(state));
             if (!state.address.coordinates) {
                 alert("Please set address");
                 return;
@@ -112,7 +110,6 @@ function Cart(props) {
         }
     }
     const initPayment = (data) => {
-        alert(process.env.KEY_ID);
         const options = {
             key: process.env.KEY_ID,
             amount: data.data.amount,
