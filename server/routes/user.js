@@ -485,7 +485,7 @@ router.post('/payment/verify',async (req, res)=>{
             const ORDER = new order({paymentId:razorpay_order_id,orderPickup:HOTEL.location,placedByUserId:req.session.userId,placedInHotelId:USER.cart["hotelId"],cityId:HOTEL.cityId,deliveryLocation:USER.cart["deliveryLocation"],userInfo,isPaid:true,deliveryCharges:25,totalPrice:USER.cart['price'],order:USER.cart.items});
             ORDER.save()
             .then(()=>{
-                user.updateOne({_id:req.session.userId},{$set:{"cart.hotelId":null,"cart.items":{},"cart.offer":null,"price":0,"cart.isPaid":false,"orderingFor":{}}})
+                user.updateOne({_id:req.session.userId},{$set:{"cart.hotelId":null,"cart.items":{},"cart.offer":null,"cart.price":0,"cart.isPaid":false,"orderingFor":{}}})
                 .then(()=>{
                     res.status(200).send("Order Placed Succesfully!");
                     return;
