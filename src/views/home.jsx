@@ -22,6 +22,7 @@ function Home(props){
   const [topDishes,setTopDishes]=useState([]);
   const [cityList,setCityList]=useState([]);
   const [searchedData,setSearchData]=useState(null);
+  const [searchInput,setSearchInput]=useState(null);
   const onChangeCity=(e)=>{
      setFilteredDishes([]);
      setSearchData(null);
@@ -123,7 +124,8 @@ function Home(props){
 
   const onClickOption = (keyword) => {
     
-    document.querySelector(`#searchBar`).value=keyword;
+    if(keyword)document.querySelector(`#searchBar`).value=keyword;
+    else keyword = document.querySelector(`#searchBar`).value;
     setFilteredDishes([]);
     setFilteredHotelsList([]);
     const newHotels=[];
@@ -156,9 +158,9 @@ function Home(props){
                           }))}
                        </select>
                        
-                       </form><form autocomplete="off" action="/action_page.php" style={{width:"100%",maxWidth:"500px"}}>
+                       </form><form autocomplete="off" onSubmit={(e)=>{e.preventDefault();onClickOption(null)}} style={{width:"100%",maxWidth:"500px"}}>
   <div className="autocomplete" style={{width:"100%",maxWidth:"500px"}}>
-    <input id="searchBar" type="text" name="searchBar" style={{height:"45px",border:"none",borderRadius:"0 5px 5px 0",padding:"0.5em",width:"100%",maxWidth:"500px"}} placeholder="Enter any Restaurants, dish or cuisine" onChange={(e)=>{onSearch(e.target.value)}}/>
+    <input id="searchBar" type="text" name="" style={{height:"45px",border:"none",borderRadius:"0 5px 5px 0",padding:"0.5em",width:"100%",maxWidth:"500px"}} placeholder="Enter any Restaurants, dish or cuisine" onChange={(e)=>{e.preventDefault();onSearch(e.target.value)}}/>
     
     </div>
     {(filtereddishes.length>0 ||filteredhotelsList.length>0 )?<div className="options" style={{width:"100%",height:"fit-content",backgroundColor:"white"}}>
@@ -183,7 +185,7 @@ function Home(props){
                 <div style={{display:"flex",maxWidth:"1200px",justifyContent:"center",margin:"auto",padding:"0px",width:"100%",flexDirection:"column"}}>
                 {(searchedData)?<>
                   
-                  {(searchedData.dishes.length==0 && searchedData.hotels.length==0)?<>NO SEARCH RESULTS FOUND</>:<span className='title'>SEARCH RESULTS...</span>}
+                  {(searchedData.dishes.length==0 && searchedData.hotels.length==0)?<div style={{display:"flex",justifyContent:"center",alignItems:"center",margin:"1em", fontSize:"2em",textAlign:"center"}}>NO SEARCH RESULTS FOUND</div>:<span className='title'>SEARCH RESULTS...</span>}
                   {(searchedData.dishes.length>0)?<span className='title'>CUISINE</span>:null}
                     <div style={{display:"flex",alignItems:"center",justifyContent:"flex-start",marginTop:"0.7em",marginBottom:"1.5em",width:"100%"}}>
                     

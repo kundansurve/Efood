@@ -8,7 +8,6 @@ import { useState } from "react";
 
 export default function HotelCard(props){
   const [id,setId] =useState(props.id);
-  
     return (
       <Link to={"/hotel/"+props.id}>  
         <div type="button" style={{ background:(props.img)?`url(${props.img})`:`url(https://img.etimg.com/thumb/msid-88860361,width-300,imgsize-75800,,resizemode-4,quality-100/restaurant.jpg)`,backgroundSize:"cover",backgroundRepeat:"no-repeat",width: '18rem',minHeight:"300px",boxShadow:"6px 12px 12px 6px rgba(0, 0, 255, .2)",borderRadius:"5px",margin:"1em" }}>

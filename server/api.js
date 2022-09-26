@@ -141,7 +141,8 @@ router.get('/hotels/:cityId',(req,res)=>{
                     numberofRatings: data.numberofRatings,
                     _id: data._id,
                     name: data.name,
-                    cityId: data.cityId
+                    cityId: data.cityId,
+                    img:data.img
                 });
             })
             res.status(200).send({"hotels":hotelData});
