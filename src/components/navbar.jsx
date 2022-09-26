@@ -23,11 +23,14 @@ function NavbarInstance(props){
     })
     .then(resp=>resp.json())
     .then((data)=>{
+      alert(window.location);
       window.location="/";
     }).catch(error=>{
       console.log(error);
     })
+    
     setOpenHamburger(false);
+    window.location="/";
   }
 
       return (<>
