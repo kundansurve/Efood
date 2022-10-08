@@ -10,6 +10,7 @@ function RegisterHotel(props) {
   const [hotelCity, setHotelCity] = useState(null);
   const [openModal, setOpenModal] = useState(false);
   const [cityIndex,setCityIndex] = useState(0);
+  const [error,setError] = useState("");
   const [address, setAddress] = useState(
     {
       coordinates: [],
@@ -28,14 +29,22 @@ function RegisterHotel(props) {
           "Content-type": "application/json; charset=UTF-8",
         },
       })
+      .then(response=>response.json())
       .then((d)=>{
+        if(d.error){
+          setError(d.error);
+          return;
+        }
         setOpenModal(false);
         setShow(false);
+        
       }).catch((error)=>{
-        alert(error);
+        console.log(error);
+        setError(error);
       })
     }catch (error) {
-      alert(error);
+      console.log(error);
+      setError(error);
     }
   }
 
@@ -75,6 +84,23 @@ function RegisterHotel(props) {
     city: cityList[0]
   });
 
+  useEffect(()=>{
+    setError("");
+  },[cityList,hotelCity,cityIndex,address])
+
+  useEffect(()=>{
+    setSignUpDetails({email: "",
+    name:"",
+    password: "",
+    phoneNumber: "",
+    city: cityList[0]
+  });
+  setAddress({
+    coordinates: [],
+    address: '',
+    detailAddress: '',
+  });
+  },[show]);
 
   return (
     (openModal) ? <>
@@ -210,6 +236,7 @@ function RegisterHotel(props) {
                 />
 
                 <div className="form-border"></div>
+                <p style={{color:"var(--error)",textAlign:"center"}}>{error}</p>
 
                 <input
                   onClick={registerHotel}

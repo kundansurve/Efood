@@ -104,7 +104,7 @@ function NavbarInstance(props){
           <>
           <div style={{width:"200px",margin:"0px"}}> 
           <div class="dropdown" style={{width:"100%"}}>
-        <span className="dropbtn" style={{padding:"10px"}}><img  style={{margin:"5px"}} src="https://img.icons8.com/color/30/26e07f/test-account.png"/>Hello! {(userData['user']['firstName'])?userData['user']['firstName'].split(' ')[0].substring(0,14):null} {(userData['user']['name'])?userData['user']['name'].split(' ')[0].substring(0,14):null}</span>
+        <span className="dropbtn" style={{padding:"10px"}}><img  style={{margin:"5px"}} src="https://img.icons8.com/color/30/26e07f/test-account.png"/>Hello! {(userData['user']['cityName'])?userData['user']['cityName']:(userData['user']['firstName'])?userData['user']['firstName'].split(' ')[0].substring(0,14):null} {(userData['user']['name'])?userData['user']['name'].split(' ')[0].substring(0,14):null}</span>
 
     <div className="dropdown-content">
       <a href="#" onClick={logout}>Logout</a>

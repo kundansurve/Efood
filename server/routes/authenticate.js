@@ -1,8 +1,9 @@
 const express = require('express');
 const router = express.Router();
+const city = require('../models/city');
 const {cityAdminAuth}=require('../middlewares/auth');
 const hotel=require('../models/hotel');
-const deliveryBoy= require('../models/review');
+const deliveryBoy= require('../models/deliveryBoy');
 const bcrypt = require('bcryptjs');
 const user = require('../models/user');
 const review = require('../models/review');
@@ -31,7 +32,7 @@ router.get('/me',(req,res)=>{
                 return;
         });
     }
-    else if(userType==='Admin'){
+    /*else if(userType==='Admin'){
         admin.findOne({_id})
         .then((Admin)=>{
             Admin.userType='Admin';
@@ -46,7 +47,7 @@ router.get('/me',(req,res)=>{
             res.status(400).send({error:"Internal Server Error"});
                 return;
         });
-    }
+    }*/
     else if(userType==='Hotel'){
         hotel.findOne({_id})
         .then((user)=>{

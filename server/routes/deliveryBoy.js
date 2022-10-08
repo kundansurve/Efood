@@ -44,12 +44,13 @@ router.get('/order/:orderId', (req, res) => {
 
 router.get('/ordersincity', (req, res) => {
     const _id= req.session.userId;
-
+    console.log(_id);
     deliveryBoy.findOne({ _id })
         .then((DB) => {
             if (DB) {
-                order.find({ "cityId": DB.cityId, "assignedToDeliveryBoyId": "", "hotelAccepted": true, "status": "Food is Being Processed" })
+                order.find({ "cityId": DB.cityId, assignedToDeliveryBoyId: null,hotelAccepted:true,  status: "Food is Being Processed" })
                     .then((ORDERS) => {
+                        console.log(ORDERS)
                         res.status(200).send({ orders: ORDERS });
                     }).catch((err) => {
                         res.status(400).send({ error: error});

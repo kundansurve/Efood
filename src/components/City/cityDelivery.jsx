@@ -77,9 +77,7 @@ function CityDelivery(props) {
             alignItems: "center",
           }}
         >
-          <div className="quantity">
-            <input id="submit-btn" type="submit" name="submit" value="About" />
-          </div>
+          
         </div>
       </div>
     );

@@ -29,6 +29,23 @@ router.get("/orders", (req, res) => {
     });
 });
 
+router.get("/dishes", (req, res) => {
+  let id=req.session.userId;
+  if (!req.session.userType === "Hotel" && !req.session.userType === "admin") {
+    res.status(400).send("Only User has Access to view the orders");
+    return;
+  }
+  dish
+    .find({ hotelId: id })
+    .then((dishes) => {
+      res.status(200).send({ dishes });
+      return;
+    })
+    .catch((error) => {
+      res.status(400).send({ error });
+    });
+});
+
 router.post("/newdish", (req, res) => {
   const { name, isVeg, type, price } = req.body;
   const hotelId = req.session.userId;
@@ -110,8 +127,7 @@ router.put("/updatedish/:id", (req, res) => {
 
 router.put("/acceptorder/:orderId", (req, res) => {
   const _id = req.session.id;
-  order
-    .updateOne({ _id: req.params.orderId }, { $set: { hotelAccepted: true } })
+  order.updateOne({ _id: req.params.orderId }, { $set: { hotelAccepted: true } })
     .then((ORDER) => {
       res.status(200).send({ status: "Accepted", order: ORDER });
     })
@@ -123,7 +139,7 @@ router.put("/acceptorder/:orderId", (req, res) => {
 router.put("/rejectorder/:orderId", (req, res) => {
   const _id = req.session.id;
   order
-    .updateOne({ _id: req.params.orderId }, { $set: { hotelAccepted: false } })
+    .updateOne({ _id: req.params.orderId }, { $set: { hotelAccepted: false, status:"Canceled" } })
     .then((ORDER) => {
       res.status(200).send({ status: "Accepted", order: ORDER });
     })

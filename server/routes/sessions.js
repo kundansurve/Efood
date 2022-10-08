@@ -43,49 +43,49 @@ router.post('/',(req,res)=>{
             USERDB.findOne({_id:user.id})
             .then((USERDATA)=>{
                 if(!USERDATA){
-                    res.status(400).send({message:"Something Wrong with userData"});
+                    res.status(400).send({error:"Something Wrong with userData"});
                     return;
                 }
                 res.status(201).send({userType:req.session.userType,user:USERDATA});
             }).catch(error=>{
                 console.log(error);
-                res.status(404).send({message:"Something Wrong with userData fetching"});
+                res.status(404).send({error:"Something Wrong with userData fetching"});
             })
-        }else if(user.userType=="DeliveryExecuitve"){
+        }else if(user.userType=="DeliveryExecutive"){
             deliveryBoy.findOne({_id:user.id})
             .then((DATA)=>{
                 if(!DATA){
-                    res.status(400).send({message:"Something Wrong with Delivery Executive"});
+                    res.status(400).send({error:"Something Wrong with Delivery Executive"});
                     return;
                 }
                 res.status(201).send({userType:req.session.userType,user:DATA});
             }).catch(error=>{
                 console.log(error);
-                res.status(400).send({message:"Something Wrong with Delivery Executive fetching"});
+                res.status(400).send({error:"Something Wrong with Delivery Executive fetching"});
             })
         }else if(user.userType=="City"){
             city.findOne({_id:user.id})
             .then((DATA)=>{
                 if(!DATA){
-                    res.status(400).send({message:"Something Wrong with city userData"});
+                    res.status(400).send({error:"Something Wrong with city userData"});
                     return;
                 }
                 res.status(201).send({userType:req.session.userType,user:DATA});
             }).catch(error=>{
                 console.log(error);
-                res.status(400).send({message:"Something Wrong with city userData fetching"});
+                res.status(400).send({error:"Something Wrong with city userData fetching"});
             })
         }else{
             hotel.findOne({_id:user.id})
             .then((DATA)=>{
                 if(!DATA){
-                    res.status(400).send({message:"Something Wrong with Hotel admin Data"});
+                    res.status(400).send({error:"Something Wrong with Hotel admin Data"});
                     return;
                 }
                 res.status(201).send({userType:req.session.userType,user:DATA});
             }).catch(error=>{
                 console.log(error);
-                res.status(400).send({message:"Something Wrong with Hotel admin fetching"});
+                res.status(400).send({error:"Something Wrong with Hotel admin fetching"});
             })
         }
         return;

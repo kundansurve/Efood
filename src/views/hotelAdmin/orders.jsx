@@ -3,35 +3,32 @@ import { render } from "@testing-library/react";
 // import "../JS files/delivery";
 import mapboxgl from "mapbox-gl";
 import Order from "../../components/Hotel/order";
+import LoadingSpinner from "../../components/loading";
 
-class Orders extends React.Component {
-  constructor(props) {
-    super(props);
-    this.state = {
-      orders: [],
-      dishes: [],
-    };
-  }
-  componentDidMount() {
+function Orders() {
+    const [orders,setOrders] = React.useState(null);
+    const [dishes,setDishes] = React.useState(null);
+
+ useEffect(()=>{
     fetch("/api/hotel/me/orders")
       .then((resp) => resp.json())
       .then((data) => {
-        this.setState({ orders: data.orders });
+        setOrders(data.orders);
       })
       .catch((error) => {
         console.log(error);
       });
-    fetch(`/api/hotel/dishes/${window.location.pathname.split("/").pop()}`)
+    fetch(`/api/hotel/me/dishes`)
       .then((resp) => resp.json())
       .then((data) => {
-        this.setState({ dishes: data.dishes });
+        setDishes(data.dishes);
       })
       .catch((error) => {
         console.log(error);
       });
-  }
-  render() {
-    return (
+  },[])
+
+  return (
       <>
         <div
           style={{
@@ -42,19 +39,18 @@ class Orders extends React.Component {
           }}
         >
           
-          {(this.state.orders.length==0)?<h3 style={{ padding: "0 1em 0" }}>No Orders</h3>:<h3 style={{ padding: "0 1em 0" }}>All Orders</h3>}
-          {this.state.orders.map((order) => {
+          {(orders && dishes )?((orders.length==0)?<h3 style={{ padding: "0 1em 0" }}>No Orders</h3>:<h3 style={{ padding: "0 1em 0" }}>All Orders</h3>):<LoadingSpinner/>}
+          {(orders && dishes)?orders.map((order) => {
             return (
               <Order
-                status="In Process"
+                status={order.status}
                 order={order}
-                dishes={this.state.dishes}
+                dishes={dishes}
               />
             );
-          })}
+          }):null}
         </div>
       </>
     );
-  }
 }
 export default Orders;

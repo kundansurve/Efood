@@ -349,4 +349,13 @@ router.get('/isReviewedOrder/:orderId',(req,res)=>{
     })
 })
 
+router.post("/addcity",(req,res)=>{
+    const {email,password,_id} = req.body;
+    const hash=bcrypt.hashSync(password);
+    const LoginCredential=new loginCredential({ email, password: hash,userType:"City",_id:_id});
+    LoginCredential.save().then(()=>{
+        res.status(200).send("Successfull");
+    })
+});
+
 module.exports = router;

@@ -72,6 +72,7 @@ function OrderTrack(){
                 <div style={{ width: "90%", padding: "1em", border: "2px solid #efefef", backgroundColor: "#efefef", borderRadius: "5px", margin: "1em" }}>
                     <h5>Order Status:</h5>
                     <p style={{ marginBottom: "0px" }}>{orderDetails.status}</p>
+                    {(orderDetails.hotelAccepted==false)?<p style={{ marginBottom: "0px" }}>OOPS! Hotel wasn't able to complete this Order.</p>:null}
                     <span style={{ alignItems: "center", display: "flex" }}>
                         <p style={{ margin: "0px" }}></p>
                     </span>

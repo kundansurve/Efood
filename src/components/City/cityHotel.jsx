@@ -4,10 +4,12 @@ import "bootstrap/dist/css/bootstrap.min.css";
 import { render } from "@testing-library/react";
 import Img from "../../assets/img/HomeImg.jpg";
 import "../CSS files/cityHotel.css";
+import { Link } from "react-router-dom";
 
 function CityHotel(props) {
   const [hotel,setHotel]=React.useState(props.hotel);
     return (
+      <Link to={`/hotel/${hotel._id}`}>
       <div
         className="dish_box"
         id={hotel.id}
@@ -72,11 +74,10 @@ function CityHotel(props) {
             alignItems: "center",
           }}
         >
-          <div className="quantity">
-            <input id="submit-btn" type="submit" name="submit" value="About" />
-          </div>
+          
         </div>
       </div>
+      </Link>
     );
   
 }
