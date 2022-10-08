@@ -66,7 +66,7 @@ router.post('/signUp',(req,res)=>{
         return;
     }
     if(!phoneNumber){
-        res.status(400).send({error:"Password not provided"});
+        res.status(400).send({error:"Phone Number not provided"});
         return;
     }
     loginCredential.findOne({email}).then(USER=>{

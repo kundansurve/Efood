@@ -8,6 +8,7 @@ function LoginPage(props) {
   const [show, setShow] = useState(false);
   const mainFunc = { title: props.title };
   const [action, setAction] = useState({ title: props.title });
+  const [error,setError] = useState("");
   const fetchUserInfoFunc = useContext(fetchUserInfo);
   const handleClose = (e) => {
     // alert(e.target.className);
@@ -42,7 +43,12 @@ function LoginPage(props) {
           "Content-type": "application/json; charset=UTF-8",
         },
       })
-        .then((res) => {
+      .then(res=>res.json())
+        .then((resp) => {
+          if(resp && resp.error){
+            setError(resp.error);
+            return;
+          }
           setAction(mainFunc);
           setShow(false);
           fetch("/api/authenticate/me")
@@ -74,6 +80,10 @@ function LoginPage(props) {
       })
         .then((response) => response.json())
         .then((data) => {
+          if(data && data.error){
+            setError(data.error);
+            return;
+          }
           sessionStorage.setItem("userData", JSON.stringify(data));
           setAction(mainFunc);
           setUserData(data);
@@ -84,6 +94,23 @@ function LoginPage(props) {
     }
   };
 
+  useEffect(()=>{
+    setError("");
+  },[loginDetails,signUpDetails]);
+  
+  useEffect(()=>{
+    setSignUpDetails({
+      email: "",
+      firstName: "",
+      lastName: "",
+      password: "",
+      phoneNumber: "",
+    });
+    setLoginDetails({
+      email: "",
+      password: "",
+    });
+  },[show])
   return action.title == "Login" ? (
     <>
       <div
@@ -153,6 +180,7 @@ function LoginPage(props) {
               <a href="#">
                 <legend id="forgot-pass">Forgot password?</legend>
               </a>
+              <p style={{color:"var(--error)",textAlign:"center"}}>{error}</p>
               <input
                 id="submit-btn"
                 onClick={login}
@@ -297,7 +325,7 @@ function LoginPage(props) {
                 }
               />
               <div className="form-border"></div>
-
+              <p style={{color:"var(--error)",textAlign:"center"}}>{error}</p>
               <input
                 onClick={signUp}
                 id="submit-btn"

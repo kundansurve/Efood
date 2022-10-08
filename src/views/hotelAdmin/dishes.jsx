@@ -12,8 +12,24 @@ function Dishes(props) {
     dishes: [],
   });
 
-  const resetDishes = () => {
-    fetch(`/api/hotel/dishes/${window.location.pathname.split("/").pop()}`, {
+  const [_id,setId] = useState();
+  useEffect(()=>{
+    fetch('/api/authenticate/me')
+    .then(response=>response.json())
+    .then((data)=>{
+      console.log("HotelAdmin"+data);
+      setId(data.user._id);
+      resetDishes(data.user._id);
+    }).catch(error=>{
+      if(error){
+        alert(error);
+      }else{
+        alert("Server Error");
+      }
+    })
+  },[])
+  const resetDishes = (id) => {
+    fetch(`/api/hotel/dishes/${id}`, {
       method: "GET",
       // body: JSON.stringify(dishDetails),
       headers: {
@@ -29,9 +45,6 @@ function Dishes(props) {
       });
   };
 
-  useEffect(() => {
-    resetDishes();
-  }, []);
   // componentDidMount() {}
   return (
     <div
@@ -93,7 +106,7 @@ function Dishes(props) {
           // color: "#24c64f",
         }}
       >
-        <InsertDish title="Add Dish" resetDishes={resetDishes} />
+        <InsertDish title="Add Dish" resetDishes={()=>{resetDishes(_id)}} />
       </div>
     </div>
   );

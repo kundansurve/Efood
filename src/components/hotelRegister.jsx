@@ -51,7 +51,7 @@ function RegisterHotel(props) {
         console.log("CITIES:"+JSON.stringify(data.cities));
         setSignUpDetails({ ...signUpDetails, city: data.cities[0] })
         
-      }).catch(error => alert("cityError: " + error))
+      }).catch(error => console.log("cityError: " + error))
   }
     , []);
 

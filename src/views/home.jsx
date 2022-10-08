@@ -38,12 +38,11 @@ function Home(props){
         }
       }).then(response => response.json())
       .then((data)=>{
-        //alert(data);
         data.hotels.sort(function(a, b){return (b.ratings/((b.numberofRatings-1)?b.numberofRatings-1:1))-(a.ratings/((a.numberofRatings-1>0)?a.numberofRatings-1:1))});
           setTopHotels(data.hotels.slice(0,10));  
         setHotelsList(data.hotels);
           
-      }).catch(error=>alert("hotelerror: "+error));
+      }).catch(error=>console.log(error));
   
   /*fetch('/api/hotels/top-rated/'+e, {
         method: 'GET',
@@ -52,10 +51,8 @@ function Home(props){
         }
       }).then(response => response.json())
       .then((data)=>{
-        //alert(data);
-        //alert(JSON.stringify(data));
-          setTopHotels(data.hotels);
-      }).catch(error=>alert("hotelerror: "+error));
+                  setTopHotels(data.hotels);
+      }).catch(error=>console.log("hotelerror: "+error));
   
       fetch('/api/dishes/top-rated/'+e, {
         method: 'GET',
@@ -65,7 +62,7 @@ function Home(props){
       }).then(response => response.json())
       .then((data)=>{
           setTopDishes(data.dishes);
-      }).catch(error=>alert("hotelerror: "+error));
+      }).catch(error=>console.log("hotelerror: "+error));
 */
       fetch('/api/city/dishes/'+e, {
         method: 'GET',
@@ -74,11 +71,10 @@ function Home(props){
         }
       }).then(response => response.json())
       .then((data)=>{
-        //alert(data);
         data.dishes.sort(function(a, b){return (b.ratings/((b.numberofRatings-1>0)?b.numberofRatings-1:1))-(a.ratings/((a.numberofRatings-1>0)?a.numberofRatings-1:1))});
         setTopDishes(data.dishes.slice(0,10));  
         setDishes(data.dishes);
-      }).catch(error=>alert("hotelerror: "+error));
+      }).catch(error=>console.log(error));
     };
   
   useEffect(()=>
@@ -91,7 +87,9 @@ function Home(props){
         }).then(response => response.json())
         .then((data)=>{
             setCityList(data.cities);
-        }).catch(error=>alert("cityError: "+error))
+        }).catch(error=>{
+          console.log(error);
+        })
         onChangeCity(city);
       }
   ,[]);

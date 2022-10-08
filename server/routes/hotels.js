@@ -52,25 +52,17 @@ router.post("/newdish", (req, res) => {
             newDish
               .save()
               .then(({ _id }) => {
-                dish
-                  .findOne({ _id })
-                  .then((Dish) => {
-                    res.status.send(Dish);
-                    return;
-                  })
-                  .catch((error) => {
-                    res.status(401).send({ error });
-                    return;
-                  });
+                res.status(200).send(newDish);
+                return;
               })
               .catch((error) => {
-                res.status(401).send({ error });
+                res.status(401).send({ error:"Cannot add the new Dish" });
                 return;
               });
           })
           .catch((error) => {
             if (error) {
-              res.status(400).send({ error });
+              res.status(400).send({ error:"Any error don't know" });
               return;
             } else {
               res.status(400).send({ error: "Server Error" });
@@ -93,7 +85,7 @@ router.put("/updatedish/:id", (req, res) => {
       return;
     } else {
       if (Dish.hotelId != req.session.userId) {
-        res.status.send("Dish cannot be deleted");
+        res.status(500).send("Dish cannot be deleted");
         return;
       }
       dish
@@ -148,7 +140,7 @@ router.delete("/deletedish/:id", (req, res) => {
       return;
     } else {
       if (Dish.hotelId != req.session.userId) {
-        res.status.send("Dish cannot be deleted");
+        res.status(500).send("Dish cannot be deleted");
         return;
       }
       dish

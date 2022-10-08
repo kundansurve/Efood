@@ -79,9 +79,7 @@ class DishInfo extends Component {
             alignItems: "center",
           }}
         >
-          <div className="quantity">
-            <input id="submit-btn" type="submit" name="submit" value="Edit" />
-          </div>
+          
         </div>
       </div>
     );
