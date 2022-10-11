@@ -6,7 +6,7 @@ import Order from '../../components/Delivery Exexcutive/prevOrder';
 import Loading from './../../components/loading';
 
 function Orders(props){
-    const [orders,setOrders]=React.useState([]);
+    const [orders,setOrders]=React.useState(null);
     React.useEffect(()=>{
         fetch("http://localhost:4000/api/delivery-executive/me/pastorders")
         .then(resp=>resp.json())
