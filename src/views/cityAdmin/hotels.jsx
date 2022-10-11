@@ -5,12 +5,13 @@ import { render } from "@testing-library/react";
 // import mapboxgl from "mapbox-gl";
 // import DishInfo from "../../components/Hotel/dishInfo";
 import CityHotel from "../../components/City/cityHotel";
+import LoadingSpinner from "../../components/loading";
 
 class Hotels extends Component {
   constructor(props){
     super(props);
     this.state={
-      hotels:[]
+      hotels:null
     }
   }
   componentDidMount() {
@@ -33,9 +34,9 @@ class Hotels extends Component {
           alignItems: "center",
         }}
       >
-        {this.state.hotels.map(hotel=>{
+        {(this.state.hotels)?this.state.hotels.map(hotel=>{
           return <CityHotel hotel={hotel}/>
-        })}
+        }):<LoadingSpinner/>}
       </div>
     );
   }

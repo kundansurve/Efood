@@ -14,6 +14,7 @@ function CityHotel(props) {
         className="dish_box"
         id={hotel.id}
         style={{
+          color:"black",
           display: "flex",
           justifyContent: "space-between",
           alignItems: "center",
@@ -59,9 +60,6 @@ function CityHotel(props) {
             </p>
             <div className="hotel_details">
               <p style={{ marginBottom: "0.1em" }}>Phone Number: {hotel.phoneNumber}</p>
-              <p style={{ marginBottom: "0.1em" }}>
-                Address : Bibwewadi, East, Pune
-              </p>
             </div>
           </div>
         </div>

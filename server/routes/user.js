@@ -385,7 +385,6 @@ router.post('/placeorder',async(req,res)=>{
                 res.status(400).send({message:"Login Error"});
                 return;
             }
-            console.log(USER.cart);
             hotel.findOne({_id:USER.cart.hotelId})
             .then((HOTEL)=>{
                 if(!HOTEL){
@@ -397,10 +396,13 @@ router.post('/placeorder',async(req,res)=>{
                         res.status(400).send({message:"Hotel Error"});
                         return;
                     }
-                    console.log(USER.cart.deliveryLocation);
-                    console.log(CITY);
+                    
                     const userLat=USER.cart.deliveryLocation.lnglat.coordinates[0];
                     const userLng=USER.cart.deliveryLocation.lnglat.coordinates[1];
+                    if(!USER.cart.deliveryLocation.lnglat){
+                        res.status(400).send({error:"Address not Selected"});
+                        return;
+                    }
                     const cityLat = CITY.location.coordinates[0];
                     const cityLng = CITY.location.coordinates[1];
                     if(userLat<cityLat-0.1 || userLat>cityLat+0.1 || userLng<cityLng-0.1 || userLng>cityLng+0.1){
@@ -480,22 +482,21 @@ router.post('/payment/verify',async (req, res)=>{
                 res.status(404).send("No such Hotel present in this city.");
                 return;
             }
+            
             const userInfo = {name:USER.name,phoneNumber:USER.phoneNumber};
-            //console.log({_id:razorpay_order_id,placedByUserId:"622ee28c71f99c3c14dcfa91",placedInHotelId:USER.cart["hotelId"],cityId:HOTEL.cityId,deliveryLocation:USER.cart["deliveryLocation"],userInfo,isPaid:true,deliverCharges:25,totalPrice:USER.cart['price']});
             const ORDER = new order({paymentId:razorpay_order_id,orderPickup:HOTEL.location,placedByUserId:req.session.userId,placedInHotelId:USER.cart["hotelId"],cityId:HOTEL.cityId,deliveryLocation:USER.cart["deliveryLocation"],userInfo,isPaid:true,deliveryCharges:25,totalPrice:USER.cart['price'],order:USER.cart.items});
+            
             ORDER.save()
             .then(()=>{
-                user.updateOne({_id:req.session.userId},{$set:{"cart.hotelId":null,"cart.items":{},"cart.offer":null,"cart.price":0,"cart.isPaid":false,"orderingFor":{}}})
+                user.updateOne({_id:req.session.userId},{$set:{"cart.hotelId":null,"cart.items":{},"cart.offer":null,"cart.price":0,"cart.isPaid":false,"orderingFor":{},"cart.deliveryLocation.address":null,"cart.deliveryLocation.detailAddress":null,"cart.deliveryLocation.lnglat":null}})
                 .then(()=>{
                     res.status(200).send("Order Placed Succesfully!");
                     return;
                 }).catch(error=>{
-                    console.log(error);
                     res.status(400).send({errorMessage:"Something Went Wrong!"});
                     return;
                 })
             }).catch(error=>{
-                console.log(error);
                 res.status(400).send({errorMessage:"Something Went Wrong!"});
                 return;
             })

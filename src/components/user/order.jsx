@@ -1,16 +1,17 @@
 import React,{Component} from 'react';
-
 import LoginPage from '../login';
 import '../CSS files/footer.css';
 import { useEffect } from 'react';
 import { Link } from 'react-router-dom';
 import { set } from 'mongoose';
+import LoadingSpinner from '../loading';
 
 export default function Order(props){
     const [orderDetail,setOrderDetail]=React.useState(props.orderDetail);
     const [hotelData,setHotelData]=React.useState(null);
-    const [dishesData,setDishesData]=React.useState([]);
+    const [dishesData,setDishesData]=React.useState(null);
     const [reviewed,setReviewed]=React.useState(true);
+
     useEffect(()=>{
         if(orderDetail && orderDetail.placedInHotelId){
             
@@ -38,7 +39,7 @@ export default function Order(props){
     },[])
 
     return <div style={{width:"90%",padding:"1.5em",border:"2px solid #efefef",borderRadius:"5px",margin:"1em"}}>
-    <div style={{width:"100%",margin:"0.2em",padding:"0em",justifyContent:"space-between",display:"flex",alignItems:"center"}}>
+    {(hotelData && orderDetail && dishesData)?<><div style={{width:"100%",margin:"0.2em",padding:"0em",justifyContent:"space-between",display:"flex",alignItems:"center"}}>
     <h6>Summary:</h6>
     <span style={{width:"100%",textAlign:"right"}}>Date: {orderDetail.placedAt.substring(0,10)}</span>
     
@@ -69,6 +70,6 @@ export default function Order(props){
     <Link to={`/orders/${orderDetail._id}`}>
     <span type="button" style={{marginBottom:"0.5em",color:"blue",textAlign:"center"}}>View More</span>
     </Link>
-        </div>
+        </div></>:<LoadingSpinner/>}
     </div>;
 }

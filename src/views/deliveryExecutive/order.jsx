@@ -79,8 +79,7 @@ function Order(props) {
     }
     function showPosition(position) {
         if(position){
-            //alert(position)
-            setCurrLocation([position.coords.longitude,position.coords.latitude]);
+            setCurrLocation({coordinates:[position.coords.latitude,position.coords.longitude]});
         }else{
             //alert("Allow Location Access");
             getLocation()
@@ -101,12 +100,13 @@ function Order(props) {
       }
     useEffect(()=>{
         traceLocation();
-    })
+       
+    },[])
     return (
         <div style={{ width: "100%", marginBottom: "2em", display: "flex", flexDirection: "column", justifyContent: "center", alignItems: "center" }}>
             {/*(currLocation && currLocation.length==2 && orderFromHotel.location && orderDetails.deliveryLocation && cityDetails.location && orderDetails.status!="Delivered" && orderDetails.status!="Canceled" )?<TrackMap start={currLocation} pickUpPoint={orderFromHotel.location} center={cityDetails.location.coordinates} dropPoint={orderDetails.deliveryLocation.lnglat.coordinates} outForDelivery={(orderDetails.status!="Food is Being Processed")}/>:null*/}
             {
-                (orderDetails && orderFromHotel && currLocation && cityDetails)?(orderDetails.status==='Delivery Executive Out for Order')?<TrackMap start={currLocation} center={cityDetails.location.coordinates} outForDelivery={(orderDetails.status!="Food is Being Processed")} dropPoint={orderDetails.deliveryLocation.lnglat.coordinates} />:(orderDetails.status==='Food is Being Processed')?<TrackMap start={currLocation} outForDelivery={(orderDetails.status!="Food is Being Processed")} center={cityDetails.location.coordinates} dropPoint={orderFromHotel.location} />:null:null
+                (orderDetails && orderFromHotel && currLocation && cityDetails)?(orderDetails.status==='Delivery Executive Out for Order')?<TrackMap start={currLocation} center={cityDetails.location.coordinates} outForDelivery={(orderDetails.status!="Food is Being Processed")} dropPoint={orderDetails.deliveryLocation.lnglat.coordinates} />:(orderDetails.status==='Food is Being Processed')?<TrackMap start={currLocation} outForDelivery={(orderDetails.status!="Food is Being Processed")} center={cityDetails.location.coordinates} dropPoint={orderFromHotel.location.coordinates} />:null:null
             }
             <div id="delivery-info" style={{ padding: "1em", width: "100%", maxWidth: "1000px", marginTop: "3em" }}>
                 <h3>Order Details</h3>

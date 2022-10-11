@@ -57,7 +57,6 @@ function RegisterHotel(props) {
     }).then(response => response.json())
       .then((data) => {
         setCityList(data.cities);
-        console.log("CITIES:"+JSON.stringify(data.cities));
         setSignUpDetails({ ...signUpDetails, city: data.cities[0] })
         
       }).catch(error => console.log("cityError: " + error))

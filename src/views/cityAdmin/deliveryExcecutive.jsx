@@ -58,7 +58,7 @@ function DeliveryExecutive(props) {
           }}
         >
           {/* <InsertDish title="Add Dish" /> */}
-          <AddDeliveryBoy title="Add Delivery Boy" hotelUser={hotelUser} resetDeliveryExecutives={resetDeliveryExecutives}/>
+          <AddDeliveryBoy title="Add" hotelUser={hotelUser} resetDeliveryExecutives={resetDeliveryExecutives}/>
         </div>
       </div>
     );
