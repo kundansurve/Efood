@@ -6,7 +6,7 @@ import fetchUserInfoFunc from '../fetch';
 import Loading from './../../components/loading';
 
 export default function DeliveryAdmin(props){
-    const [orders,setOrders]=useState([]);
+    const [orders,setOrders]=useState(null);
     const [userData,setUserData]=React.useContext(UserData);
     useEffect(()=>{
         fetchUserInfoFunc(setUserData)
@@ -26,8 +26,9 @@ export default function DeliveryAdmin(props){
     }
     return(<>{(userData.user)?(userData.user.isFree)? <div style={{width:"100%",maxWidth:"1000px",margin:"auto",marginTop:"3.5em",padding:"1em",minHeight:"500px"}}>
     <h3>Orders in Your City</h3>
-    {orders.map((order,index)=>{
+    {(orders)?orders.map((order,index)=>{
         return <Order order={order} resetOrders={resetOrders}/>;
-    })}
-    </div>:<Navigate to={`/delivery-executive/orders/order/${userData.user.currentOrder}`} />:<Loading/>}</>);
+    }):<Loading/>}
+    {(orders && orders.length===0)?<div style={{width:"100%",height:"100%",maxHeight:"200px",justifyContent:"center",alignItems:"center"}}><h6>No Orders In Your City</h6></div>:null}
+    </div>:<Navigate to={`/delivery-executive/orders/order/${userData.user.currentOrder}`} />:<div style={{width:"100%",maxWidth:"1000px",margin:"auto",marginTop:"3.5em",padding:"1em",minHeight:"500px"}}><Loading/></div>}</>);
 }

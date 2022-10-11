@@ -132,25 +132,33 @@ router.put('/accept/order/:orderId', (req, res) => {
     order.findOne({ _id: orderId })
         .then((orderData) => {
             if (orderData) {
-                
-                if (orderData.assignedToDeliveryBoyId.length!=0) {
+                if ( orderData.assignedToDeliveryBoyId!=null || (orderData.assignedToDeliveryBoyId && orderData.assignedToDeliveryBoyId.length!=0)) {
+                    console.log("Error Line 136 ")
                     res.status(400).send({ error: "Oops! Order assigned to another delivery executive." });
                     return;
                 } else if (!orderData.status || orderData.status == "Cancelled") {
+                    console.log("Error Line 140 ")
                     res.status(400).send({ error: "Oops! Order has been cancelled." });
                     return;
                 } else {
+                    console.log("Error Line 143 ")
                     deliveryBoy.findOne({ _id })
                         .then((DB) => {
+                            console.log("Error Line 146 ")
                             console.log(DB);
                             if (!DB.isFree) {
                                 res.status(400).send({ error: "First complete your previous order." })
                                 return;
                             }
+                            console.log("Error Line 152 ")
+                    
                             const deliveryBoyInfo = { name: DB.name, phoneNumber: DB.phoneNumber, ratings: DB.ratings };
                             console.log(deliveryBoyInfo);
+                            console.log("Error Line 156 ")
+                    
                             order.updateOne({ _id: orderId }, { $set: { assignedToDeliveryBoyId: DB._id, deliveryBoyInfo } })
                                 .then((ORDER) => {
+                                    console.log("Error Line 160 ")
                                     console.log(ORDER);
                                     deliveryBoy.updateOne({ _id }, { $set: { currentOrder: orderId, isFree: false } })
                                         .then(() => {
