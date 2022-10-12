@@ -97,7 +97,7 @@ function Cart(props) {
                 alert("Please set address");
                 return;
             }
-            if (state.address.coordinates[0] > state.address.coordinates[0] + 0.1 || state.address.coordinates[1] < state.address.coordinates[1] > 0.1 || state.address.coordinates[0] < state.address.coordinates[0] - 0.1 || state.address.coordinates[1] < state.address.coordinates[1] - 0.1) {
+            if (state.address.coordinates[0] > state.address.coordinates[0] + 0.1 || state.address.coordinates[1] > state.address.coordinates[1] + 0.1 || state.address.coordinates[0] < state.address.coordinates[0] - 0.1 || state.address.coordinates[1] < state.address.coordinates[1] - 0.1) {
                 alert("Sorry this hotel orders cannot be placed at selected address");
                 return;
             }

@@ -7,12 +7,13 @@ function InsertDish(props) {
   const resetDishes = props.resetDishes;
   const mainFunc = { title: props.title };
   const [action, setAction] = useState({ title: props.title });
+  const [error,setError] = useState(null);
   const [dishDetails, setDishDetails] = useState({
-    name: " ",
-    numberofRatings: " ",
-    price: " ",
-    isVeg: " ",
-    type: " ",
+    name: null,
+    numberofRatings: null,
+    price: null,
+    isVeg: null,
+    type: null,
   });
 
   const handleClose = (e) => {
@@ -47,7 +48,7 @@ function InsertDish(props) {
           zIndex: "999",
         }}
       >
-        <div id="dishCard">
+        <div id="dishCard" style={{minWidth:"300px"}}>
           <img
             className="close"
             type="button"
@@ -63,24 +64,7 @@ function InsertDish(props) {
               {/* <div className="underline-title"></div> */}
             </div>
             <form method="post" className="form">
-              <label for="dish-image" style={{ paddingTop: "13px" }}>
-                &nbsp;Upload Image
-              </label>
-              <input
-                type="file"
-                id="dish-image"
-                className="form-content"
-                name="image"
-                // autocomplete="on"
-                // required
-                // value={dishDetails.id}
-                // onChange={(e) =>
-                //   setDishDetails({
-                //     ...dishDetails,
-                //     id: e.target.value,
-                //   })
-                // }
-              />
+              
               {/* <div className="form-border"></div> */}
               <label for="dish-name" style={{ paddingTop: "13px" }}>
                 &nbsp;Dish Name
@@ -199,6 +183,8 @@ function InsertDish(props) {
                   />
                 </label>
               </div>
+              <p style={{margin:"auto",color:"var(--error)"}}>{error}</p>
+                
               <div className="dish_btns">
                 {/* <input
                   //   onClick={signUp}
@@ -224,6 +210,10 @@ function InsertDish(props) {
                     })
                       .then((response) => response.json())
                       .then((data) => {
+                        if(data.error){
+                          setError(data.error);
+                          return;
+                        }
                         resetDishes();
                         setDishDetails({
                           name: " ",

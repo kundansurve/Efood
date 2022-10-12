@@ -21,12 +21,8 @@ export default function Order(props){
         headers: {
           "Content-type": "application/json; charset=UTF-8",
         },
-      }).then(resp=>resp.json())
+      })
       .then(data=>{
-          alert(JSON.stringify(data));
-          if(data.error){
-              return;
-          }
           resetOrders();
       }).catch(error=>console.log(error));
     }

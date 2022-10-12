@@ -68,7 +68,7 @@ class Dish extends Component {
       <div id={this.state.id} style={{ display: "flex", justifyContent: "flex-start", alignItems: "center", margin: "1em", height: "fit-content", borderRadius: "5px 5px 5px 5px", boxShadow: "0 0 10px rgba(0, 0, 255, .2)", width: "97%", maxWidth: "600px", padding: "0.5em 0.5em 0.5em 0.5em" }}>
 
         <div style={{ display: "flex", justifyContent: "flex-start",flexDirection:"column", alignItems: "center",justifyContent:"center",margin:"5px" }}>
-          <img style={{ height: "4em",width:"5em", borderRadius: "5px 5px 5px 5px", opacity: "1" }} src={this.state.img} />
+          <img style={{ height: "4em",width:"5em", borderRadius: "5px 5px 5px 5px", opacity: "1" }} src={(this.state.img && this.state.img=="")?this.state.img:Img} />
         </div>
         <div style={{ height: "100%",width:"100%", display: "flex", flexWrap: "wrap", justifyContent: "center", alignItems: "center" }}>
         <div style={{ width: "100%", padding: "0.2em 0.2em" ,maxWidth:"300px"}}>
@@ -83,11 +83,11 @@ class Dish extends Component {
   Price: {this.state.price}
 </p>
 </div>
-          <div className="quantity" type="button">
+          {(!this.state.userType || this.state.userType=='User')?<div className="quantity" type="button">
             <div onClick={this.decreaseValue} className="quantity__minus"><span>-</span></div>
             <input name="quantity" type="text" style={{ height: "100%" }} className="quantity__input" value={this.state.quantity} />
             <div onClick={this.increaseValue} className="quantity__plus"><span>+</span></div>
-          </div>
+          </div>:null}
         </div>
 
       </div>

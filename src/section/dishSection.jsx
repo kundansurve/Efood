@@ -9,7 +9,6 @@ import LoadingSpinner from '../components/loading';
 function DishSection(props){
     const [dishesData,setDishesData] = useState(null);
     const [userData,setUserData] = useContext(UserData);
-    console.log("userData: "+JSON.stringify(userData));
     useEffect(()=>{
         fetch("/api/hotel/dishes/"+window.location.pathname.split('/').pop())
         .then(response=>response.json())
@@ -20,8 +19,9 @@ function DishSection(props){
         return (<div className="dishes" style={{display:"flex",height:"fit-content",flexDirection:"column",marginLeft:"0px",alignItems:"center"}}>
         {(dishesData)?
             dishesData.map((data)=>{
-                //console.log(userData.user.cart.items + " "+ userData.user.cart.items[data._id]+" "+data._id)
-                return <Dish login={userData.userType} name={data.name} ratings={data.ratings} noOfRatings={data.numberofRatings} type={data.type} id={data._id} price={data.price} isVeg={data.isVeg} img={data.img} count={(userData.user!=undefined && userData.user.cart.items &&userData.user.cart.items[data._id]!=undefined)?userData.user.cart.items[data._id]:0}/>
+                if(userData.userType=='User')return <Dish login={userData.userType} name={data.name} ratings={data.ratings} noOfRatings={data.numberofRatings} type={data.type} id={data._id} price={data.price} isVeg={data.isVeg} img={data.img} count={(userData.user!=undefined && userData.user.cart.items &&userData.user.cart.items[data._id]!=undefined)?userData.user.cart.items[data._id]:0}/>
+
+                return <Dish login={userData.userType} name={data.name} ratings={data.ratings} noOfRatings={data.numberofRatings} type={data.type} id={data._id} price={data.price} isVeg={data.isVeg} img={data.img} count={0}/>
             })
         :
             <div
@@ -35,7 +35,16 @@ function DishSection(props){
             >
               <LoadingSpinner/>
             </div>}
-        
+            {(dishesData && dishesData.length==0)?<div
+                      style={{
+                        display: "flex",
+                        justifyContent: "center",
+                        alignItems: "center",
+                        height: "60vh",
+                        width: "100%",
+                      }}
+                    >No Reviews Yet
+                    </div>:null}
     </div>);
     
 }

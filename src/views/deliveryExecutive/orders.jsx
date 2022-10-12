@@ -18,11 +18,8 @@ export default function DeliveryAdmin(props){
         }).catch(error=>console.log(error));
     },[])
     const resetOrders=()=>{
-        fetch("http://localhost:4000/api/delivery-executive/me/ordersincity")
-        .then(resp=>resp.json())
-        .then(data=>{
-            setOrders(data.orders);
-        }).catch(error=>console.log(error));
+        window.location.reload();
+        
     }
     return(<>{(userData.user)?(userData.user.isFree)? <div style={{width:"100%",maxWidth:"1000px",margin:"auto",marginTop:"3.5em",padding:"1em",minHeight:"500px"}}>
     <h3>Orders in Your City</h3>

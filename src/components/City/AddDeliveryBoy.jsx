@@ -5,11 +5,12 @@ import NotFoundPage from "../../views/notfound";
 function AddDeliveryBoy(props) {
   const location = {...props.hotelUser.location,"type":"Point"};
   const [show, setShow] = useState(false);
-  const [name, setName] = useState("");
-  const [phoneNumber,setPhoneNumber]=useState("");
-  const [email,setEmail] = useState("");
-  const [password,setPassword] = useState("");
+  const [name, setName] = useState(null);
+  const [phoneNumber,setPhoneNumber]=useState(null);
+  const [email,setEmail] = useState(null);
+  const [password,setPassword] = useState(null);
   const resetDeliveryExecutives=props.resetDeliveryExecutives;
+  const [error,setError] = useState(null);
   const handleClose = (e) => {
     if (
       e.target.className == "close" ||
@@ -20,6 +21,7 @@ function AddDeliveryBoy(props) {
       setPhoneNumber("");
       setEmail("");
       setPassword("");
+      setError(null)
     }
   };
   const onClickAdd=()=>{
@@ -31,6 +33,10 @@ function AddDeliveryBoy(props) {
         },
       }).then(res=>res.json())
       .then(data=>{
+        if(data.error){
+          setError(data.error);
+          return;
+        }
         resetDeliveryExecutives();
         setShow(false);
       setName("");
@@ -45,7 +51,7 @@ function AddDeliveryBoy(props) {
       <div
         className="colors"
         type="button"
-        style={{ color: "black", padding: "0.5em" }}
+        style={{ color: "black", padding: "0.5em",marginTop:"1em" }}
         onClick={handleShow}
       >
         {props.title}
@@ -61,7 +67,7 @@ function AddDeliveryBoy(props) {
           zIndex: "999",
         }}
       >
-        <div id="dishCard">
+        <div id="dishCard" style={{minWidth:"300px"}}>
           <img
             className="close"
             type="button"
@@ -71,23 +77,12 @@ function AddDeliveryBoy(props) {
             onClick={handleClose}
             alt=""
           />
-          <div id="dishCard-content">
-            <div id="dishCard-title">
-              <h2>Add a Delivery Boy</h2>
- 
+          <div id="dishCard-content" >
+            <div id="dishCard-title" >
+              <h5>Add a Delivery Executive</h5>
             </div>
             <form method="post" className="form">
-              <label for="dish-image" style={{ paddingTop: "13px" }}>
-                &nbsp;Upload Profile
-              </label>
-              <input
-                type="file"
-                id="dish-image"
-                className="form-content"
-                name="image"
-                autocomplete="on"
-                
-              />
+              
               <label for="name" style={{ paddingTop: "13px" }}>
                 &nbsp;Name
               </label>
@@ -99,7 +94,7 @@ function AddDeliveryBoy(props) {
                 autocomplete="on"
                 required
                 value={name}
-                onChange={(e)=>{setName(e.target.value)}}
+                onChange={(e)=>{setError(null);setName(e.target.value)}}
               />
               <div className="form-border"></div>
               <label for="email" style={{ paddingTop: "13px" }}>
@@ -113,7 +108,7 @@ function AddDeliveryBoy(props) {
                 required
                 type="email"
                 value={email}
-                onChange={(e)=>{setEmail(e.target.value)}}
+                onChange={(e)=>{setError(null);setEmail(e.target.value)}}
               />
               <div className="form-border"></div>
               <label for="phoneNumber" style={{ paddingTop: "13px" }}>
@@ -126,7 +121,7 @@ function AddDeliveryBoy(props) {
                 autocomplete="on"
                 required
                 value={phoneNumber}
-                onChange={(e)=>{setPhoneNumber(e.target.value)}}
+                onChange={(e)=>{setError(null);setPhoneNumber(e.target.value)}}
               />
               <div className="form-border"></div>
               <label for="password" style={{ paddingTop: "13px" }}>
@@ -140,9 +135,10 @@ function AddDeliveryBoy(props) {
                 required
                 type="password"
                 value={password}
-                onChange={(e)=>{setPassword(e.target.value)}}
+                onChange={(e)=>{setError(null);setPassword(e.target.value)}}
               />
               <div className="form-border"></div>
+              <p style={{color:"var(--error)"}}>{error}</p>
               <div className="dish_btns">
                 <input
                   className="btns"

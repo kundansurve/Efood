@@ -34,6 +34,16 @@ function ReviewSection(props){
                     >
                       <LoadingSpinner/>
                     </div>}
+                    {(reviewsData && reviewsData.length==0)?<div
+                      style={{
+                        display: "flex",
+                        justifyContent: "center",
+                        alignItems: "center",
+                        height: "60vh",
+                        width: "100%",
+                      }}
+                    >No Reviews Yet
+                    </div>:null}
             </div>
         </section>);
     

@@ -55,6 +55,7 @@ function Order(props) {
     }, [])
 
     const recievedFromHotel = () => {
+        setOrderDetails({...orderDetails,status:"Delivery Executive Out for Order"})
         fetch("/api/delivery-executive/me/order/recieved-from-hotel", {
             method: "PUT",
             body: JSON.stringify({ recieved: true }),
@@ -63,10 +64,11 @@ function Order(props) {
             },
         }).then(res => res.json())
             .then(status => {
-                apiCall();
+                //setOrderDetails({...orderDetails,status:status});
             }).catch(error => console.log(error));
     }
     const delivered = () => {
+        setOrderDetails({...orderDetails,status:"Delivered"})
         fetch("/api/delivery-executive/me/order/delivered", {
             method: "PUT",
             headers: {
@@ -74,8 +76,10 @@ function Order(props) {
             },
         }).then(res => res.json())
             .then(status => {
-                apiCall();
+                window.location.reload();
+                //setOrderDetails({...orderDetails,status:status})
             }).catch(error => console.log(error));
+            
     }
     function showPosition(position) {
         if(position){
@@ -169,9 +173,9 @@ function Order(props) {
                     {(orderDetails )?
                     <div style={{ padding: "0.2em", textAlign: "center", display: "grid", gridTemplateColumns: "auto auto" }}>
                         <h6 style={{ textAlign: "left" }}>Total</h6>
-                        
-                        {(orderDetails && !orderDetails.isPaid && !orderDetails.status=="Delivered") ? <p style={{ textAlign: "right" }}>RS. {orderDetails.totalPrice} <br /><span style={{ color: "#ff6666" }}>(Cash To Be Collected)</span></p> : <></>}
-                        {(orderDetails && orderDetails.status=="Delivered")?<p style={{ textAlign: "right" }}>RS. {orderDetails.totalPrice} <br /><span style={{ color: "green" }}>(Cash Collected)</span></p> : <></>}
+                        {( orderDetails.isPaid && !orderDetails.status=="Delivered")?<p style={{ textAlign: "right" }}>RS. {orderDetails.totalPrice}</p>:<></>}
+                        {( !orderDetails.isPaid && !orderDetails.status=="Delivered") ? <p style={{ textAlign: "right" }}>RS. {orderDetails.totalPrice} <br /><span style={{ color: "#ff6666" }}>(Cash To Be Collected)</span></p> : <></>}
+                        {( orderDetails.status=="Delivered")?<p style={{ textAlign: "right" }}>RS. {orderDetails.totalPrice} <br /><span style={{ color: "green" }}>(Cash Collected)</span></p> : <></>}
                     </div>
                     :<LoadingSpinner/>}
                 </div>

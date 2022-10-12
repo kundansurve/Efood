@@ -488,7 +488,7 @@ router.post('/payment/verify',async (req, res)=>{
             
             ORDER.save()
             .then(()=>{
-                user.updateOne({_id:req.session.userId},{$set:{"cart.hotelId":null,"cart.items":{},"cart.offer":null,"cart.price":0,"cart.isPaid":false,"orderingFor":{},"cart.deliveryLocation.address":null,"cart.deliveryLocation.detailAddress":null,"cart.deliveryLocation.lnglat":null}})
+                user.updateOne({_id:req.session.userId},{$set:{"cart.hotelId":null,"cart.items":{},"cart.offer":null,"cart.price":0,"cart.isPaid":false,"orderingFor":{},"cart.deliveryLocation.address":null,"cart.deliveryLocation.detailAddress":null,"cart.deliveryLocation.lnglat.coordinates":[]}})
                 .then(()=>{
                     res.status(200).send("Order Placed Succesfully!");
                     return;

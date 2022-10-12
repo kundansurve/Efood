@@ -49,11 +49,15 @@ router.get("/dishes", (req, res) => {
 router.post("/newdish", (req, res) => {
   const { name, isVeg, type, price } = req.body;
   const hotelId = req.session.userId;
+  if(!name || !isVeg || !type || !price){
+    res.status(400).send({error:"Please fill all the fields"});
+    return;
+  }
   dish
-    .find({ name, hotelId })
+    .findOne({ name, hotelId })
     .then((oldDish) => {
-      if (!oldDish) {
-        res.status(400).send("Two different dishes cannot have same name.");
+      if (oldDish) {
+        res.status(400).send({error:"This named dish is already added."});
       } else {
         hotel
           .findOne({ _id: hotelId })

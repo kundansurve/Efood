@@ -102,8 +102,8 @@ function Hotel(props) {
                 justifyContent: "center",
                 alignContent: "center",
                 width: "100%",
-                margin: "1em",
-                padding: "1em",
+                margin: "0.5em",
+                padding: "0.5em",
               }}
             >
               <button

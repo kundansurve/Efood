@@ -44,13 +44,11 @@ router.get('/order/:orderId', (req, res) => {
 
 router.get('/ordersincity', (req, res) => {
     const _id= req.session.userId;
-    console.log(_id);
     deliveryBoy.findOne({ _id })
         .then((DB) => {
             if (DB) {
                 order.find({ "cityId": DB.cityId, assignedToDeliveryBoyId: null,hotelAccepted:true,  status: "Food is Being Processed" })
                     .then((ORDERS) => {
-                        console.log(ORDERS)
                         res.status(200).send({ orders: ORDERS });
                     }).catch((err) => {
                         res.status(400).send({ error: error});
@@ -84,7 +82,6 @@ router.put('/tracking', (req, res) => {
 
 router.put('/order/recieved-from-hotel', (req, res) => {
     const _id= req.session.userId;
-    console.log(req.body);
     deliveryBoy.findOne({ _id })
         .then((DB) => {
             if (!DB) {
@@ -95,7 +92,7 @@ router.put('/order/recieved-from-hotel', (req, res) => {
                 res.status(400).send("Devlivery Executive is not having any current order.");
                 return;
             }
-            order.updateOne({ _id: DB.currentOrder }, { $set: { status: "Delivery Executive Out for Order" } })
+            order.updateOne({ _id: DB.currentOrder }, { $set: { status: "Delivery Executive Out for Order" ,deliveryBoyRecievedOrderAt:Date.now()} })
                 .then(() => {
                     res.status(200).send("Delivery Executive Out for Order");
                     return;
@@ -133,33 +130,24 @@ router.put('/accept/order/:orderId', (req, res) => {
         .then((orderData) => {
             if (orderData) {
                 if ( orderData.assignedToDeliveryBoyId!=null || (orderData.assignedToDeliveryBoyId && orderData.assignedToDeliveryBoyId.length!=0)) {
-                    console.log("Error Line 136 ")
                     res.status(400).send({ error: "Oops! Order assigned to another delivery executive." });
                     return;
                 } else if (!orderData.status || orderData.status == "Cancelled") {
-                    console.log("Error Line 140 ")
                     res.status(400).send({ error: "Oops! Order has been cancelled." });
                     return;
                 } else {
-                    console.log("Error Line 143 ")
                     deliveryBoy.findOne({ _id })
                         .then((DB) => {
-                            console.log("Error Line 146 ")
-                            console.log(DB);
                             if (!DB.isFree) {
                                 res.status(400).send({ error: "First complete your previous order." })
                                 return;
                             }
-                            console.log("Error Line 152 ")
                     
                             const deliveryBoyInfo = { name: DB.name, phoneNumber: DB.phoneNumber, ratings: DB.ratings };
-                            console.log(deliveryBoyInfo);
-                            console.log("Error Line 156 ")
+                            
                     
                             order.updateOne({ _id: orderId }, { $set: { assignedToDeliveryBoyId: DB._id, deliveryBoyInfo } })
                                 .then((ORDER) => {
-                                    console.log("Error Line 160 ")
-                                    console.log(ORDER);
                                     deliveryBoy.updateOne({ _id }, { $set: { currentOrder: orderId, isFree: false } })
                                         .then(() => {
                                             res.status(200).send({ order: ORDER })
