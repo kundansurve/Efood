@@ -193,11 +193,6 @@ function NavbarInstance(props){
       <div  className="colors" type="button" style={{color:'white',padding:"0.5em"}}>
         Previous Orders
     </div></a>
-    
-    <a href='/delivery-executive/orders/previous'>
-      <div  className="colors" type="button" style={{color:'white',padding:"0.5em"}}>
-        Previous Orders
-    </div></a>
     </>:null}
     {(userData['userType'])?<a href='#'>
       <div  className="colors" type="button" style={{color:'white',padding:"0.5em"}} onClick={logout}>
