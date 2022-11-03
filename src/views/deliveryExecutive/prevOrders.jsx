@@ -8,7 +8,7 @@ import Loading from './../../components/loading';
 function Orders(props){
     const [orders,setOrders]=React.useState(null);
     React.useEffect(()=>{
-        fetch("http://localhost:4000/api/delivery-executive/me/pastorders")
+        fetch("api/delivery-executive/me/pastorders")
         .then(resp=>resp.json())
         .then(data=>{
             setOrders(data.orders);

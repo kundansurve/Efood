@@ -10,7 +10,7 @@ export default function DeliveryAdmin(props){
     const [userData,setUserData]=React.useContext(UserData);
     useEffect(()=>{
         fetchUserInfoFunc(setUserData)
-        fetch("http://localhost:4000/api/delivery-executive/me/ordersincity")
+        fetch("/api/delivery-executive/me/ordersincity")
         .then(resp=>resp.json())
         .then(data=>{
             setOrders(data.orders);
