@@ -19,28 +19,28 @@ function Order(props) {
     const [cityDetails,setCityDetails] = React.useState(null);
     
     const apiCall = () => {
-        fetch(`/api/delivery-executive/me/order/${orderId}`)
+        fetch(`http://foodiiee.herokuapp.com/api/delivery-executive/me/order/${orderId}`)
             .then(resp => resp.json())
             .then(data => {
                 setOrderDetails(data.order);
-                fetch(`/api/users/user/${data.order.placedByUserId}`)
+                fetch(`http://foodiiee.herokuapp.com/api/users/user/${data.order.placedByUserId}`)
                     .then(resp => resp.json())
                     .then((deliverTo) => {
                         setDeliverTo(deliverTo);
                     }).catch(error => console.log(error))
-                fetch(`/api/hotels/hotel/${data.order.placedInHotelId}`)
+                fetch(`http://foodiiee.herokuapp.com/api/hotels/hotel/${data.order.placedInHotelId}`)
                     .then(resp => resp.json())
                     .then((hotelData) => {
                         setOrderFromHotel(hotelData.hotel);
                     }).catch(error => console.log(error))
-                    fetch(`/api/cities/city/${data.order.cityId}`)
+                    fetch(`http://foodiiee.herokuapp.com/api/cities/city/${data.order.cityId}`)
                     .then(resp => resp.json())
                     .then((CityDetails) => {
                         setCityDetails(CityDetails['city']);
                         
                     }).catch(error => console.log(error))
                     
-                fetch(`/api/hotel/dishes/${data.order.placedInHotelId}`)
+                fetch(`http://foodiiee.herokuapp.com/api/hotel/dishes/${data.order.placedInHotelId}`)
                     .then(resp => resp.json())
                     .then((dishes) => {
                         setDishes(dishes.dishes);
@@ -56,7 +56,7 @@ function Order(props) {
 
     const recievedFromHotel = () => {
         setOrderDetails({...orderDetails,status:"Delivery Executive Out for Order"})
-        fetch("/api/delivery-executive/me/order/recieved-from-hotel", {
+        fetch("http://foodiiee.herokuapp.com/api/delivery-executive/me/order/recieved-from-hotel", {
             method: "PUT",
             body: JSON.stringify({ recieved: true }),
             headers: {
@@ -69,7 +69,7 @@ function Order(props) {
     }
     const delivered = () => {
         setOrderDetails({...orderDetails,status:"Delivered"})
-        fetch("/api/delivery-executive/me/order/delivered", {
+        fetch("http://foodiiee.herokuapp.com/api/delivery-executive/me/order/delivered", {
             method: "PUT",
             headers: {
                 "Content-type": "application/json; charset=UTF-8",
