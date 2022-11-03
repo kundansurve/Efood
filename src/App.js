@@ -22,7 +22,7 @@ import ReviewPage from './views/user/reviewPage';
 function App() {
   const [userData, setUserData] = useState({});
 
-  const [city, setCity] = useState("6225d3ee02b267ae9583f1c3");
+  const [city, setCity] = useState("6225d41502b267ae9583f1c5");
   const fetchUserInfoFunc=(setUserData)=>{
     fetch("/api/authenticate/me")
       .then((response) => response.json())
