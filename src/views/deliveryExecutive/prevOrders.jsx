@@ -8,7 +8,7 @@ import Loading from './../../components/loading';
 function Orders(props){
     const [orders,setOrders]=React.useState(null);
     React.useEffect(()=>{
-        fetch("http://foodiiee.herokuapp.com/api/delivery-executive/me/pastorders")
+        fetch(`${window.location.origin}/api/delivery-executive/me/pastorders`)
         .then(resp=>resp.json())
         .then(data=>{
             setOrders(data.orders);
