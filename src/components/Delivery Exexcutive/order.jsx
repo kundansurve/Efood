@@ -35,7 +35,7 @@ export default function Order(props){
     </span>
     <span style={{display:"flex",marginRight:"3em",justifyContent:"center",flexDirection:"column",flexWrap:"wrap",alignItems:"flex-start"}}>
         <h6 >Order Drop Point:</h6>
-        <p>{order.deliveryLocation.address.substring(0, 30)}...</p>
+        <p>{(order.deliveryLocation.address)?order.deliveryLocation.address.substring(0, 30):null}...</p>
     </span>
     
     <span style={{display:"flex",justifyContent:"center",flexDirection:"column",flexWrap:"wrap",alignItems:"flex-start"}}>
