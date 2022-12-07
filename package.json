@@ -2,10 +2,7 @@
     "name": "ecommerce",
     "version": "0.1.0",
     "private": true,
-    "engines": {
-      "node": "18.12.1"
-      },
-    "dependencies": {
+        "dependencies": {
       "@emotion/react": "^11.7.1",
       "@emotion/styled": "^11.6.0",
       "@mapbox/mapbox-gl-geocoder": "^5.0.0",
