@@ -116,7 +116,7 @@ router.get('/dishes/top-rated/:cityId',(req,res)=>{
 })
 
 router.get('/city/dishes/:cityId',(req,res)=>{
-    Dish.find({cityId:req.params.cityId})
+    Dish.find({cityId:req.params.cityId}).limit(20)
         .then((dishes)=>{
             res.status(200).send({"dishes":dishes});
             return;
